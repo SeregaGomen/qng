@@ -1315,7 +1315,7 @@ namespace netgen
 
   /* ***************************** HPRefinement ********************************** */
 
-  void HPRefinement (Mesh & mesh, Refinement * ref, int levels, double fac1, bool setorders, bool reflevels)
+  void HPRefinement (Mesh & mesh, Refinement * ref, int levels, double fac1, bool setorders, bool /*reflevels*/)
   {
     PrintMessage (1, "HP Refinement called, levels = ", levels);
 
