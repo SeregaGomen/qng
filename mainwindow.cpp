@@ -595,10 +595,10 @@ void MainWindow::genMeshSTL(void)
     using namespace nglib;
 
     // Define pointer to a new Netgen Mesh
-    Ng_Mesh *mesh;
+//    Ng_Mesh *mesh;
 
     // Define pointer to STL Geometry
-    Ng_STL_Geometry *stl_geom;
+//    Ng_STL_Geometry *stl_geom;
 
     // Result of Netgen Operations
     Ng_Result ng_res;
@@ -610,7 +610,7 @@ void MainWindow::genMeshSTL(void)
     Ng_Init();
 
     // Actually create the mesh structure
-    mesh = Ng_NewMesh();
+    mesh = (Ng_Mesh*)Ng_NewMesh();
 
     int np, ne;
 

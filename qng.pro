@@ -18,7 +18,7 @@ TEMPLATE = app
 INCLUDEPATH += libsrc/include \
                nglib
 
-LIBS += -lz
+unix:LIBS += -lz
 
 SOURCES += main.cpp\
         mainwindow.cpp\
@@ -118,7 +118,6 @@ SOURCES += main.cpp\
         libsrc/meshing/meshclass.cpp \
         libsrc/meshing/meshfunc.cpp \
         libsrc/meshing/meshfunc2d.cpp \
-        libsrc/meshing/meshing2.cpp \
         libsrc/meshing/meshing3.cpp \
         libsrc/meshing/meshtool.cpp \
         libsrc/meshing/meshtype.cpp \
@@ -157,7 +156,6 @@ SOURCES += main.cpp\
         libsrc/occ/Partition_Loop2d.cxx \
         libsrc/occ/Partition_Loop3d.cxx \
         libsrc/occ/Partition_Spliter.cxx \
-        libsrc/occ/vsocc.cpp \
         libsrc/stlgeom/meshstlsurface.cpp \
         libsrc/stlgeom/stlgeom.cpp \
         libsrc/stlgeom/stlgeomchart.cpp \
@@ -165,7 +163,8 @@ SOURCES += main.cpp\
         libsrc/stlgeom/stlline.cpp \
         libsrc/stlgeom/stltool.cpp \
         libsrc/stlgeom/stltopology.cpp \
-        nglib/nglib.cpp
+        nglib/nglib.cpp \
+    libsrc/meshing/meshing2.cpp
 
 HEADERS  += mainwindow.h \
         qstdredirector.h\

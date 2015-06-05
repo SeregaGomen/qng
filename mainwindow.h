@@ -58,6 +58,8 @@ private slots:
     void stopMesh(void);
 
 private:
+    void **mesh;
+    void **stl_geom;
     bool isUntitled = true;
     bool isGenMeshStarted = false;
     FileType fType = EMPTY;
