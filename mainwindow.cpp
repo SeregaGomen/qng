@@ -594,12 +594,6 @@ void MainWindow::genMeshSTL(void)
 {
     using namespace nglib;
 
-    // Define pointer to a new Netgen Mesh
-//    Ng_Mesh *mesh;
-
-    // Define pointer to STL Geometry
-//    Ng_STL_Geometry *stl_geom;
-
     // Result of Netgen Operations
     Ng_Result ng_res;
 
@@ -618,7 +612,7 @@ void MainWindow::genMeshSTL(void)
 
     QString data = qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText();
 
-    stl_geom = Ng_STL_LoadGeometry(data.toStdString());
+    stl_geom = (Ng_STL_Geometry*)Ng_STL_LoadGeometry(data.toStdString());
     if(!stl_geom)
     {
         //        cout << "Error reading in STL File: " << argv[1] << endl;
