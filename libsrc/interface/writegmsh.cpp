@@ -22,7 +22,6 @@ namespace netgen
 {
 #include "writeuser.hpp"
 
-  extern MeshingParameters mparam;
 
 
 /*
@@ -31,8 +30,8 @@ namespace netgen
  */
 
 void WriteGmshFormat (const Mesh & mesh,
-                      const NetgenGeometry & /*geom*/,
-                      const string & filename)
+			 const CSGeometry & geom,
+			 const string & filename)
 {
   ofstream outfile (filename.c_str());
   outfile.precision(6);

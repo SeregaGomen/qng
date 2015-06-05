@@ -18,7 +18,6 @@
 #include <stlgeom.hpp>
 #include <geometry2d.hpp>
 #include <meshing.hpp>
-#include <../visualization/soldata.hpp>
 
 #ifdef OCCGEOMETRY
 #include <occgeom.hpp>
@@ -29,7 +28,7 @@
 
 namespace netgen {
    extern void MeshFromSpline2D (SplineGeometry2d & geometry,
-                                 shared_ptr<Mesh> & mesh, 
+                                 Mesh *& mesh, 
                                  MeshingParameters & mp);
 }
 
@@ -46,12 +45,11 @@ namespace netgen
 #endif
 
 
-/*
 namespace netgen
 {
   int id = 0, ntasks = 1;
 }
-*/
+
 
 
 /*
@@ -503,6 +501,8 @@ namespace nglib
    }
 
 
+
+
    DLL_HEADER Ng_Result Ng_GenerateMesh_2D (Ng_Geometry_2D * geom,
                                             Ng_Mesh ** mesh,
                                             Ng_Meshing_Parameters * mp)
@@ -511,13 +511,12 @@ namespace nglib
       //  MeshingParameters mparam;  
       mp->Transfer_Parameters();
 
-      shared_ptr<Mesh> m;
+      Mesh * m;
       MeshFromSpline2D (*(SplineGeometry2d*)geom, m, mparam);
-      new shared_ptr<Mesh> (m);  // hack to keep mesh m alive 
 
       cout << m->GetNSE() << " elements, " << m->GetNP() << " points" << endl;
 
-      *mesh = (Ng_Mesh*)m.get();
+      *mesh = (Ng_Mesh*)m;
       return NG_OK;
    }
 
@@ -597,16 +596,14 @@ namespace nglib
    }
 
 
-   // loads geometry from STL file
    DLL_HEADER Ng_STL_Geometry * Ng_STL_LoadGeometry (string data)
    {
       int i;
       STLGeometry geom;
       STLGeometry* geo;
-//      strstream ist((char*)data.c_str(),data.length());
       strstream ist;
 
-      ist << data.c_str();
+      ist << data;
       geo = geom.Load(ist);
 
       readtrias.SetSize(0);
@@ -638,6 +635,7 @@ namespace nglib
 
       return geo2;
    }
+
 
 
    // generate new STL Geometry
@@ -693,7 +691,7 @@ namespace nglib
                        stlgeometry->GetBoundingBox().PMax() + Vec3d(10, 10, 10),
                        0.3);
 
-//      me -> LoadLocalMeshSize (mp->meshsize_filename);
+      me -> LoadLocalMeshSize (mp->meshsize_filename);
       /*
       if (mp->meshsize_filename)
       {
@@ -1098,7 +1096,7 @@ namespace nglib
       mparam.secondorder = second_order;
       mparam.quad = quad_dominated;
 
-//      mparam.meshsizefilename = meshsize_filename;
+      mparam.meshsizefilename = meshsize_filename;
 
       mparam.optsteps2d = optsteps_2d;
       mparam.optsteps3d = optsteps_3d;
@@ -1218,7 +1216,7 @@ namespace netgen
 {
    char geomfilename[255];
 
-   DLL_HEADER void MyError2 (const char * ch)
+   DLL_HEADER void MyError (const char * ch)
    {
       cerr << ch;
    }
@@ -1227,7 +1225,7 @@ namespace netgen
 
 
    //Destination for messages, errors, ...
-   DLL_HEADER void Ng_PrintDest2(const char * s)
+   DLL_HEADER void Ng_PrintDest(const char * s)
    {
 #ifdef PARALLEL
      int id = 0;
@@ -1238,20 +1236,21 @@ namespace netgen
    }
 
 
-  /*
+
+
    DLL_HEADER double GetTime ()
    {
       return 0;
    }
-  */
 
 
-//#ifndef WIN32
+
+
    void ResetTime ()
    {
       ;
    }
-//#endif
+
 
 
 
@@ -1263,41 +1262,21 @@ namespace netgen
 
 
 
-  //void Render() { ; }
-
+   void Render()
+   {
+      ; 
+   }
 } // End of namespace netgen
 
 
-/*
 
-#ifndef WIN32
+
 void Ng_Redraw () { ; }
-void Ng_ClearSolutionData() { ; }
-#endif
+void Ng_ClearSolutionData () { ; }
 void Ng_SetSolutionData (Ng_SolutionData * soldata) 
 { 
   delete soldata->solclass;
 }
 void Ng_InitSolutionData (Ng_SolutionData * soldata) { ; }
-*/
 
 
-
-
-#ifdef WIN32
-#ifdef NG_PYTHON
-#include <boost/python.hpp>
-void ExportNetgenMeshing();
-void ExportMeshVis();
-void ExportCSG();
-void ExportCSGVis();
-void ExportGeom2d();
-BOOST_PYTHON_MODULE(nglib) {
-    ExportCSG();
-    ExportCSGVis();
-    ExportNetgenMeshing();
-    ExportMeshVis();
-	ExportGeom2d();
-}
-#endif
-#endif

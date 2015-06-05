@@ -20,7 +20,6 @@
 #include <cstring>
 #include <climits>
 #include <algorithm>
-#include <memory>
 
 
 #include <new>

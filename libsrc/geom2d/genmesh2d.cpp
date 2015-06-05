@@ -3,7 +3,7 @@
 
 namespace netgen
 {
-  // extern DLL_HEADER MeshingParameters mparam;
+  extern DLL_HEADER MeshingParameters mparam;
 
   extern void Optimize2d (Mesh & mesh, MeshingParameters & mp);
 
@@ -12,7 +12,7 @@ namespace netgen
 
   void CalcPartition (const SplineSegExt & spline, 
 		      // double l, 
-              MeshingParameters & /*mp*/, Mesh & mesh,
+		      MeshingParameters & mp, Mesh & mesh, 
 		      // double h, double h1, double h2, double hcurve, 
 		      double elto0, Array<double> & points)
   {
@@ -91,7 +91,7 @@ namespace netgen
 
   // partitionizes spline curve
   void Partition (const SplineSegExt & spline,
-          MeshingParameters & mp, double /*hxxx*/, double elto0,
+		  MeshingParameters & mp, double hxxx, double elto0,
 		  Mesh & mesh, Point3dTree & searchtree, int segnr) 
   {
     int n = 100;
@@ -350,7 +350,7 @@ namespace netgen
 
 
   void MeshFromSpline2D (SplineGeometry2d & geometry,
-			 shared_ptr<Mesh> & mesh, 
+			 Mesh *& mesh, 
 			 MeshingParameters & mp)
   {
     PrintMessage (1, "Generate Mesh from spline geometry");
@@ -365,20 +365,18 @@ namespace netgen
 	mp.maxh = h;
       }
 
-    // mesh = make_shared<Mesh>();
+    mesh = new Mesh;
     mesh->SetDimension (2);
 
     Point3d pmin(bbox.PMin()(0), bbox.PMin()(1), -bbox.Diam());
     Point3d pmax(bbox.PMax()(0), bbox.PMax()(1), bbox.Diam());
 
-    mesh->SetLocalH (pmin, pmax, mp.grading);
+    mesh->SetLocalH (pmin, pmax, mparam.grading);
     mesh->SetGlobalH (h);
 
     
 
     geometry.PartitionBoundary (mp, h, *mesh);
-    
-    PrintMessage (3, "Boundary mesh done, np = ", mesh->GetNP());
 
 
     // marks mesh points for hp-refinement
@@ -415,22 +413,24 @@ namespace netgen
     // number of bcnames
     int maxsegmentindex = 0;
     for (SegmentIndex si = 0; si < mesh->GetNSeg(); si++)
-      if ( (*mesh)[si].si > maxsegmentindex) maxsegmentindex = (*mesh)[si].si;
+      {
+	if ( (*mesh)[si].si > maxsegmentindex) maxsegmentindex = (*mesh)[si].si;
+      }
 
-    mesh->SetNBCNames(maxsegmentindex+1);
+    mesh->SetNBCNames(maxsegmentindex);
 
-    for ( int sindex = 0; sindex <= maxsegmentindex; sindex++ )
+    for ( int sindex = 0; sindex < maxsegmentindex; sindex++ )
       mesh->SetBCName ( sindex, geometry.GetBCName( sindex+1 ) );
 
     for (SegmentIndex si = 0; si < mesh->GetNSeg(); si++)
       (*mesh)[si].SetBCName ( (*mesh).GetBCNamePtr( (*mesh)[si].si-1 ) );
+
   
-    mesh->CalcLocalH(mp.grading);
+    mesh->CalcLocalH(mparam.grading);
 
     int bnp = mesh->GetNP(); // boundary points
-    auto BndPntRange = mesh->Points().Range();
 
-    int hquad = mp.quad;
+    int hquad = mparam.quad;
 
 
     for (int domnr = 1; domnr <= maxdomnr; domnr++)
@@ -526,17 +526,17 @@ namespace netgen
 
 	int oldnf = mesh->GetNSE();
 
-        mp.quad = hquad || geometry.GetDomainQuadMeshing (domnr);
+        mparam.quad = hquad || geometry.GetDomainQuadMeshing (domnr);
 
-	Meshing2 meshing (mp, Box<3> (pmin, pmax));
+	Meshing2 meshing (mparam, Box<3> (pmin, pmax));
 
 	Array<int, PointIndex::BASE> compress(bnp);
 	compress = -1;
 	int cnt = 0;
-        for (PointIndex pi : BndPntRange)
+	for (PointIndex pi = PointIndex::BASE; pi < bnp+PointIndex::BASE; pi++)
 	  if ( (*mesh)[pi].GetLayer() == geometry.GetDomainLayer(domnr))
 	    {
-	      meshing.AddPoint ((*mesh)[pi], pi);
+	      meshing.AddPoint ( (*mesh)[pi], pi);
 	      cnt++;
 	      compress[pi] = cnt;
 	    }
@@ -547,32 +547,38 @@ namespace netgen
 	  {
 	    if ( (*mesh)[si].domin == domnr)
 	      {
-		meshing.AddBoundaryElement (compress[(*mesh)[si][0]], 
-                                            compress[(*mesh)[si][1]], gi, gi);
+		meshing.AddBoundaryElement ( compress[(*mesh)[si][0]], 
+					     compress[(*mesh)[si][1]], gi, gi);
 	      }
 	    if ( (*mesh)[si].domout == domnr)
 	      {
-		meshing.AddBoundaryElement (compress[(*mesh)[si][1]],
-                                            compress[(*mesh)[si][0]], gi, gi);
+		meshing.AddBoundaryElement ( compress[(*mesh)[si][1]],
+					     compress[(*mesh)[si][0]], gi, gi);
+		
 	      }
+
 	  }
 
-        // not complete, use at own risk ...
-        // meshing.Delaunay(*mesh, domnr, mp);
-        mp.checkoverlap = 0;
-        meshing.GenerateMesh (*mesh, mp, h, domnr);
+
+	mparam.checkoverlap = 0;
+
+	meshing.GenerateMesh (*mesh, mparam, h, domnr);
 
 	for (SurfaceElementIndex sei = oldnf; sei < mesh->GetNSE(); sei++)
 	  (*mesh)[sei].SetIndex (domnr);
 
+
 	// astrid
 	char * material;
-	geometry.GetMaterial (domnr, material);
-	if (material)
-          mesh->SetMaterial (domnr, material);
+	geometry.GetMaterial( domnr, material );
+	if ( material )
+	  {
+	    (*mesh).SetMaterial ( domnr,  material );
+	  }
+
       }
 
-    mp.quad = hquad;
+    mparam.quad = hquad;
 
 
 
@@ -591,7 +597,9 @@ namespace netgen
     mesh->Compress();
     mesh -> SetNextMajorTimeStamp();
 
-    mp.Render();
+
+    extern DLL_HEADER void Render();
+    Render();
   }
 
 

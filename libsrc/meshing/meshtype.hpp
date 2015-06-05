@@ -120,7 +120,12 @@ namespace netgen
     PointIndex () { ; }
     PointIndex (int ai) : i(ai) { ; }
     PointIndex & operator= (const PointIndex &ai) { i = ai.i; return *this; }
+    // PointIndex & operator= (int ai) { i = ai; return *this; }
     operator int () const { return i; }
+    // int GetInt () const { return i; }
+    // PointIndex operator+ (int i2) { return PointIndex (i+i2); }
+    // PointIndex operator++ (int) { int hi = i; i++; return PointIndex(hi); }
+    // PointIndex operator-- (int) { int hi = i; i--; return PointIndex(hi); }
     PointIndex operator++ (int) { PointIndex hi(*this); i++; return hi; }
     PointIndex operator-- (int) { PointIndex hi(*this); i--; return hi; }
     PointIndex operator++ () { i++; return *this; }
@@ -355,7 +360,7 @@ namespace netgen
         {
 #ifdef DEBUG
           if (typ != QUAD && typ != QUAD6 && typ != QUAD8)
-            PrintSysError ("element2d::GetNV not implemented for typ", typ);
+            PrintSysError ("element2d::GetNV not implemented for typ", typ)
 #endif
           return 4;
         }
@@ -994,13 +999,6 @@ namespace netgen
   class DLL_HEADER MeshingParameters
   {
   public:
-
-
-    
-
-
-
-
     /**
        3d optimization strategy:
        // m .. move nodes
@@ -1013,9 +1011,9 @@ namespace netgen
        // h .. Histogramm, no pause
        // H .. Histogramm, pause
        */
-    string optimize3d = "cmdmustm";
+    const char * optimize3d;
     /// number of 3d optimization steps
-    int optsteps3d = 3;
+    int optsteps3d;
     /**
        2d optimization strategy:
        // s .. swap, opt 6 lines/node
@@ -1025,104 +1023,90 @@ namespace netgen
        // P .. plot, pause
        // c .. combine
        **/
-    string optimize2d = "smsmsmSmSmSm";
+    const char * optimize2d;
     /// number of 2d optimization steps
-    int optsteps2d = 3;
+    int optsteps2d;
     /// power of error (to approximate max err optimization)
-    double opterrpow = 2;
+    double opterrpow;
     /// do block filling ?  
-    int blockfill = 1;
+    int blockfill;
     /// block filling up to distance
-    double filldist = 0.1;
+    double filldist;
     /// radius of local environment (times h)
-    double safety = 5;
+    double safety;
     /// radius of active environment (times h)
-    double relinnersafety = 3;
+    double relinnersafety;
     /// use local h ?
-    int uselocalh = 1;
+    int uselocalh;
     /// grading for local h
-    double grading = 0.3;
+    double grading;
     /// use delaunay meshing
-    int delaunay = 1;
+    int delaunay;
     /// maximal mesh size
-    double maxh = 1e10;
+    double maxh;
     /// minimal mesh size
-    double minh = 0.0;
+    double minh;
     /// file for meshsize
-    string meshsizefilename = "";
+    const char * meshsizefilename;
     /// start surfacemeshing from everywhere in surface
-    int startinsurface = 0;
+    int startinsurface;
     /// check overlapping surfaces (debug)
-    int checkoverlap = 1;
+    int checkoverlap;
     /// check overlapping surface mesh before volume meshing
-    int checkoverlappingboundary = 1;
+    int checkoverlappingboundary;
     /// check chart boundary (sometimes too restrictive)
-    int checkchartboundary = 1;
+    int checkchartboundary;
     /// safty factor for curvatures (elemetns per radius)
-    double curvaturesafety = 2;
+    double curvaturesafety;
     /// minimal number of segments per edge
-    double segmentsperedge = 1;
+    double segmentsperedge;
     /// use parallel threads
-    int parthread = 0;
+    int parthread;
     /// weight of element size w.r.t element shape
-    double elsizeweight = 0.2;
+    double elsizeweight;
     /// init with default values
 
 
     /// from mp3:
     /// give up quality class, 2d meshing
-    int giveuptol2d = 200;
+    int giveuptol2d;
     /// give up quality class, 3d meshing
-    int giveuptol = 10;
+    int giveuptol;
     /// maximal outer steps
-    int maxoutersteps = 10;
+    int maxoutersteps;
     /// class starting star-shape filling
-    int starshapeclass = 5;
+    int starshapeclass;
     /// if non-zero, baseelement must have baseelnp points
-    int baseelnp = 0;        
+    int baseelnp;        
     /// quality tolerances are handled less careful
-    int sloppy = 1;
+    int sloppy;
   
     /// limit for max element angle (150-180)
-    double badellimit = 175;
+    double badellimit;
 
-    bool check_impossible = 0;
+    bool check_impossible;
   
     ///
-    int secondorder = 0;
+    int secondorder;
     /// high order element curvature
-    int elementorder = 1;
+    int elementorder;
     /// quad-dominated surface meshing
-    int quad = 0;
+    int quad;
     ///
-    int inverttets = 0;
+    int inverttets;
     ///
-    int inverttrigs = 0;
+    int inverttrigs;
     ///
-    int autozrefine = 0;
+    int autozrefine;
     ///
     MeshingParameters ();
     ///
-    MeshingParameters (const MeshingParameters & mp2) = default;
-    ///
     void Print (ostream & ost) const;
-    /// 
-    // void CopyFrom(const MeshingParameters & other);
-    
 
-    void (*render_function)(bool) = NULL;
-    void Render(bool blocking = false)
-    {
-      if (render_function) 
-        (*render_function)(blocking);
-    }
+    void CopyFrom(const MeshingParameters & other);
   };
 
-  inline ostream & operator<< (ostream & ost, const MeshingParameters & mp)
-  {
-    mp.Print (ost);
-    return ost;
-  }
+
 
   class DebugParameters 
   {

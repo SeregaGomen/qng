@@ -105,8 +105,8 @@ namespace netgen
   // static Point3d globp1;
 
   void Meshing2 :: DefineTransformation (const Point3d & p1, const Point3d & p2,
-                     const PointGeomInfo * /*geominfo1*/,
-                     const PointGeomInfo * /*geominfo2*/)
+					 const PointGeomInfo * geominfo1,
+					 const PointGeomInfo * geominfo2)
   {
     globp1 = p1;
     ex = p2 - p1;
@@ -117,7 +117,7 @@ namespace netgen
   }
 
   void Meshing2 :: TransformToPlain (const Point3d & locpoint, 
-                     const MultiPointGeomInfo & /*geominf*/,
+				     const MultiPointGeomInfo & geominf,
 				     Point2d & plainpoint, double h, int & zone)
   {
     Vec3d p1p (globp1, locpoint);
@@ -144,14 +144,14 @@ namespace netgen
   }
 
 
-  int Meshing2 :: BelongsToActiveChart (const Point3d & /*p*/,
-                    const PointGeomInfo & /*gi*/)
+  int Meshing2 :: BelongsToActiveChart (const Point3d & p, 
+					const PointGeomInfo & gi)
   {
     return 1;
   }
 
 
-  int Meshing2 :: ComputePointGeomInfo (const Point3d & /*p*/, PointGeomInfo & gi)
+  int Meshing2 :: ComputePointGeomInfo (const Point3d & p, PointGeomInfo & gi)
   {
     gi.trignum = 1;
     return 0;
@@ -168,8 +168,8 @@ namespace netgen
 
 
   int Meshing2 :: 
-  IsLineVertexOnChart (const Point3d & /*p1*/, const Point3d & /*p2*/,
-               int /*endpoint*/, const PointGeomInfo & /*geominfo*/)
+  IsLineVertexOnChart (const Point3d & p1, const Point3d & p2,
+		       int endpoint, const PointGeomInfo & geominfo)
   {
     return 1;
   }
@@ -177,7 +177,7 @@ namespace netgen
   void Meshing2 ::
   GetChartBoundary (Array<Point2d> & points, 
 		    Array<Point3d> & points3d, 
-            Array<INDEX_2> & lines, double /*h*/) const
+		    Array<INDEX_2> & lines, double h) const
   {
     points.SetSize (0);
     points3d.SetSize (0);

@@ -30,14 +30,11 @@
 #include <meshing.hpp>
 #include <sys/stat.h>
 
-//#define PACKAGE_VERSION "6.0"
-
+#define PACKAGE_VERSION "5.3.1"
 
 namespace netgen
 {
 #include "writeuser.hpp"
-
-  extern MeshingParameters mparam;
 
    // Global arrays used to maintain the owner, neighbour and face lists 
    // so that they are accessible across functions

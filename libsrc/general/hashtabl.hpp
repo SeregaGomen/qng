@@ -1247,7 +1247,7 @@ SetSize (int size)
   
 template<class T>
 inline void INDEX_2_CLOSED_HASHTABLE<T> :: 
-PrintMemInfo (ostream & /*ost*/) const
+PrintMemInfo (ostream & ost) const
 {
   cout << "Hashtable: " << Size() 
        << " entries of size " << sizeof(INDEX_2) << " + " << sizeof(T) 

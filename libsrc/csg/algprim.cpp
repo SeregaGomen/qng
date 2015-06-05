@@ -95,12 +95,6 @@ namespace netgen
     return new Plane (p, n);
   }
 
-  void Plane :: Print (ostream & ost) const
-  {
-    ost << "plane(" << p << "; " << n << ")";
-  }
-  
-
   void Plane :: Transform (Transformation<3> & trans)
   {
     Point<3> hp;
@@ -834,10 +828,6 @@ namespace netgen
     return new Cylinder (a, b, r);
   }
 
-  void Cylinder :: Print (ostream & ost) const
-  {
-    ost << "cylinder(" << a << "; " << b << "; " << r << ")";
-  }
 
   int Cylinder :: IsIdentic (const Surface & s2, int & inv, double eps) const
   {
@@ -1414,8 +1404,7 @@ namespace netgen
 
 
   double Cone ::  LocH (const Point<3> & p, double /* x */, 
-                        double /* c */, 
-                        const MeshingParameters & mparam, double hmax) const
+                        double /* c */, double hmax) const
   {
     //double bloch = Surface::LocH (p, x, c, hmax);
     Vec<3> g;

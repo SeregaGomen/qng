@@ -23,8 +23,12 @@ public:
 };
 
 
+/*
+extern void BisectTets (Mesh &, const CSGeometry *,
+			BisectionOptions & opt);
+*/
 
-extern void BisectTetsCopyMesh (Mesh &, const NetgenGeometry *,
+extern void BisectTetsCopyMesh (Mesh &, const class CSGeometry *,
 				BisectionOptions & opt);
 
 extern void ZRefinement (Mesh &, const class NetgenGeometry *,

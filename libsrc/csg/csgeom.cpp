@@ -129,11 +129,11 @@ namespace netgen
 
 
   extern int CSGGenerateMesh (CSGeometry & geom, 
-			      shared_ptr<Mesh> & mesh, MeshingParameters & mparam,
+			      Mesh *& mesh, MeshingParameters & mparam,
 			      int perfstepsstart, int perfstepsend);
 
 
-  int CSGeometry :: GenerateMesh (shared_ptr<Mesh> & mesh, MeshingParameters & mparam,
+  int CSGeometry :: GenerateMesh (Mesh*& mesh, MeshingParameters & mparam,
 				 int perfstepsstart, int perfstepsend)
   {
     return CSGGenerateMesh (*this, mesh, mparam, perfstepsstart, perfstepsend);
@@ -182,7 +182,7 @@ namespace netgen
 
   void CSGeometry :: Save (string filename) const
   {
-    ofstream ost (filename.c_str());
+    fstream ost (filename.c_str());
     Save (ost);
   }
   
@@ -511,7 +511,7 @@ namespace netgen
  
   void CSGeometry :: AddSurface (char * name, Surface * surf)
   { 
-    (*testout) << "Adding surface " << name << ": " << (*surf) << endl;
+    (*testout) << "Adding surface " << name << endl;
     surfaces.Set (name, surf); 
     surf->SetName (name);
     changeval++; 

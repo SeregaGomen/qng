@@ -228,7 +228,7 @@ namespace netgen
     }
 
     enum EB_TYPE { EMPTY_BOX = 1 };
-    Box ( EB_TYPE /*et*/ )
+    Box ( EB_TYPE et ) 
     {
       pmin = Point<3> (1e99, 1e99, 1e99);
       pmax = Point<3> (-1e99, -1e99, -1e99);

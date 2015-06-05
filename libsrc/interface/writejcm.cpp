@@ -16,7 +16,7 @@ namespace netgen
 #include "writeuser.hpp"
 
 void WriteJCMFormat (const Mesh & mesh,
-                     const NetgenGeometry & /*geom*/,
+                     const CSGeometry & geom,
                      const string & filename)
 {
   if (mesh.GetDimension() != 3)

@@ -18,9 +18,9 @@ namespace netgen
 
   void Refinement2d :: 
   PointBetween (const Point<3> & p1, const Point<3> & p2, double secpoint,
-        int /*surfi*/,
-        const PointGeomInfo & /*gi1*/,
-        const PointGeomInfo & /*gi2*/,
+		int surfi, 
+		const PointGeomInfo & gi1, 
+		const PointGeomInfo & gi2,
 		Point<3> & newp, PointGeomInfo & newgi) const
   {
     newp = p1+secpoint*(p2-p1);
@@ -30,8 +30,8 @@ namespace netgen
 
 
   void Refinement2d :: 
-  PointBetween (const Point<3> & /*p1*/, const Point<3> & /*p2*/, double secpoint,
-        int /*surfi1*/, int /*surfi2*/,
+  PointBetween (const Point<3> & p1, const Point<3> & p2, double secpoint, 
+		int surfi1, int surfi2, 
 		const EdgePointGeomInfo & ap1, 
 		const EdgePointGeomInfo & ap2,
 		Point<3> & newp, EdgePointGeomInfo & newgi) const
@@ -51,27 +51,27 @@ namespace netgen
 
 
 
-  Vec<3> Refinement2d :: GetTangent (const Point<3> & /*p*/, int /*surfi1*/, int /*surfi2*/,
+  Vec<3> Refinement2d :: GetTangent (const Point<3> & p, int surfi1, int surfi2,
                                      const EdgePointGeomInfo & ap1) const
   {
     Vec<2> t2d = geometry.GetSplines().Get(ap1.edgenr) -> GetTangent(ap1.dist);
     return Vec<3> (t2d(0), t2d(1), 0);
   }
 
-  Vec<3> Refinement2d :: GetNormal (const Point<3> & /*p*/, int /*surfi1*/,
-                                    const PointGeomInfo & /*gi*/) const
+  Vec<3> Refinement2d :: GetNormal (const Point<3> & p, int surfi1, 
+                                    const PointGeomInfo & gi) const
   {
     return Vec<3> (0,0,1);
   }
 
 
-  void Refinement2d :: ProjectToSurface (Point<3> & p, int /*surfi*/, const PointGeomInfo & /* gi */) const
+  void Refinement2d :: ProjectToSurface (Point<3> & p, int surfi, const PointGeomInfo & /* gi */) const
   {
     p(2) = 0;
   }
 
 
-  void Refinement2d :: ProjectToEdge (Point<3> & p, int /*surfi1*/, int /*surfi2*/,
+  void Refinement2d :: ProjectToEdge (Point<3> & p, int surfi1, int surfi2, 
                                       const EdgePointGeomInfo & egi) const
   {
     Point<2> p2d (p(0), p(1)), pp;

@@ -10,7 +10,6 @@
 namespace netgen
 {
 
-  /*
 template <typename T>
 class AutoPtr
 {
@@ -31,7 +30,7 @@ private:
   AutoPtr (AutoPtr &) { ; }
   AutoPtr & operator= (AutoPtr &) { ; }
 };
-  */
+
 }
 
 #endif

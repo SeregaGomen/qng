@@ -749,7 +749,7 @@ namespace netgen
 
 
   void SaveVolumeMesh (const Mesh & mesh, 
-		       const NetgenGeometry & geometry,
+		       const CSGeometry & geometry,
 		       char * filename)
   {
     INDEX i;

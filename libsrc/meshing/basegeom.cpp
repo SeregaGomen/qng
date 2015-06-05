@@ -14,7 +14,7 @@ namespace netgen
 
 
   
-  int NetgenGeometry :: GenerateMesh (shared_ptr<Mesh> & mesh, MeshingParameters & mparam,
+  int NetgenGeometry :: GenerateMesh (Mesh*& mesh, MeshingParameters & mparam,
 				      int perfstepsstart, int perfstepsend)
   {
     if (!mesh) return 1;
@@ -59,7 +59,7 @@ namespace netgen
   }
 
 
-  void NetgenGeometry :: Save (string /*filename*/) const
+  void NetgenGeometry :: Save (string filename) const
   {
     throw NgException("Cannot save geometry - no geometry available");
   }

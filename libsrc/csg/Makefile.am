@@ -15,8 +15,7 @@ libcsg_la_SOURCES = algprim.cpp brick.cpp   \
 bspline2d.cpp csgeom.cpp csgparser.cpp curve2d.cpp edgeflw.cpp	       \
 explicitcurve2d.cpp extrusion.cpp gencyl.cpp genmesh.cpp identify.cpp  \
 manifold.cpp meshsurf.cpp polyhedra.cpp revolution.cpp singularref.cpp \
-solid.cpp specpoin.cpp spline3d.cpp surface.cpp triapprox.cpp zrefine.cpp \
-python_csg.cpp
+solid.cpp specpoin.cpp spline3d.cpp surface.cpp triapprox.cpp
 
 libcsg_la_LIBADD =  $(top_builddir)/libsrc/meshing/libmesh.la
 
@@ -26,7 +25,7 @@ if NGGUI
 lib_LTLIBRARIES += libcsgvis.la 
 
 libcsgvis_la_SOURCES = vscsg.cpp csgpkg.cpp
-libcsgvis_la_LIBADD = libcsg.la $(top_builddir)/libsrc/visualization/libvisual.la
+libcsgvis_la_LIBADD = libcsg.la
 endif
 
 #   $(top_builddir)/libsrc/geom2d/libgeom2d.la 

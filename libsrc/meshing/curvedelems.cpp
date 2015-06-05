@@ -3123,9 +3123,9 @@ namespace netgen
 
 
   void CurvedElements :: 
-  CalcMultiPointSegmentTransformation (Array<double> * /*xi*/, SegmentIndex /*segnr*/,
-                       Array<Point<3> > * /*x*/,
-                       Array<Vec<3> > * /*dxdxi*/)
+  CalcMultiPointSegmentTransformation (Array<double> * xi, SegmentIndex segnr,
+				       Array<Point<3> > * x,
+				       Array<Vec<3> > * dxdxi)
   {
     ;
   }

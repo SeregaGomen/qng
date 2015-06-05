@@ -274,7 +274,7 @@ namespace netgen
   BlockAllocator ADTreeNode3 :: ball(sizeof (ADTreeNode3));
 
 
-  void * ADTreeNode3 :: operator new(size_t /*s*/)
+  void * ADTreeNode3 :: operator new(size_t s)
   {
     return ball.Alloc();
   }
@@ -1562,7 +1562,7 @@ namespace netgen
 
 
   BlockAllocator ADTreeNode6 :: ball (sizeof (ADTreeNode6));
-  void * ADTreeNode6 :: operator new(size_t /*s*/)
+  void * ADTreeNode6 :: operator new(size_t s)
   {
     return ball.Alloc();
   }

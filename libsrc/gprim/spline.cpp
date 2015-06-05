@@ -34,8 +34,8 @@ namespace netgen
 
 
   template <> 
-  void CircleSeg<3> :: LineIntersections (const double /*a*/, const double /*b*/, const double /*c*/,
-                      Array < Point<3> > & /*points*/, const double /*eps*/) const
+  void CircleSeg<3> :: LineIntersections (const double a, const double b, const double c,
+					  Array < Point<3> > & points, const double eps) const
   {
     cerr << "CircleSeg<3>::LineIntersections not implemented" << endl;
   }

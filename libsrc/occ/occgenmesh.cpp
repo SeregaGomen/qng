@@ -1273,17 +1273,17 @@ namespace netgen
 
 
 
-  int OCCGenerateMesh (OCCGeometry & geom, shared_ptr<Mesh> & mesh, MeshingParameters & mparam,
+  int OCCGenerateMesh (OCCGeometry & geom, Mesh *& mesh, MeshingParameters & mparam,
 		       int perfstepsstart, int perfstepsend)
    {
       multithread.percent = 0;
 
       if (perfstepsstart <= MESHCONST_ANALYSE)
       {
-        // delete mesh;
-        // mesh = make_shared<Mesh>();
+         delete mesh;
+         mesh = new Mesh();
          mesh->geomtype = Mesh::GEOM_OCC;
-         
+
          OCCSetLocalMeshSize(geom,*mesh);
       }
 

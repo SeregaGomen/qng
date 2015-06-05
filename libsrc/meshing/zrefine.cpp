@@ -9,7 +9,7 @@ namespace netgen
   // find singular edges
   void SelectSingularEdges (const Mesh & mesh, const CSGeometry & geom, 
 			    INDEX_2_HASHTABLE<int> & singedges,
-                ZRefinementOptions & /*opt*/)
+			    ZRefinementOptions & opt)
   {
     // edges selected in csg input file
     for (int i = 1; i <= geom.singedges.Size(); i++)
@@ -242,7 +242,7 @@ namespace netgen
 
 
   void RefinePrisms (Mesh & mesh, const CSGeometry * geom, 
-             ZRefinementOptions & /*opt*/)
+		     ZRefinementOptions & opt)
   {
     int i, j;
     bool found, change;

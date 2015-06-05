@@ -18,7 +18,7 @@ TEMPLATE = app
 INCLUDEPATH += libsrc/include \
                nglib
 
-#LIBS += -lz
+LIBS += -lz
 
 SOURCES += main.cpp\
         mainwindow.cpp\
@@ -37,7 +37,6 @@ SOURCES += main.cpp\
         libsrc/csg/manifold.cpp \
         libsrc/csg/meshsurf.cpp \
         libsrc/csg/polyhedra.cpp \
-        libsrc/csg/python_csg.cpp \
         libsrc/csg/revolution.cpp \
         libsrc/csg/singularref.cpp \
         libsrc/csg/solid.cpp \
@@ -45,7 +44,6 @@ SOURCES += main.cpp\
         libsrc/csg/spline3d.cpp \
         libsrc/csg/surface.cpp \
         libsrc/csg/triapprox.cpp \
-        libsrc/csg/zrefine.cpp \
         libsrc/general/array.cpp \
         libsrc/general/bitarray.cpp \
         libsrc/general/dynamicmem.cpp \
@@ -66,7 +64,6 @@ SOURCES += main.cpp\
         libsrc/geom2d/genmesh2d.cpp \
         libsrc/geom2d/geom2dmesh.cpp \
         libsrc/geom2d/geometry2d.cpp \
-        libsrc/geom2d/python_geom2d.cpp \
         libsrc/gprim/adtree.cpp \
         libsrc/gprim/geom2d.cpp \
         libsrc/gprim/geom3d.cpp \
@@ -112,6 +109,7 @@ SOURCES += main.cpp\
         libsrc/meshing/delaunay.cpp \
         libsrc/meshing/delaunay2d.cpp \
         libsrc/meshing/geomsearch.cpp \
+        libsrc/meshing/global.cpp \
         libsrc/meshing/hprefinement.cpp \
         libsrc/meshing/improve2.cpp \
         libsrc/meshing/improve2gen.cpp \
@@ -134,7 +132,6 @@ SOURCES += main.cpp\
         libsrc/meshing/prism2rls.cpp \
         libsrc/meshing/pyramid2rls.cpp \
         libsrc/meshing/pyramidrls.cpp \
-        libsrc/meshing/python_mesh.cpp \
         libsrc/meshing/quadrls.cpp \
         libsrc/meshing/refine.cpp \
         libsrc/meshing/ruler2.cpp \
@@ -148,10 +145,12 @@ SOURCES += main.cpp\
         libsrc/meshing/topology.cpp \
         libsrc/meshing/triarls.cpp \
         libsrc/meshing/validate.cpp \
+        libsrc/meshing/zrefine.cpp \
         libsrc/occ/occconstruction.cpp \
         libsrc/occ/occgenmesh.cpp \
         libsrc/occ/occgeom.cpp \
         libsrc/occ/occmeshsurf.cpp \
+        libsrc/occ/occpkg.cpp \
         libsrc/occ/Partition_Inter2d.cxx \
         libsrc/occ/Partition_Inter3d.cxx \
         libsrc/occ/Partition_Loop.cxx \
@@ -166,10 +165,7 @@ SOURCES += main.cpp\
         libsrc/stlgeom/stlline.cpp \
         libsrc/stlgeom/stltool.cpp \
         libsrc/stlgeom/stltopology.cpp \
-        libsrc/visualization/importsolution.cpp \
-        libsrc/visualization/visual_dummy.cpp \
-        nglib/nglib.cpp \
-        libsrc/meshing/global.cpp
+        nglib/nglib.cpp
 
 HEADERS  += mainwindow.h \
         qstdredirector.h\
@@ -210,7 +206,6 @@ HEADERS  += mainwindow.h \
         libsrc/general/mystring.hpp \
         libsrc/general/netgenout.hpp \
         libsrc/general/ngexception.hpp \
-        libsrc/general/ngpython.hpp \
         libsrc/general/optmem.hpp \
         libsrc/general/parthreads.hpp \
         libsrc/general/profiler.hpp \
@@ -241,7 +236,6 @@ HEADERS  += mainwindow.h \
         libsrc/include/csg.hpp \
         libsrc/include/geometry2d.hpp \
         libsrc/include/gprim.hpp \
-        libsrc/include/incopengl.hpp \
         libsrc/include/linalg.hpp \
         libsrc/include/meshing.hpp \
         libsrc/include/myadt.hpp \
@@ -254,7 +248,6 @@ HEADERS  += mainwindow.h \
         libsrc/include/opti.hpp \
         libsrc/include/parallel.hpp \
         libsrc/include/stlgeom.hpp \
-        libsrc/include/visual.hpp \
         libsrc/interface/writeuser.hpp \
         libsrc/linalg/densemat.hpp \
         libsrc/linalg/linalg.hpp \
@@ -315,12 +308,6 @@ HEADERS  += mainwindow.h \
         libsrc/stlgeom/stltool.hpp \
         libsrc/stlgeom/stltopology.hpp \
         libsrc/stlgeom/vsstl.hpp \
-        libsrc/visualization/meshdoc.hpp \
-        libsrc/visualization/mvdraw.hpp \
-        libsrc/visualization/soldata.hpp \
-        libsrc/visualization/vispar.hpp \
-        libsrc/visualization/visual.hpp \
-        libsrc/visualization/vssolution.hpp \
         nglib/nglib.h
 
 FORMS    += mainwindow.ui

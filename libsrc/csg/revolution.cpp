@@ -140,7 +140,7 @@ namespace netgen
   }
   
 
-  int  RevolutionFace ::IsIdentic (const Surface & s2, int & /*inv*/, double /*eps*/) const
+  int  RevolutionFace ::IsIdentic (const Surface & s2, int & inv, double eps) const
   {
     const RevolutionFace * rev2 = dynamic_cast<const RevolutionFace*>(&s2);
     
@@ -431,7 +431,7 @@ namespace netgen
 
 
   void RevolutionFace :: GetTriangleApproximation (TriangleApproximation & tas, 
-                           const Box<3> & /*boundingbox*/,
+						   const Box<3> & boundingbox, 
 						   double facets) const
   {
     Vec<3> random_vec(0.760320,-0.241175,0.60311534);

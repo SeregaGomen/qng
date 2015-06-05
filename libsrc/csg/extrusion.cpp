@@ -106,7 +106,7 @@ namespace netgen
   }
 
   
-  int ExtrusionFace :: IsIdentic (const Surface & s2, int & /*inv*/, double /*eps*/) const
+  int ExtrusionFace :: IsIdentic (const Surface & s2, int & inv, double eps) const
   {
     const ExtrusionFace * ext2 = dynamic_cast<const ExtrusionFace*>(&s2);
 
@@ -485,7 +485,7 @@ namespace netgen
     //(*testout) << endl;
   }
 
-  void ExtrusionFace :: Print (ostream & /*str*/) const{}
+  void ExtrusionFace :: Print (ostream & str) const{}
 
   INSOLID_TYPE ExtrusionFace :: VecInFace ( const Point<3> & p,
 					    const Vec<3> & v,
@@ -553,7 +553,7 @@ namespace netgen
 
 
   void ExtrusionFace :: GetTriangleApproximation (TriangleApproximation & tas, 
-                          const Box<3> & /*boundingbox*/,
+						  const Box<3> & boundingbox, 
 						  double facets) const
   {
     int n = int(facets) + 1;

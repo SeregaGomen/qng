@@ -10,9 +10,8 @@ namespace netgen
 
   EdgeCalculation :: 
   EdgeCalculation (const CSGeometry & ageometry,
-		   Array<SpecialPoint> & aspecpoints,
-                   MeshingParameters & amparam)
-    : geometry(ageometry), specpoints(aspecpoints), mparam(amparam)
+		   Array<SpecialPoint> & aspecpoints)
+    : geometry(ageometry), specpoints(aspecpoints)
   {
     Box<3> bbox = geometry.BoundingBox();
 
@@ -41,8 +40,9 @@ namespace netgen
     PrintMessage (1, "Find edges");
     PushStatus ("Find edges");
 
-    for (PointIndex pi : mesh.Points().Range())    
-      meshpoint_tree->Insert (mesh[pi], pi);
+    for (int i = 1; i <= mesh.GetNP(); i++)
+      meshpoint_tree->Insert (mesh.Point(i), i);
+
 
     // add all special points before edge points (important for periodic identification)
     // JS, Jan 2007
@@ -62,7 +62,6 @@ namespace netgen
               meshpoint_tree -> Insert (p, pi); 
             }
         }
-           
 
     /*
       // slow version
@@ -699,8 +698,8 @@ namespace netgen
     // (*testout) << "geometry.GetSurface(s1) -> LocH (p, 3, 1, h) " << geometry.GetSurface(s1) -> LocH (p, 3, 1, h)
     // << " geometry.GetSurface(s2) -> LocH (p, 3, 1, h) " << geometry.GetSurface(s2) -> LocH (p, 3, 1, h) << endl;
 
-    loch = min2 (geometry.GetSurface(s1) -> LocH (p, 3, 1, mparam, h), 
-		 geometry.GetSurface(s2) -> LocH (p, 3, 1, mparam, h));
+    loch = min2 (geometry.GetSurface(s1) -> LocH (p, 3, 1, h), 
+		 geometry.GetSurface(s2) -> LocH (p, 3, 1, h));
   
   
   
@@ -849,16 +848,18 @@ namespace netgen
 	  }
 	*/
 
-	loch = min2 (geometry.GetSurface(s1_rep) -> LocH (np, 3, 1, mparam, h), 
-		     geometry.GetSurface(s2_rep) -> LocH (np, 3, 1, mparam, h));
+	loch = min2 (geometry.GetSurface(s1_rep) -> LocH (np, 3, 1, h), 
+		     geometry.GetSurface(s2_rep) -> LocH (np, 3, 1, h));
         loch = max2 (loch, mparam.minh);
 
 	if (uselocalh)
 	  {
 	    double lh = mesh.GetH(np);
-	    if (lh < loch) loch = lh;
+	    if (lh < loch)
+	      loch = lh;
 	  }
-        
+      
+      
 	len += Dist (p, np) / loch;
 	edgepoints.Append (np);
 	curvelength.Append (len);
@@ -1427,7 +1428,7 @@ namespace netgen
   StoreShortEdge (const Array<Segment> & refedges,
 		  const Array<bool> & refedgesinv,
 		  const Array<Point<3> > & edgepoints,
-          const Array<double> & /*curvelength*/,
+		  const Array<double> & curvelength,
 		  int layer,
 		  Mesh & mesh)
   {
@@ -1735,7 +1736,7 @@ namespace netgen
 	    Vec<3> nv = s -> GetNormalVector (p1);
 		    
 	    double hloc = 
-	      min2 (s->LocH (p1, 3, 1, mparam, h), mesh.GetH(p1));
+	      min2 (s->LocH (p1, 3, 1, h), mesh.GetH(p1));
 
 	  
 		    

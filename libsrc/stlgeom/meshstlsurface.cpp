@@ -730,7 +730,8 @@ void STLSurfaceMeshing1 (STLGeometry & geom,
 	compress[icompress[i]] = 0;
       
       
-      mparam.Render();
+      extern void Render();
+      Render();
     }     
   
   // NgProfiler::Print(stdout);
@@ -755,7 +756,7 @@ void STLSurfaceOptimization (STLGeometry & geom,
   PrintMessage(5,"optimize string = ", meshparam.optimize2d, " elsizew = ", meshparam.elsizeweight);
 
   for (int i = 1; i <= meshparam.optsteps2d; i++)
-    for (size_t j = 1; j <= meshparam.optimize2d.length(); j++)
+    for (size_t j = 1; j <= strlen(meshparam.optimize2d); j++)
       {
 	if (multithread.terminate)
 	  break;

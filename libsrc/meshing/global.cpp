@@ -16,48 +16,16 @@ namespace netgen
   ostream * mycout = &cout;
   ostream * myerr = &cerr;
 
-  // some functions (visualization) still need a global mesh 
-  shared_ptr<Mesh> mesh;
-  shared_ptr<NetgenGeometry> ng_geometry;
-
-  weak_ptr<Mesh> global_mesh;
 
   //  Flags parameters;
+
+
   int silentflag = 0;
   int testmode = 0;
 
   volatile multithreadt multithread;
 
   string ngdir = ".";
-
-  // parallel netgen
-  int id = 0, ntasks = 1;
-
-
-  void Ng_PrintDest(const char * s)
-  {
-    if (id == 0)
-      (*mycout) << s << flush;
-  }
-
-  DLL_HEADER void MyError(const char * ch)
-  {
-    cout << ch;
-    (*testout) << "Error !!! " << ch << endl << flush;
-  }
-
-  static clock_t starttimea;
-//  void ResetTime ()
-//  {
-//    starttimea = clock();
-//  }
-
-  double GetTime ()
-  {
-    return double(clock() - starttimea) / CLOCKS_PER_SEC;
-  }
-
-
 
   Array<int> tets_in_qualclass;
 

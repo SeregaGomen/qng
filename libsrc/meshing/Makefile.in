@@ -39,14 +39,10 @@ subdir = libsrc/meshing
 DIST_COMMON = $(noinst_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/m4/ax_boost_base.m4 \
-	$(top_srcdir)/m4/ax_boost_python.m4 \
-	$(top_srcdir)/m4/ax_cxx_compile_stdcxx_11.m4 \
-	$(top_srcdir)/m4/ax_python_devel.m4 \
-	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/ltoptions.m4 \
-	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
-	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/tcl.m4 \
-	$(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/libtool.m4 \
+	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
+	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
+	$(top_srcdir)/m4/tcl.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -82,10 +78,9 @@ am__uninstall_files_from_dir = { \
   }
 am__installdirs = "$(DESTDIR)$(libdir)"
 LTLIBRARIES = $(lib_LTLIBRARIES)
-am__DEPENDENCIES_1 =
 libmesh_la_DEPENDENCIES = $(top_builddir)/libsrc/linalg/libla.la \
 	$(top_builddir)/libsrc/gprim/libgprim.la \
-	$(top_builddir)/libsrc/general/libgen.la $(am__DEPENDENCIES_1)
+	$(top_builddir)/libsrc/general/libgen.la
 am_libmesh_la_OBJECTS = adfront2.lo adfront3.lo bisect.lo \
 	boundarylayer.lo clusters.lo curvedelems.lo delaunay.lo \
 	delaunay2d.lo geomsearch.lo global.lo hprefinement.lo \
@@ -95,8 +90,8 @@ am_libmesh_la_OBJECTS = adfront2.lo adfront3.lo bisect.lo \
 	parser3.lo prism2rls.lo pyramid2rls.lo pyramidrls.lo \
 	quadrls.lo refine.lo ruler2.lo ruler3.lo secondorder.lo \
 	smoothing2.5.lo smoothing2.lo smoothing3.lo specials.lo \
-	tetrarls.lo topology.lo triarls.lo validate.lo bcfunctions.lo \
-	parallelmesh.lo paralleltop.lo basegeom.lo python_mesh.lo
+	tetrarls.lo topology.lo triarls.lo validate.lo zrefine.lo \
+	bcfunctions.lo parallelmesh.lo paralleltop.lo basegeom.lo
 libmesh_la_OBJECTS = $(am_libmesh_la_OBJECTS)
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
@@ -133,9 +128,6 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-BOOST_CPPFLAGS = @BOOST_CPPFLAGS@
-BOOST_LDFLAGS = @BOOST_LDFLAGS@
-BOOST_PYTHON_LIB = @BOOST_PYTHON_LIB@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -162,7 +154,6 @@ FFMPEG_INCLUDES = @FFMPEG_INCLUDES@
 FFMPEG_LIBS = @FFMPEG_LIBS@
 FGREP = @FGREP@
 GREP = @GREP@
-HAVE_CXX11 = @HAVE_CXX11@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -210,16 +201,6 @@ PKG_STUB_LIB_FILE = @PKG_STUB_LIB_FILE@
 PKG_STUB_OBJECTS = @PKG_STUB_OBJECTS@
 PKG_STUB_SOURCES = @PKG_STUB_SOURCES@
 PKG_TCL_SOURCES = @PKG_TCL_SOURCES@
-PYTHON = @PYTHON@
-PYTHON_CPPFLAGS = @PYTHON_CPPFLAGS@
-PYTHON_EXEC_PREFIX = @PYTHON_EXEC_PREFIX@
-PYTHON_EXTRA_LDFLAGS = @PYTHON_EXTRA_LDFLAGS@
-PYTHON_EXTRA_LIBS = @PYTHON_EXTRA_LIBS@
-PYTHON_LDFLAGS = @PYTHON_LDFLAGS@
-PYTHON_PLATFORM = @PYTHON_PLATFORM@
-PYTHON_PREFIX = @PYTHON_PREFIX@
-PYTHON_SITE_PKG = @PYTHON_SITE_PKG@
-PYTHON_VERSION = @PYTHON_VERSION@
 RANLIB = @RANLIB@
 SED = @SED@
 SET_MAKE = @SET_MAKE@
@@ -298,13 +279,9 @@ mandir = @mandir@
 mkdir_p = @mkdir_p@
 oldincludedir = @oldincludedir@
 pdfdir = @pdfdir@
-pkgpyexecdir = @pkgpyexecdir@
-pkgpythondir = @pkgpythondir@
 prefix = @prefix@
 program_transform_name = @program_transform_name@
 psdir = @psdir@
-pyexecdir = @pyexecdir@
-pythondir = @pythondir@
 sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 srcdir = @srcdir@
@@ -336,14 +313,13 @@ libmesh_la_SOURCES = adfront2.cpp adfront3.cpp bisect.cpp boundarylayer.cpp \
 	pyramid2rls.cpp pyramidrls.cpp quadrls.cpp refine.cpp		    \
 	ruler2.cpp ruler3.cpp secondorder.cpp smoothing2.5.cpp		    \
 	smoothing2.cpp smoothing3.cpp specials.cpp tetrarls.cpp		    \
-	topology.cpp triarls.cpp validate.cpp bcfunctions.cpp   \
-	parallelmesh.cpp  paralleltop.cpp  paralleltop.hpp basegeom.cpp     \
-	python_mesh.cpp
+	topology.cpp triarls.cpp validate.cpp zrefine.cpp bcfunctions.cpp   \
+	parallelmesh.cpp  paralleltop.cpp  paralleltop.hpp basegeom.cpp 
 
 libmesh_la_LIBADD = $(top_builddir)/libsrc/linalg/libla.la \
 	$(top_builddir)/libsrc/gprim/libgprim.la \
 	$(top_builddir)/libsrc/general/libgen.la \
-	-lz  $(MPI_LIBS)
+	-lz
 
 all: all-am
 
@@ -453,7 +429,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/prism2rls.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pyramid2rls.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pyramidrls.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/python_mesh.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/quadrls.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/refine.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ruler2.Plo@am__quote@
@@ -467,6 +442,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/topology.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/triarls.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/validate.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/zrefine.Plo@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
