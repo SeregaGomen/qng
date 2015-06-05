@@ -13,16 +13,22 @@
 // #include <visual.hpp>
 
 
+namespace netgen
+{
+    MeshingParameters mparam;
+}
+
+
 #ifdef _MSC_VER
 // Philippose - 30/01/2009
 // MSVC Express Edition Support
 #ifdef MSVC_EXPRESS
 
 // #include <pthread.h>
-namespace netgen
-{
-    MeshingParameters mparam;
-}
+//namespace netgen
+//{
+//    MeshingParameters mparam;
+//}
 
 static pthread_t meshingthread;
 void RunParallel ( void * (*fun)(void *), void * in)

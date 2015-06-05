@@ -6,6 +6,8 @@
 
 QMAKE_CXXFLAGS += -std=c++0x
 
+DEFINES += _AFXDLL
+
 QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -16,7 +18,7 @@ TEMPLATE = app
 INCLUDEPATH += libsrc/include \
                nglib
 
-LIBS += -lz
+#LIBS += -lz
 
 SOURCES += main.cpp\
         mainwindow.cpp\
