@@ -15,6 +15,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
+
 namespace nglib
 {
     #include "nglib.h"
@@ -588,10 +590,10 @@ void MainWindow::stopMesh(void)
 
 void MainWindow::genMeshSTL(void)
 {
-//    using namespace nglib;
-
     Ng_Result ng_res;
     Ng_Meshing_Parameters mp;
+    Ng_Mesh *mesh;
+    Ng_STL_Geometry *stl_geom;
     int np,
         ne;
 
@@ -618,6 +620,7 @@ void MainWindow::genMeshSTL(void)
 
     cout << "Initialise the STL Geometry structure...." << endl;
     ng_res = Ng_STL_InitSTLGeometry(stl_geom);
+
     if (ng_res != NG_OK)
     {
         cout << "Error Initialising the STL Geometry....Aborting!!" << endl;
@@ -676,5 +679,13 @@ void MainWindow::genMeshSTL(void)
 
 void MainWindow::showSTL(void)
 {
+    Ng_STL_Geometry *stl_geom;
 
+    stl_geom = (Ng_STL_Geometry*)Ng_STL_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
+    if(!stl_geom)
+    {
+        cout << "Error reading in current STL data" << endl;
+        return;
+    }
+    cout << "Successfully loaded STL data" << endl;
 }

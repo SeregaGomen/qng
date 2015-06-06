@@ -44,7 +44,7 @@ namespace netgen
     virtual Point<3> GetSurfacePoint () const;
 
 
-    virtual void Print (ostream & ist) const;
+    virtual void Print (ostream & str) const;
     virtual void Read (istream & ist);
     void PrintCoeff (ostream & ost) const;
   };
@@ -63,13 +63,16 @@ namespace netgen
   public:
     ///
     Plane (const Point<3> & ap, Vec<3> an);
-
+    Point<3> P() const { return p; }
+    Vec<3> N() const { return n; }
     virtual void GetPrimitiveData (const char *& classname, 
 				   Array<double> & coeffs) const;
     virtual void SetPrimitiveData (Array<double> & coeffs);
     static Primitive * CreateDefault ();
 
     virtual Primitive * Copy () const;
+    virtual void Print (ostream & str) const;
+
     virtual void Transform (Transformation<3> & trans);
 
 
@@ -184,12 +187,16 @@ namespace netgen
   public:
     Cylinder (const Point<3> & aa, const Point<3> & ab, double ar);
     Cylinder (Array<double> & coeffs);
-
+    Point<3> A() const { return a; }
+    Point<3> B() const { return b; }
+    double R() const { return r; }
     virtual void GetPrimitiveData (const char *& classname, Array<double> & coeffs) const;
     virtual void SetPrimitiveData (Array<double> & coeffs);
     static Primitive * CreateDefault ();
 
     virtual Primitive * Copy () const;
+    virtual void Print (ostream & str) const;
+
     virtual void Transform (Transformation<3> & trans);
 
     ///
@@ -341,7 +348,9 @@ namespace netgen
     virtual double HesseNorm () const;
 
     virtual double LocH (const Point<3> & p, double x, 
-			 double c, double hmax) const;
+			 double c,                          
+                         const MeshingParameters & mparam,
+                         double hmax) const;
 
     ///
     virtual Point<3> GetSurfacePoint () const;

@@ -9,7 +9,13 @@
 #endif
 
 #include "nginterface.h"
+// #include "../visualization/soldata.hpp"
+// #include <visual.hpp>
 
+namespace netgen
+{
+    MeshingParameters mparam;
+}
 
 #ifdef _MSC_VER
 // Philippose - 30/01/2009
@@ -17,6 +23,10 @@
 #ifdef MSVC_EXPRESS
 
 // #include <pthread.h>
+//namespace netgen
+//{
+//    MeshingParameters mparam;
+//}
 
 static pthread_t meshingthread;
 void RunParallel ( void * (*fun)(void *), void * in)
@@ -60,7 +70,12 @@ void RunParallel ( void* (*fun)(void *), void * in)
 #else  // For #ifdef _MSC_VER
 
 // #include <pthread.h>
- 
+
+namespace netgen
+{
+  MeshingParameters mparam;
+}
+
 static pthread_t meshingthread;
 void RunParallel ( void * (*fun)(void *), void * in)
 {
@@ -98,20 +113,10 @@ namespace netgen
 {
 #include "writeuser.hpp"
 
-  MeshingParameters mparam;
+  extern shared_ptr<Mesh> mesh;
+  extern shared_ptr<NetgenGeometry> ng_geometry;
 
-  // global variable mesh (should not be used in libraries)
-  AutoPtr<Mesh> mesh;
-  // NetgenGeometry * ng_geometry = NULL; // new NetgenGeometry;
-  AutoPtr<NetgenGeometry> ng_geometry;
-
-  // extern NetgenGeometry * ng_geometry;
-  // extern AutoPtr<Mesh> mesh;
-
-#ifndef NOTCL
   extern Tcl_Interp * tcl_interp;
-#endif
-
 
 #ifdef SOCKETS
   extern AutoPtr<ClientSocket> clientsocket;
@@ -132,7 +137,7 @@ void Ng_LoadGeometry (const char * filename)
   // can be used to reset geometry
   if (!filename || strcmp(filename,"")==0) 
     {
-      ng_geometry.Reset (new NetgenGeometry());
+      ng_geometry.reset (new NetgenGeometry());
       return;
     }
 
@@ -141,8 +146,8 @@ void Ng_LoadGeometry (const char * filename)
       NetgenGeometry * hgeom = geometryregister[i]->Load (filename);
       if (hgeom)
 	{
-          ng_geometry.Reset (hgeom);
-	  mesh.Reset();
+          ng_geometry.reset (hgeom);
+	  mesh.reset();
 	  return;
 	}
     }
@@ -155,15 +160,19 @@ void Ng_LoadGeometry (const char * filename)
 
 void Ng_LoadMeshFromStream ( istream & input )
 {
-  mesh.Reset (new Mesh());
+  mesh.reset (new Mesh());
   mesh -> Load(input);
-  
+  /*
+  vssolution.SetMesh(mesh);
+  vsmesh.SetMesh(mesh);
+  */
+  SetGlobalMesh (mesh);
   for (int i = 0; i < geometryregister.Size(); i++)
     {
       NetgenGeometry * hgeom = geometryregister[i]->LoadFromMeshFile (input);
       if (hgeom)
 	{
-          ng_geometry.Reset (hgeom);
+          ng_geometry.reset (hgeom);
 	  break;
 	}
     }
@@ -187,7 +196,7 @@ void Ng_LoadMesh (const char * filename)
 	   strcmp (filename + (strlen (filename)-4), ".vol") != 0 )
         */
 	{
-	  mesh.Reset (new Mesh());
+	  mesh.reset (new Mesh());
 	  ReadFile(*mesh,filename);
 	  
 	  //mesh->SetGlobalH (mparam.maxh);
@@ -272,7 +281,10 @@ void Ng_LoadMesh (const char * filename)
     }
   else
     {
-      mesh.Reset (new Mesh());
+      mesh.reset (new Mesh());
+//       vssolution.SetMesh(mesh);
+//       vsmesh.SetMesh(mesh);
+      SetGlobalMesh (mesh);
       mesh->SendRecvMesh();
     }
 #endif
@@ -602,6 +614,7 @@ char * Ng_GetBCNumBCName (int bcnr)
 //    strcpy(name,mesh->GetBCName(bcnr).c_str());
 //}
 
+/*
 void Ng_GetNormalVector (int sei, int locpi, double * nv)
 {
   nv[0] = 0; 
@@ -628,7 +641,7 @@ void Ng_GetNormalVector (int sei, int locpi, double * nv)
 	  nv[2] = n(2);
 	}
 #endif
-      CSGeometry * geometry = dynamic_cast<CSGeometry*> (ng_geometry.Ptr());
+      CSGeometry * geometry = dynamic_cast<CSGeometry*> (ng_geometry.get());
       if (geometry)
 	{
 	  n = geometry->GetSurface (surfi) -> GetNormalVector(p);
@@ -638,7 +651,7 @@ void Ng_GetNormalVector (int sei, int locpi, double * nv)
 	}
     }
 }
-
+*/
 
 
 void Ng_SetPointSearchStartElement(const int el)
@@ -1497,8 +1510,8 @@ void Ng_UpdateTopology()
 
 Ng_Mesh Ng_SelectMesh (Ng_Mesh newmesh)
 {
-  Mesh * hmesh = mesh.Ptr();
-  mesh.Ptr() = (Mesh*)newmesh;
+  Mesh * hmesh = mesh.get();
+  mesh.reset((Mesh*)newmesh);
   return hmesh;
 }
 
@@ -2127,12 +2140,15 @@ int Ng_Bisect_WithInfo ( const char * refinementfile, double ** qualityloss, int
 #endif
     {
       // ref = new RefinementSurfaces(*geometry);
-      CSGeometry * geometry = dynamic_cast<CSGeometry*> (ng_geometry.Ptr());
+      /*
+        // joachim, oct 2014
+      CSGeometry * geometry = dynamic_cast<CSGeometry*> (ng_geometry.get());
       if (geometry)
 	{
 	  opt = new MeshOptimize2dSurfaces(*geometry);
 	  ref->Set2dOptimizer(opt);
 	}
+      */
     }
 
   if(!mesh->LocalHFunctionGenerated())
@@ -2335,4 +2351,11 @@ void Ng_GetArgs (int & argc, char ** &argv)
 {
   argc = h_argc;
   argv = h_argv;
+}
+
+
+
+void LinkFunction ()
+{
+  Ng_Redraw();
 }

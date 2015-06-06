@@ -64,14 +64,14 @@ namespace netgen
     void Store ();
     void Restore ();
 
-    void SetSize(int /* size */) { }
-    void Clear() { }
+    void SetSize(int /* size */) { };
+    void Clear() { };
     int Size() const { return geom.GetNTE(); }
     const STLTopEdge & Get(int i) const { return geom.GetTopEdge(i); }
     STLTopEdge & Elem(int i) { return geom.GetTopEdge(i); }
 
     int GetNEPP(int pn) const {return geom.NTopEdgesPerPoint(pn); }
-    int GetEdgePP(int pn, int vi) const {return geom.TopEdgePerPoint(pn, vi);}
+    int GetEdgePP(int pn, int vi) const {return geom.TopEdgePerPoint(pn, vi);};
 
     //void AddEdgePP(int pn, int vn) { } ;
 
@@ -452,7 +452,7 @@ namespace netgen
     friend class MeshingSTLSurface;
 
 
-    virtual int GenerateMesh (Mesh*& mesh, MeshingParameters & mparam,
+    virtual int GenerateMesh (shared_ptr<Mesh> & mesh, MeshingParameters & mparam,
 			      int perfstepsstart, int perfstepsend);
     
     virtual const Refinement & GetRefinement () const;
@@ -463,7 +463,7 @@ namespace netgen
 
 
 
-  extern int STLMeshingDummy (STLGeometry* stlgeometry, Mesh*& mesh, MeshingParameters & mparam,
+  extern int STLMeshingDummy (STLGeometry* stlgeometry, shared_ptr<Mesh> & mesh, MeshingParameters & mparam,
 			      int perfstepsstart, int perfstepsend);
 
 

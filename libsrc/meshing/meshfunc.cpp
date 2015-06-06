@@ -172,8 +172,11 @@ namespace netgen
 
            mesh3d.FindOpenElements(k);
 
-
+           /*
            for (PointIndex pi = mesh3d.Points().Begin(); pi < mesh3d.Points().End(); pi++)
+              meshing.AddPoint (mesh3d[pi], pi);
+           */
+           for (PointIndex pi : mesh3d.Points().Range())
               meshing.AddPoint (mesh3d[pi], pi);
 
            for (int i = 1; i <= mesh3d.GetNOpenElements(); i++)
@@ -639,7 +642,8 @@ namespace netgen
 	MeshOptimize3d optmesh(mp);
 
 	// teterrpow = mp.opterrpow;
-	for (size_t j = 1; j <= strlen(mp.optimize3d); j++)
+	// for (size_t j = 1; j <= strlen(mp.optimize3d); j++)
+        for (size_t j = 1; j <= mp.optimize3d.length(); j++)
 	  {
 	    if (multithread.terminate)
 	      break;

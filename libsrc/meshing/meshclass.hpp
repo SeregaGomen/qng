@@ -272,6 +272,9 @@ namespace netgen
     Element2d & operator[] (SurfaceElementIndex ei)
     { return surfelements[ei]; }
 
+    const T_SURFELEMENTS & SurfaceElements() const { return surfelements; }
+    T_SURFELEMENTS & SurfaceElements() { return surfelements; }
+
   
     DLL_HEADER void RebuildSurfaceElementLists ();
     DLL_HEADER void GetSurfaceElementsOfFace (int facenr, Array<SurfaceElementIndex> & sei) const;
@@ -373,7 +376,7 @@ namespace netgen
     /// Calculates localh 
     DLL_HEADER void CalcLocalH (double grading);
     ///
-    DLL_HEADER void SetLocalH (const Point3d & pmin, const Point3d & pmax, double grading);
+    DLL_HEADER void SetLocalH (netgen::Point<3> pmin, netgen::Point<3> pmax, double grading);
     ///
     DLL_HEADER void RestrictLocalH (const Point3d & p, double hloc);
     ///
@@ -386,7 +389,7 @@ namespace netgen
     ///
     DLL_HEADER void RestrictLocalH (resthtype rht, int nr, double loch);
     ///
-    DLL_HEADER void LoadLocalMeshSize (const char * meshsizefilename);
+    DLL_HEADER void LoadLocalMeshSize (const string & meshsizefilename);
     ///
     DLL_HEADER void SetGlobalH (double h);
     ///
@@ -679,10 +682,8 @@ namespace netgen
 	  area += Cross ( mesh[sel[1]]-mesh[sel[0]],
 			  mesh[sel[2]]-mesh[sel[0]] ).Length() / 2;
 	else
-	  area += Cross (Vec3d (mesh.Point (sel.PNum(1)),
-				mesh.Point (sel.PNum(3))),
-			 Vec3d (mesh.Point (sel.PNum(1)),
-				mesh.Point (sel.PNum(4)))).Length() / 2;;
+	  area += Cross (Vec3d (mesh[sel.PNum(1)], mesh[sel.PNum(3)]),
+			 Vec3d (mesh[sel.PNum(1)], mesh[sel.PNum(4)])).Length() / 2;;
       }
       void ReCalc ()
       {

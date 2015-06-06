@@ -22,6 +22,21 @@ unix:LIBS += -lz
 
 SOURCES += main.cpp\
         mainwindow.cpp\
+        glwidget.cpp \
+        glstl.cpp \
+        libsrc/csg/python_csg.cpp \
+        libsrc/csg/vscsg.cpp \
+        libsrc/csg/zrefine.cpp \
+        libsrc/geom2d/python_geom2d.cpp \
+        libsrc/geom2d/vsgeom2d.cpp \
+        libsrc/meshing/python_mesh.cpp \
+        libsrc/occ/vsocc.cpp \
+        libsrc/stlgeom/vsstl.cpp \
+        libsrc/visualization/importsolution.cpp \
+        libsrc/visualization/mvdraw.cpp \
+        libsrc/visualization/vsfieldlines.cpp \
+        libsrc/visualization/vsmesh.cpp \
+        libsrc/visualization/vssolution.cpp \
         libsrc/csg/algprim.cpp \
         libsrc/csg/brick.cpp \
         libsrc/csg/bspline2d.cpp \
@@ -118,6 +133,7 @@ SOURCES += main.cpp\
         libsrc/meshing/meshclass.cpp \
         libsrc/meshing/meshfunc.cpp \
         libsrc/meshing/meshfunc2d.cpp \
+        libsrc/meshing/meshing2.cpp \
         libsrc/meshing/meshing3.cpp \
         libsrc/meshing/meshtool.cpp \
         libsrc/meshing/meshtype.cpp \
@@ -144,12 +160,10 @@ SOURCES += main.cpp\
         libsrc/meshing/topology.cpp \
         libsrc/meshing/triarls.cpp \
         libsrc/meshing/validate.cpp \
-        libsrc/meshing/zrefine.cpp \
         libsrc/occ/occconstruction.cpp \
         libsrc/occ/occgenmesh.cpp \
         libsrc/occ/occgeom.cpp \
         libsrc/occ/occmeshsurf.cpp \
-        libsrc/occ/occpkg.cpp \
         libsrc/occ/Partition_Inter2d.cxx \
         libsrc/occ/Partition_Inter3d.cxx \
         libsrc/occ/Partition_Loop.cxx \
@@ -163,13 +177,23 @@ SOURCES += main.cpp\
         libsrc/stlgeom/stlline.cpp \
         libsrc/stlgeom/stltool.cpp \
         libsrc/stlgeom/stltopology.cpp \
-        nglib/nglib.cpp \
-    libsrc/meshing/meshing2.cpp \
-    glwidget.cpp \
-    glstl.cpp
+        nglib/nglib.cpp
 
 HEADERS  += mainwindow.h \
         qstdredirector.h\
+        glwidget.h \
+        imageparams.h \
+        glstl.h \
+        libsrc/general/ngpython.hpp \
+        libsrc/include/incopengl.hpp \
+        libsrc/include/incvis.hpp \
+        libsrc/include/visual.hpp \
+        libsrc/visualization/meshdoc.hpp \
+        libsrc/visualization/mvdraw.hpp \
+        libsrc/visualization/soldata.hpp \
+        libsrc/visualization/vispar.hpp \
+        libsrc/visualization/visual.hpp \
+        libsrc/visualization/vssolution.hpp \
         libsrc/csg/algprim.hpp \
         libsrc/csg/brick.hpp \
         libsrc/csg/csg.hpp \
@@ -309,11 +333,7 @@ HEADERS  += mainwindow.h \
         libsrc/stlgeom/stltool.hpp \
         libsrc/stlgeom/stltopology.hpp \
         libsrc/stlgeom/vsstl.hpp \
-        nglib/nglib.h \
-    glwidget.h \
-    imageparams.h \
-    glstl.h \
-    matrix.h
+        nglib/nglib.h
 
 FORMS    += mainwindow.ui
 

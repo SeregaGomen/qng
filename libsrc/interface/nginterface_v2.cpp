@@ -6,11 +6,12 @@
 
 #include "nginterface.h"
 #include "nginterface_v2.hpp"
+// #include <visual.hpp>
 
 namespace netgen
 {
 #include "writeuser.hpp"
-  extern AutoPtr<Mesh> mesh;
+  extern shared_ptr<Mesh> mesh;
 }
 
 
@@ -19,33 +20,49 @@ namespace netgen
 #define NGX_INLINE
 #include "nginterface_v2_impl.hpp"
 
-  Ngx_Mesh :: Ngx_Mesh (class Mesh * amesh)
+  shared_ptr<Mesh> Ngx_Mesh :: SelectMesh () const
+  {
+    shared_ptr<Mesh> hmesh = netgen::mesh;
+
+    netgen::mesh = mesh;
+    // vssolution.SetMesh(mesh);
+    // vsmesh.SetMesh(mesh);
+    SetGlobalMesh (mesh);
+
+    return hmesh;
+  }
+  
+
+  Ngx_Mesh :: Ngx_Mesh (shared_ptr<Mesh> amesh) 
   {
     if (amesh)
       mesh = amesh;
     else
-      mesh = netgen::mesh.Ptr();
+      mesh = netgen::mesh;
   }
-
+  
   Ngx_Mesh * LoadMesh (const string & filename)
   {
-    netgen::mesh.Ptr() = NULL;
+    netgen::mesh.reset();
     Ng_LoadMesh (filename.c_str());
-    return new Ngx_Mesh (netgen::mesh.Ptr());
+    return new Ngx_Mesh (netgen::mesh);
   }
 
   void Ngx_Mesh :: LoadMesh (const string & filename)
   {
-    netgen::mesh.Ptr() = NULL;
+    netgen::mesh.reset();
     Ng_LoadMesh (filename.c_str());
-    mesh = netgen::mesh.Ptr();
+    mesh = netgen::mesh;
   }
 
   void Ngx_Mesh :: LoadMesh (istream & ist)
   {
-    netgen::mesh.Reset (new Mesh);
+    netgen::mesh = make_shared<Mesh>();
     netgen::mesh -> Load (ist);
-    mesh = netgen::mesh.Ptr();
+    mesh = netgen::mesh;
+    // vssolution.SetMesh(mesh);
+    // vsmesh.SetMesh(mesh);
+    SetGlobalMesh (mesh);
   }
 
   void Ngx_Mesh :: SaveMesh (ostream & ost) const
@@ -72,6 +89,11 @@ namespace netgen
       }
   }
 
+  void Ngx_Mesh :: UpdateTopology ()
+  {
+    if (mesh)
+      mesh -> UpdateTopology();
+  }
 
 
   /*
@@ -82,9 +104,12 @@ namespace netgen
 
   Ngx_Mesh :: ~Ngx_Mesh ()
   {
+    ;
+    /*
     if (netgen::mesh.Ptr() == mesh) 
       netgen::mesh.Ptr() = NULL;
     delete mesh;
+    */
   }
 
   int Ngx_Mesh :: GetDimension() const
@@ -201,13 +226,14 @@ namespace netgen
   }
   */
 
+  
+  /*
   template <>
   DLL_HEADER int Ngx_Mesh :: GetElementIndex<0> (int nr) const
   {
     return 0;
   }
 
-  /*
   template <>
   DLL_HEADER int Ngx_Mesh :: GetElementIndex<1> (int nr) const
   {
@@ -637,6 +663,34 @@ namespace netgen
   }
 
 
+#ifdef PARALLEL
+  
+  std::tuple<int,int*>  Ngx_Mesh :: GetDistantProcs (int nodetype, int locnum) const
+  {
+    
+    switch (nodetype)
+      {
+      case 0:
+	{
+	  FlatArray<int> dn = mesh->GetParallelTopology().GetDistantPNums(locnum);
+	  return std::tuple<int,int*>(dn.Size(), &dn[0]);
+	}
+      case 1:
+	{
+	  FlatArray<int> dn = mesh->GetParallelTopology().GetDistantEdgeNums(locnum);
+	  return std::tuple<int,int*>(dn.Size(), &dn[0]);
+	}
+      case 2:
+	{
+	  FlatArray<int> dn = mesh->GetParallelTopology().GetDistantFaceNums(locnum);
+	  return std::tuple<int,int*>(dn.Size(), &dn[0]);
+	}
+      default:
+	return std::tuple<int,int*>(0,nullptr);
+      }
+  }
+
+#endif
 
 }
 

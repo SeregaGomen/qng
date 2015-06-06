@@ -47,6 +47,7 @@ namespace netgen
 
   Mesh :: ~Mesh()
   {
+    // cout << "******************** deleting Mesh **********" << endl;
     delete lochfunc;
     delete boundaryedges;
     delete surfelementht;
@@ -100,7 +101,6 @@ namespace netgen
   {
     NgLock lock(mutex);
     lock.Lock();
-
     points.SetSize(0);
     segments.SetSize(0);
     surfelements.SetSize(0);
@@ -773,12 +773,20 @@ namespace netgen
 
   void Mesh :: Load (const string & filename)
   {
+    cout << "filename = " << filename << endl;
+    istream * infile = NULL;
 
-    ifstream infile(filename.c_str());
-    if (!infile.good())
+    if (filename.find(".vol.gz") != string::npos)
+      infile = new igzstream (filename.c_str());
+    else
+      infile = new ifstream (filename.c_str());
+
+    // ifstream infile(filename.c_str());
+    if (! (infile -> good()) )
       throw NgException ("mesh file not found");
 
-    Load(infile);
+    Load(*infile);
+    delete infile;
   }
 
 
@@ -786,7 +794,6 @@ namespace netgen
 
   void Mesh :: Load (istream & infile)
   {
-
     char str[100];
     int i, n;
 
@@ -798,11 +805,11 @@ namespace netgen
     facedecoding.SetSize(0);
 
     bool endmesh = false;
+    
 
     while (infile.good() && !endmesh)
       {
         infile >> str;
-
         if (strcmp (str, "dimension") == 0)
           {
             infile >> dimension;
@@ -2408,19 +2415,19 @@ namespace netgen
 
 
 
-  void Mesh :: SetLocalH (const Point3d & pmin, const Point3d & pmax, double grading)
+  void Mesh :: SetLocalH (netgen::Point<3> pmin, netgen::Point<3> pmax, double grading)
   {
-    Point3d c = Center (pmin, pmax);
-    double d = max3 (pmax.X()-pmin.X(),
-                     pmax.Y()-pmin.Y(),
-                     pmax.Z()-pmin.Z());
+    using netgen::Point;
+    Point<3> c = Center (pmin, pmax);
+    double d = max3 (pmax(0)-pmin(0),
+                     pmax(1)-pmin(1),
+                     pmax(2)-pmin(2));
     d /= 2;
-    Point3d pmin2 = c - Vec3d (d, d, d);
-    Point3d pmax2 = c + Vec3d (d, d, d);
-
+    Point<3> pmin2 = c - Vec<3> (d, d, d);
+    Point<3> pmax2 = c + Vec<3> (d, d, d);
 
     delete lochfunc;
-    lochfunc = new LocalH (pmin2, pmax2, grading);
+    lochfunc = new LocalH (pmin2, pmax2, grading, dimension);
   }
 
   void Mesh :: RestrictLocalH (const Point3d & p, double hloc)
@@ -2915,15 +2922,15 @@ namespace netgen
   }
 
 
-  void Mesh :: LoadLocalMeshSize (const char * meshsizefilename)
+  void Mesh :: LoadLocalMeshSize (const string &  meshsizefilename)
   {
     // Philippose - 10/03/2009
     // Improve error checking when loading and reading
     // the local mesh size file
 
-    if (!meshsizefilename) return;
+    if (meshsizefilename.empty()) return;
 
-    ifstream msf(meshsizefilename);
+    ifstream msf(meshsizefilename.c_str());
 
     // Philippose - 09/03/2009
     // Adding print message information in case the specified 

@@ -1,11 +1,4 @@
 #include "glstl.h"
-//#include <mystdlib.h>
-
-//#include <myadt.hpp>
-//#include <meshing.hpp>
-// #include <csg.hpp>
-
-//#include <stlgeom.hpp>
 
 
 /*******************************************************************/
@@ -61,6 +54,7 @@ void GLSTLWidget::displaySceleton(void)
 /*******************************************************************/
 void GLSTLWidget::createSceleton(void)
 {
+
 //    STLGeometry* stl_geom = (STLGeometry*)object;
 //    GLfloat x0 = (maxX + minX)*0.5,
 //            y0 = (maxY + minY)*0.5,

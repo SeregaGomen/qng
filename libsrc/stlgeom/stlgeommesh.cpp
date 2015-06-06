@@ -1329,8 +1329,8 @@ void STLGeometry :: RestrictHChartDistOneChart(int chartnum, Array<int>& acttrig
 }
 
 
-int STLMeshingDummy (STLGeometry* stlgeometry, Mesh*& mesh, MeshingParameters & mparam,
-			    int perfstepsstart, int perfstepsend)
+int STLMeshingDummy (STLGeometry* stlgeometry, shared_ptr<Mesh> & mesh, MeshingParameters & mparam,
+                     int perfstepsstart, int perfstepsend)
 {
   if (perfstepsstart > perfstepsend) return 0;
 
@@ -1340,8 +1340,11 @@ int STLMeshingDummy (STLGeometry* stlgeometry, Mesh*& mesh, MeshingParameters & 
 
   if (perfstepsstart <= MESHCONST_MESHEDGES)
     {
+      if (mesh)
+        mesh -> DeleteMesh();
+      else
+        mesh = make_shared<Mesh>();
 
-      mesh = new Mesh();
       mesh->geomtype = Mesh::GEOM_STL;
 
       mesh -> SetGlobalH (mparam.maxh);
@@ -1459,8 +1462,7 @@ int STLMeshingDummy (STLGeometry* stlgeometry, Mesh*& mesh, MeshingParameters & 
 	      (*statout) << GetTime() << " & ";
 #endif
 
-	      extern void Render();
-	      Render();
+	      mparam.Render();
 	    }
 	  stlgeometry->surfaceoptimized = 1;
 	}
@@ -1576,8 +1578,7 @@ int STLMeshingDummy (STLGeometry* stlgeometry, Mesh*& mesh, MeshingParameters & 
 		     << mesh->GetNP() << " " << '\\' << '\\' << " \\" << "hline" << endl;
 #endif
 
-	  extern void Render();
-	  Render();
+	  mparam.Render();
 	}
     }
   

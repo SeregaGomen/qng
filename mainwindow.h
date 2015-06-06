@@ -9,6 +9,8 @@ class QTextEdit;
 class QProgressBar;
 class QTranslator;
 QT_END_NAMESPACE
+class NGInterface;
+
 
 typedef enum { EN = 0, RU = 1 } Lang;
 typedef enum { EMPTY = 0, GEO = 1, STL = 2 } FileType;
@@ -58,8 +60,7 @@ private slots:
     void stopMesh(void);
 
 private:
-    void **mesh;
-    void **stl_geom;
+    NGInterface* ng;
     bool isUntitled = true;
     bool isGenMeshStarted = false;
     FileType fType = EMPTY;

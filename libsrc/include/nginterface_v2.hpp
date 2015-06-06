@@ -73,8 +73,10 @@ namespace netgen
 
   public:
     NG_ELEMENT_TYPE type;
+    int index;           // material / boundary condition 
+
     NG_ELEMENT_TYPE GetType() const { return type; }
-    
+    int GetIndex() const { return index-1; }
     Ng_Points points;      // all points
     Ng_Vertices vertices;
     Ng_Edges edges;
@@ -152,21 +154,22 @@ namespace netgen
 
 
 
-
+  class Mesh;
 
   class DLL_HEADER Ngx_Mesh
   {
   private:
-    class Mesh * mesh;
+    shared_ptr<Mesh> mesh;
     
   public:
     // Ngx_Mesh () { ; }
     // Ngx_Mesh(class Mesh * amesh) : mesh(amesh) { ; }
-    Ngx_Mesh(class Mesh * amesh = NULL);
+    Ngx_Mesh(shared_ptr<Mesh> amesh = NULL);
     void LoadMesh (const string & filename);
 
     void LoadMesh (istream & str);
     void SaveMesh (ostream & str) const;
+    void UpdateTopology ();
     void DoArchive (ngstd::Archive & archive);
 
     virtual ~Ngx_Mesh();
@@ -228,6 +231,12 @@ namespace netgen
      bool build_searchtrees = false, 
      int * const indices = NULL, int numind = 0) const;
     
+
+#ifdef PARALLEL
+    std::tuple<int,int*> GetDistantProcs (int nodetype, int locnum) const;
+#endif
+
+    shared_ptr<Mesh> SelectMesh () const;
   };
 
 
