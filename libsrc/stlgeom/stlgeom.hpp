@@ -64,14 +64,14 @@ namespace netgen
     void Store ();
     void Restore ();
 
-    void SetSize(int /* size */) { };
-    void Clear() { };
+    void SetSize(int /* size */) { }
+    void Clear() { }
     int Size() const { return geom.GetNTE(); }
     const STLTopEdge & Get(int i) const { return geom.GetTopEdge(i); }
     STLTopEdge & Elem(int i) { return geom.GetTopEdge(i); }
 
     int GetNEPP(int pn) const {return geom.NTopEdgesPerPoint(pn); }
-    int GetEdgePP(int pn, int vi) const {return geom.TopEdgePerPoint(pn, vi);};
+    int GetEdgePP(int pn, int vi) const {return geom.TopEdgePerPoint(pn, vi);}
 
     //void AddEdgePP(int pn, int vn) { } ;
 

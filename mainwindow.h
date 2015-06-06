@@ -88,6 +88,7 @@ private:
     void setCurrentFile(const QString &);
     void updateRecentFileActions(const QString &);
     void genMeshSTL(void);
+    void showSTL(void);
     bool loadGeometry(const QString &);
     bool loadGEO(const QString &);
     bool loadSTL(const QString &);

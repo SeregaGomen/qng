@@ -34,11 +34,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    delete wout;
-    delete werr;
-    delete terminal;
-    delete dock;
-    delete tabWidget;
     delete ui;
 }
 
@@ -353,6 +348,7 @@ bool MainWindow::loadSTL(const QString& fileName)
     if (!loadGeometry(fileName))
         return false;
     fType = STL;
+    showSTL();
     return true;
 }
 
@@ -592,13 +588,13 @@ void MainWindow::stopMesh(void)
 
 void MainWindow::genMeshSTL(void)
 {
-    using namespace nglib;
+//    using namespace nglib;
 
-    // Result of Netgen Operations
     Ng_Result ng_res;
+    Ng_Meshing_Parameters mp;
+    int np,
+        ne;
 
-
-    cout << "Netgen (nglib) STL Testing" << endl;
 
     // Initialise the Netgen Core library
     Ng_Init();
@@ -606,30 +602,23 @@ void MainWindow::genMeshSTL(void)
     // Actually create the mesh structure
     mesh = (Ng_Mesh*)Ng_NewMesh();
 
-    int np, ne;
-
-    // Read in the STL File
-
-    QString data = qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText();
-
-    stl_geom = (Ng_STL_Geometry*)Ng_STL_LoadGeometry(data.toStdString());
+    stl_geom = (Ng_STL_Geometry*)Ng_STL_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
     if(!stl_geom)
     {
-        //        cout << "Error reading in STL File: " << argv[1] << endl;
+        cout << "Error reading in current STL data" << endl;
         return;
     }
-    //    cout << "Successfully loaded STL File: " << argv[1] << endl;
+    cout << "Successfully loaded STL data" << endl;
 
 
     // Set the Meshing Parameters to be used
-    Ng_Meshing_Parameters mp;
     mp.maxh = 1.0e+6;
     mp.fineness = 0.4;
     mp.second_order = 0;
 
     cout << "Initialise the STL Geometry structure...." << endl;
     ng_res = Ng_STL_InitSTLGeometry(stl_geom);
-    if(ng_res != NG_OK)
+    if (ng_res != NG_OK)
     {
         cout << "Error Initialising the STL Geometry....Aborting!!" << endl;
         return;
@@ -637,7 +626,7 @@ void MainWindow::genMeshSTL(void)
 
     cout << "Start Edge Meshing...." << endl;
     ng_res = Ng_STL_MakeEdges(stl_geom, mesh, &mp);
-    if(ng_res != NG_OK)
+    if (ng_res != NG_OK)
     {
         cout << "Error in Edge Meshing....Aborting!!" << endl;
         return;
@@ -645,7 +634,7 @@ void MainWindow::genMeshSTL(void)
 
     cout << "Start Surface Meshing...." << endl;
     ng_res = Ng_STL_GenerateSurfaceMesh(stl_geom, mesh, &mp);
-    if(ng_res != NG_OK)
+    if (ng_res != NG_OK)
     {
         cout << "Error in Surface Meshing....Aborting!!" << endl;
         return;
@@ -682,4 +671,10 @@ void MainWindow::genMeshSTL(void)
     cout << "points   after refinement: " << Ng_GetNP(mesh) << endl;
 
     Ng_SaveMesh(mesh,"test_ref.vol");
+    Ng_DeleteMesh(mesh);
+}
+
+void MainWindow::showSTL(void)
+{
+
 }

@@ -164,7 +164,9 @@ SOURCES += main.cpp\
         libsrc/stlgeom/stltool.cpp \
         libsrc/stlgeom/stltopology.cpp \
         nglib/nglib.cpp \
-    libsrc/meshing/meshing2.cpp
+    libsrc/meshing/meshing2.cpp \
+    glwidget.cpp \
+    glstl.cpp
 
 HEADERS  += mainwindow.h \
         qstdredirector.h\
@@ -307,7 +309,11 @@ HEADERS  += mainwindow.h \
         libsrc/stlgeom/stltool.hpp \
         libsrc/stlgeom/stltopology.hpp \
         libsrc/stlgeom/vsstl.hpp \
-        nglib/nglib.h
+        nglib/nglib.h \
+    glwidget.h \
+    imageparams.h \
+    glstl.h \
+    matrix.h
 
 FORMS    += mainwindow.ui
 
