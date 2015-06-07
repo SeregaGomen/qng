@@ -4,29 +4,29 @@
 
 #include "glwidget.h"
 
-
-
 class GLSTLWidget : public GLWidget
 {
     Q_OBJECT
 
 public:
-    GLSTLWidget(QWidget* parent) : GLWidget(parent)
+    GLSTLWidget(void** p,QWidget* parent) : GLWidget(parent)
     {
+        object = p;
         isIdle = isRotate = true;
         isLeftBtn = isScale = isTranslate = false;
+        buildScene();
     }
     ~GLSTLWidget() {}
-    void setObject(void *);
 protected:
     void paintGL(void);
 
 private:
-    void *object = NULL;
+    void **object = NULL;
     void displayObject(void);
     void displaySceleton(void);
     void createObject(void);
     void createSceleton(void);
+    void buildScene(void);
 };
 
 

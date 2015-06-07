@@ -1,6 +1,29 @@
+#include <QApplication>
 #include "glstl.h"
 
+namespace nglib
+{
+    #include "nglib.h"
+}
+using namespace nglib;
+using namespace std;
 
+/*******************************************************************/
+void GLSTLWidget::buildScene(void)
+{
+    xRot = yRot = zRot = 0;
+//    radius = Ng_STL_Radius(object);
+
+    minX = Ng_STL_MinX(object);
+    minY = Ng_STL_MinY(object);
+    minZ = Ng_STL_MinZ(object);
+    maxX = Ng_STL_MaxX(object);
+    minY = Ng_STL_MaxY(object);
+    maxY = Ng_STL_MaxZ(object);
+    radius = sqrt((maxX - minX) * (maxX - minX) + (maxY - minY) * (maxY - minY)  + (maxZ - minZ) * (maxZ - minZ));
+    setupCameraGL(width(),height());
+    updateGL();
+}
 /*******************************************************************/
 void GLSTLWidget::paintGL(void)
 {
@@ -55,56 +78,30 @@ void GLSTLWidget::displaySceleton(void)
 void GLSTLWidget::createSceleton(void)
 {
 
-//    STLGeometry* stl_geom = (STLGeometry*)object;
-//    GLfloat x0 = (maxX + minX)*0.5,
-//            y0 = (maxY + minY)*0.5,
-//            z0 = (maxZ + minZ)*0.5;
+    GLfloat x0 = (maxX + minX)*0.5,
+            y0 = (maxY + minY)*0.5,
+            z0 = (maxZ + minZ)*0.5;
+    int numVertex = Ng_STL_NP(object);
 
-//    xList2 = glGenLists(1);
-//    glNewList (xList2, GL_COMPILE);
-//    if (params.isLight)
-//    {
-//        glEnable (GL_COLOR_MATERIAL);
-//        glDisable (GL_LIGHTING);
-//    }
-//    glColor3d(0,0,0);
-//    glPointSize(1);
-//    glBegin(GL_POINTS);
-//    for (unsigned i = 1; i < stl_geom->getNT(); i++)
-//        for (unsigned j = 0; j < surface.size2(); j++)
-//            glVertex3d(X[surface[i][j]] - x0, (Y.size()) ? Y[surface[i][j]] - y0 : 0, (Z.size()) ? Z[surface[i][j]] - z0 : 0);
-//    glEnd();
-//    if (params.isLight)
-//    {
-//        glEnable(GL_LIGHTING);
-//        glDisable (GL_COLOR_MATERIAL);
-//    }
-//    glEndList();
-}
-/*******************************************************************/
-void GLSTLWidget::setObject(void *o)
-{
-//    object = o;
-//    xRot = yRot = zRot = 0;
-//    minX = *min_element(object->getMesh().getX().begin(),object->getMesh().getX().end());
-//    maxX = *max_element(object->getMesh().getX().begin(),object->getMesh().getX().end());
-//    minY = (object->getMesh().getY().size()) ? *min_element(object->getMesh().getY().begin(),object->getMesh().getY().end()) : 0;
-//    maxY = (object->getMesh().getY().size()) ? *max_element(object->getMesh().getY().begin(),object->getMesh().getY().end()) : 0;
-//    minZ = (object->getMesh().getZ().size()) ? *min_element(object->getMesh().getZ().begin(),object->getMesh().getZ().end()) : 0;
-//    maxZ = (object->getMesh().getZ().size()) ? *max_element(object->getMesh().getZ().begin(),object->getMesh().getZ().end()) : 0;
-//    radius = sqrt((maxX - minX) * (maxX - minX) + (maxY - minY) * (maxY - minY)  + (maxZ - minZ) * (maxZ - minZ));
-//    setupCameraGL(width(),height());
-//    if (object->getMesh().getZ().size())
-//        createNormal();
-//    if (object->getMesh().getFreedom() == 1)
-//        params.isMesh = true;
-//    if (params.isLimit || params.isForce)
-//    {
-//        setSelectedVertex();
-//        repaint();
-//    }
-
-//    updateGL();
+    xList2 = glGenLists(1);
+    glNewList(xList2, GL_COMPILE);
+    if (params.isLight)
+    {
+        glEnable (GL_COLOR_MATERIAL);
+        glDisable (GL_LIGHTING);
+    }
+    glColor3d(0,0,0);
+    glPointSize(1);
+    glBegin(GL_POINTS);
+    for (int i = 1; i <= numVertex; i++)
+        glVertex3d(Ng_STL_X(object,i) - x0, Ng_STL_Y(object,i) - y0, Ng_STL_Z(object,i) - z0);
+    glEnd();
+    if (params.isLight)
+    {
+        glEnable(GL_LIGHTING);
+        glDisable (GL_COLOR_MATERIAL);
+    }
+    glEndList();
 }
 /*******************************************************************/
 void GLSTLWidget::displayObject(void)
@@ -116,32 +113,29 @@ void GLSTLWidget::displayObject(void)
 /*******************************************************************/
 void GLSTLWidget::createObject(void)
 {
-//    if (!object->getMesh().getX().size()) return;
+    GLfloat x0 = (maxX + minX)*0.5,
+            y0 = (maxY + minY)*0.5,
+            z0 = (maxZ + minZ)*0.5;
+    int numTri = Ng_STL_NT(object);
 
-//    QApplication::setOverrideCursor(Qt::BusyCursor);
+    QApplication::setOverrideCursor(Qt::BusyCursor);
 
-//    xList1 = glGenLists(1);
-//    glNewList (xList1, GL_COMPILE);
-//    switch (object->getMesh().getFEType())
-//    {
-//        case FE1D_2:
-//            drawTRP_1D();
-//            break;
-//        case FE2D_3:
-//        case FE2D_6:
-//        case FE2D_4:
-//            drawTRP_2D();
-//            break;
-//        case FE3D_4:
-//        case FE3D_10:
-//        case FE3D_8:
-//            drawTRP_3D();
-//            break;
-//        default:
-//            break;
-//    }
-//    glEndList();
-//    QApplication::restoreOverrideCursor();
+    xList1 = glGenLists(1);
+    glNewList (xList1, GL_COMPILE);
+
+
+    for (int i = 1; i <= numTri; i++)
+    {
+        setColor(0,1,0,params.alpha);
+        glBegin(GL_TRIANGLES);
+        glNormal3d(Ng_STL_Normal_X(object,i),Ng_STL_Normal_Y(object,i),Ng_STL_Normal_Z(object,i));
+        for (unsigned j = 1; j <= 3; j++)
+            glVertex3d(Ng_STL_TRI_X(object,i,j) - x0, Ng_STL_TRI_Y(object,i,j) - y0, Ng_STL_TRI_Z(object,i,j) - z0);
+        glEnd();
+    }
+
+    glEndList();
+    QApplication::restoreOverrideCursor();
 }
 /*******************************************************************/
 //void GLSTLWidget::drawTRP_3D(void)

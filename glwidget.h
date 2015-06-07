@@ -105,7 +105,6 @@ private:
     void setupTranslate(int,int);
     void setupRotate(int,int,int);
     void initParams(void);
-    virtual void calcSelection(int,int) = 0;
     void perspective(GLdouble,GLdouble,GLdouble,GLdouble);
     void lookAt(GLdouble,GLdouble,GLdouble,GLdouble,GLdouble,GLdouble,GLdouble,GLdouble,GLdouble);
     void normalize(GLdouble*);

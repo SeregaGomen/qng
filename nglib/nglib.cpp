@@ -632,14 +632,115 @@ namespace nglib
 
          Ng_STL_AddTriangle(geo2, p1, p2, p3, n);
       }
-
       return geo2;
    }
 
 
+   DLL_HEADER int Ng_STL_NP (Ng_STL_Geometry* stl_geom)
+   {
+       return ((STLGeometry*)stl_geom)->GetNP();
+   }
+
+   DLL_HEADER int Ng_STL_NT (Ng_STL_Geometry *stl_geom)
+   {
+       return ((STLGeometry*)stl_geom)->GetNT();
+   }
+
+   DLL_HEADER double Ng_STL_X (Ng_STL_Geometry *stl_geom,int i)
+   {
+       return ((STLGeometry*)stl_geom)->GetPoint(i)(0);
+   }
+
+   DLL_HEADER double Ng_STL_Y (Ng_STL_Geometry *stl_geom,int i)
+   {
+       return ((STLGeometry*)stl_geom)->GetPoint(i)(1);
+   }
+
+   DLL_HEADER double Ng_STL_Z (Ng_STL_Geometry *stl_geom,int i)
+   {
+       return ((STLGeometry*)stl_geom)->GetPoint(i)(2);
+   }
+
+
+   DLL_HEADER double Ng_STL_Radius (Ng_STL_Geometry *stl_geom)
+   {
+       return ((STLGeometry*)stl_geom)->GetBoundingBox().Diam()*0.5;
+   }
+
+   DLL_HEADER double Ng_STL_MinX (Ng_STL_Geometry *stl_geom)
+   {
+       return ((STLGeometry*)stl_geom)->GetBoundingBox().PMin()(0);
+   }
+
+   DLL_HEADER double Ng_STL_MinY (void** stl_geom)
+   {
+       return ((STLGeometry*)stl_geom)->GetBoundingBox().PMin()(1);
+   }
+
+   DLL_HEADER double Ng_STL_MinZ (Ng_STL_Geometry *stl_geom)
+   {
+       return ((STLGeometry*)stl_geom)->GetBoundingBox().PMin()(2);
+   }
+
+   DLL_HEADER double Ng_STL_MaxX (Ng_STL_Geometry *stl_geom)
+   {
+       return ((STLGeometry*)stl_geom)->GetBoundingBox().PMax()(0);
+   }
+
+   DLL_HEADER double Ng_STL_MaxY (Ng_STL_Geometry *stl_geom)
+   {
+       return ((STLGeometry*)stl_geom)->GetBoundingBox().PMax()(1);
+   }
+
+   DLL_HEADER double Ng_STL_MaxZ (Ng_STL_Geometry *stl_geom)
+   {
+       return ((STLGeometry*)stl_geom)->GetBoundingBox().PMax()(2);
+   }
+
+   DLL_HEADER double Ng_STL_Normal_X (Ng_STL_Geometry *stl_geom,int i)
+   {
+       const Vec3d &n = ((STLGeometry*)stl_geom)->GetTriangle(i).Normal();
+
+       return n.X();
+   }
+
+   DLL_HEADER double Ng_STL_Normal_Y (Ng_STL_Geometry *stl_geom,int i)
+   {
+       const Vec3d &n = ((STLGeometry*)stl_geom)->GetTriangle(i).Normal();
+
+       return n.Y();
+   }
+
+   DLL_HEADER double Ng_STL_Normal_Z (Ng_STL_Geometry *stl_geom,int i)
+   {
+       const Vec3d &n = ((STLGeometry*)stl_geom)->GetTriangle(i).Normal();
+
+       return n.Z();
+   }
+
+   DLL_HEADER double Ng_STL_TRI_X (Ng_STL_Geometry *stl_geom,int i,int j)
+   {
+       const Point3d &tp = ((STLGeometry*)stl_geom)->GetPoint(((STLGeometry*)stl_geom)->GetTriangle(i).PNum(j));
+
+       return tp.X();
+   }
+
+   DLL_HEADER double Ng_STL_TRI_Y (Ng_STL_Geometry *stl_geom,int i,int j)
+   {
+       const Point3d &tp = ((STLGeometry*)stl_geom)->GetPoint(((STLGeometry*)stl_geom)->GetTriangle(i).PNum(j));
+
+       return tp.Y();
+   }
+
+   DLL_HEADER double Ng_STL_TRI_Z (Ng_STL_Geometry *stl_geom,int i,int j)
+   {
+       const Point3d &tp = ((STLGeometry*)stl_geom)->GetPoint(((STLGeometry*)stl_geom)->GetTriangle(i).PNum(j));
+
+       return tp.Z();
+   }
 
    // generate new STL Geometry
-   DLL_HEADER Ng_STL_Geometry * Ng_STL_NewGeometry ()
+   DLL_HEADER Ng_STL_Geometry * Ng_STL_NewGeometry (void)
    {
       return (Ng_STL_Geometry*)(void*)new STLGeometry;
    } 

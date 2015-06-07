@@ -305,7 +305,10 @@ public:
 
 
 
-  int GetNT() const { return trias.Size(); }
+  int GetNT() const
+  {
+      return trias.Size();
+  }
   void AddTriangle(const STLTriangle& t);
   const STLTriangle & GetTriangle (int nr) const { return trias.Get(nr); }
   STLTriangle & GetTriangle (int nr) { return trias.Elem(nr); }

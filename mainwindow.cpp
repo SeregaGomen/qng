@@ -14,6 +14,7 @@
 #include <QDockWidget>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "glstl.h"
 
 
 
@@ -602,9 +603,9 @@ void MainWindow::genMeshSTL(void)
     Ng_Init();
 
     // Actually create the mesh structure
-    mesh = (Ng_Mesh*)Ng_NewMesh();
+    mesh = Ng_NewMesh();
 
-    stl_geom = (Ng_STL_Geometry*)Ng_STL_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
+    stl_geom = Ng_STL_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
     if(!stl_geom)
     {
         cout << "Error reading in current STL data" << endl;
@@ -620,7 +621,6 @@ void MainWindow::genMeshSTL(void)
 
     cout << "Initialise the STL Geometry structure...." << endl;
     ng_res = Ng_STL_InitSTLGeometry(stl_geom);
-
     if (ng_res != NG_OK)
     {
         cout << "Error Initialising the STL Geometry....Aborting!!" << endl;
@@ -680,12 +680,35 @@ void MainWindow::genMeshSTL(void)
 void MainWindow::showSTL(void)
 {
     Ng_STL_Geometry *stl_geom;
+    bool isFind = false;
+    vector<double> x,
+                   y,
+                   z;
 
-    stl_geom = (Ng_STL_Geometry*)Ng_STL_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
-    if(!stl_geom)
+    stl_geom = Ng_STL_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
+    if (!stl_geom)
     {
         cout << "Error reading in current STL data" << endl;
         return;
     }
     cout << "Successfully loaded STL data" << endl;
+    if (Ng_STL_InitSTLGeometry(stl_geom) != NG_OK)
+    {
+        cout << "Error Initialising the STL Geometry....Aborting!!" << endl;
+        return;
+    }
+
+    // Проверка наличия такой закладки
+    for (int i = 0; i < tabWidget->count(); i++)
+        if (tabWidget->tabText(i) == tr("Model"))
+        {
+            isFind = true;
+            tabWidget->setCurrentIndex(i);
+            break;
+        }
+    if (!isFind)
+    {
+        tabWidget->addTab(new GLSTLWidget(stl_geom,this),tr("Model"));
+        tabWidget->setCurrentIndex(tabWidget->count() - 1);
+    }
 }

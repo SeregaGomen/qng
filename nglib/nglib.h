@@ -597,6 +597,26 @@ DLL_HEADER void Ng_HP_Refinement (Ng_Geometry_2D * geom,
 DLL_HEADER Ng_STL_Geometry * Ng_STL_LoadGeometry (const char * filename, int binary = 0);
 DLL_HEADER Ng_STL_Geometry * Ng_STL_LoadGeometry (std::string);
 
+DLL_HEADER double Ng_STL_Radius (Ng_STL_Geometry*);
+DLL_HEADER double Ng_STL_MinX (Ng_STL_Geometry*);
+DLL_HEADER double Ng_STL_MinY (Ng_STL_Geometry*);
+DLL_HEADER double Ng_STL_MinZ (Ng_STL_Geometry*);
+DLL_HEADER double Ng_STL_MaxX (Ng_STL_Geometry*);
+DLL_HEADER double Ng_STL_MaxY (Ng_STL_Geometry*);
+DLL_HEADER double Ng_STL_MaxZ (Ng_STL_Geometry*);
+DLL_HEADER double Ng_STL_X (Ng_STL_Geometry*,int);
+DLL_HEADER double Ng_STL_Y (Ng_STL_Geometry*,int);
+DLL_HEADER double Ng_STL_Z (Ng_STL_Geometry*,int);
+DLL_HEADER double Ng_STL_TRI_X (Ng_STL_Geometry*,int,int);
+DLL_HEADER double Ng_STL_TRI_Y (Ng_STL_Geometry*,int,int);
+DLL_HEADER double Ng_STL_TRI_Z (Ng_STL_Geometry*,int,int);
+DLL_HEADER double Ng_STL_Normal_X (Ng_STL_Geometry*,int);
+DLL_HEADER double Ng_STL_Normal_Y (Ng_STL_Geometry*,int);
+DLL_HEADER double Ng_STL_Normal_Z (Ng_STL_Geometry*,int);
+DLL_HEADER int Ng_STL_NP (Ng_STL_Geometry*);
+DLL_HEADER int Ng_STL_NT (Ng_STL_Geometry*);
+
+
 
 // generate new STL Geometry
 DLL_HEADER Ng_STL_Geometry * Ng_STL_NewGeometry ();
