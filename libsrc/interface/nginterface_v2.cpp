@@ -153,10 +153,10 @@ namespace netgen
   }
   */
 
-  template <> DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<0> (int nr) const
+  template <> DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<0> (int /*nr*/) const
   {
     cout << "Netgen does not support 0-D elements" << endl;
-	Ng_Element ret;
+    Ng_Element ret;
 	return ret;
   }
 
@@ -509,10 +509,10 @@ namespace netgen
 
 
   template <> DLL_HEADER void Ngx_Mesh :: 
-  ElementTransformation<0,1> (int elnr, 
-                              const double * xi,
-                              double * x,
-                              double * dxdxi) const
+  ElementTransformation<0,1> (int /*elnr*/,
+                              const double * /*xi*/,
+                              double * /*x*/,
+                              double * /*dxdxi*/) const
   {
     cout << "1D not supported" << endl;
   }
@@ -575,10 +575,10 @@ namespace netgen
 
 
   template <> DLL_HEADER void Ngx_Mesh :: 
-  MultiElementTransformation<0,1> (int elnr, int npts,
-                                   const double * xi, size_t sxi,
-                                   double * x, size_t sx,
-                                   double * dxdxi, size_t sdxdxi) const
+  MultiElementTransformation<0,1> (int /*elnr*/, int /*npts*/,
+                                   const double * /*xi*/, size_t /*sxi*/,
+                                   double * /*x*/, size_t /*sx*/,
+                                   double * /*dxdxi*/, size_t /*sdxdxi*/) const
   {
     cout << "1D not supported" << endl;
   }

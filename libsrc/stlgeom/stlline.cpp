@@ -645,7 +645,7 @@ double GetH(const Point3d& p, double x)
 }
 */
 STLLine* STLLine :: Mesh(const Array<Point<3> >& ap, 
-			 Array<Point3d>& mp, double ghi,
+             Array<Point3d>& mp, double /*ghi*/,
 			 class Mesh& mesh) const
 {
   static int timer1a = NgProfiler::CreateTimer ("mesh stl-line 1a");

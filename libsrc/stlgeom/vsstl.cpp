@@ -1171,7 +1171,7 @@ void VisualSceneSTLMeshing :: MouseDblClick (int px, int py)
   }
 
 
-  void VisualSceneSTLGeometry :: BuildScene (int zoomall)
+  void VisualSceneSTLGeometry :: BuildScene (int /*zoomall*/)
   {
     //  cout << "rebuild stl geometry scene" << endl;
 

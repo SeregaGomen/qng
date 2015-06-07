@@ -897,7 +897,7 @@ void STLBoundary ::AddTriangle(const STLTriangle & t)
 }
 
 int STLBoundary :: TestSeg(const Point<3>& p1, const Point<3> & p2, const Vec<3> & sn, 
-			   double sinchartangle, int divisions, Array<Point<3> >& points, double eps)
+               double sinchartangle, int divisions, Array<Point<3> >& /*points*/, double eps)
 {
   if (usechartnormal)
     return TestSegChartNV (p1, p2, sn);
@@ -1090,7 +1090,7 @@ int STLBoundary :: TestSeg(const Point<3>& p1, const Point<3> & p2, const Vec<3>
 
 // checks, whether 2d projection intersects
 int STLBoundary :: TestSegChartNV(const Point3d & p1, const Point3d& p2, 
-				  const Vec3d& sn)
+                  const Vec3d& /*sn*/)
 {
   int timer = NgProfiler::CreateTimer ("TestSegChartNV");
   NgProfiler::StartTimer (timer);

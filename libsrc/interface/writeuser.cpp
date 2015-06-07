@@ -159,7 +159,7 @@ bool WriteUserFormat (const string & format,
  */
 
 void WriteNeutralFormat (const Mesh & mesh,
-			 const NetgenGeometry & geom,
+             const NetgenGeometry & /*geom*/,
 			 const string & filename)
 {
   cout << "write neutral, new" << endl;
@@ -619,7 +619,7 @@ void WriteVRMLFormat (const Mesh & mesh,
  * FEPP .. a finite element package developed at University Linz, Austria
  */
 void WriteFEPPFormat (const Mesh & mesh,
-		      const NetgenGeometry & geom,
+              const NetgenGeometry & /*geom*/,
 		      const string & filename)
 {
 
@@ -750,7 +750,7 @@ void WriteFEPPFormat (const Mesh & mesh,
  */
 
 void WriteEdgeElementFormat (const Mesh & mesh,
-			     const NetgenGeometry & geom,
+                 const NetgenGeometry & /*geom*/,
 			     const string & filename)
 {
   cout << "write edge element format" << endl;

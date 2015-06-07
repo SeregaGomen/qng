@@ -53,7 +53,7 @@ namespace netgen
     /// returns point at curve, 0 <= t <= 1
     virtual Point<D> GetPoint (double t) const = 0;
     /// returns a (not necessarily unit-length) tangent vector for 0 <= t <= 1
-    virtual Vec<D> GetTangent (const double t) const
+    virtual Vec<D> GetTangent (const double /*t*/) const
     { 
       cerr << "GetTangent not implemented for spline base-class"  << endl; 
       Vec<D> dummy; return dummy;
@@ -91,18 +91,18 @@ namespace netgen
     /** calculates (2D) lineintersections:
 	for lines $$ a x + b y + c = 0 $$ the interecting points are calculated
 	and stored in points */
-    virtual void LineIntersections (const double a, const double b, const double c,
-				    Array < Point<D> > & points, const double eps) const
+    virtual void LineIntersections (const double /*a*/, const double /*b*/, const double /*c*/,
+                    Array < Point<D> > & points, const double /*eps*/) const
     {points.SetSize(0);}
 
     virtual double MaxCurvature(void) const = 0;
 
     virtual string GetType(void) const {return "splinebase";}
 
-    virtual void Project (const Point<D> point, Point<D> & point_on_curve, double & t) const
+    virtual void Project (const Point<D> /*point*/, Point<D> & /*point_on_curve*/, double & /*t*/) const
     { cerr << "Project not implemented for spline base-class" << endl;}
 
-    virtual void GetRawData (Array<double> & data) const
+    virtual void GetRawData (Array<double> & /*data*/) const
     { cerr << "GetRawData not implemented for spline base-class" << endl;}
 
   };
@@ -130,7 +130,7 @@ namespace netgen
 				 Vec<D> & first,
 				 Vec<D> & second) const;
     ///
-    virtual const GeomPoint<D> & StartPI () const { return p1; };
+    virtual const GeomPoint<D> & StartPI () const { return p1; }
     ///
     virtual const GeomPoint<D> & EndPI () const { return p2; }
     ///
@@ -173,7 +173,7 @@ namespace netgen
 				 Vec<D> & first,
 				 Vec<D> & second) const;
     ///
-    virtual const GeomPoint<D> & StartPI () const { return p1; };
+    virtual const GeomPoint<D> & StartPI () const { return p1; }
     ///
     virtual const GeomPoint<D> & EndPI () const { return p3; }
     ///
@@ -258,7 +258,7 @@ namespace netgen
     ///
     virtual const GeomPoint<D> & EndPI () const { return p2n; }
     ///
-    virtual void GetCoeff (Vector & coeffs) const {;}
+    virtual void GetCoeff (Vector & /*coeffs*/) const {;}
 
     virtual double MaxCurvature(void) const {return 1;}
   };
@@ -334,7 +334,7 @@ namespace netgen
   }
 
   template<int D>
-  Vec<D> LineSeg<D> :: GetTangent (const double t) const
+  Vec<D> LineSeg<D> :: GetTangent (const double /*t*/) const
   {
     return p2-p1;
   }
@@ -590,11 +590,11 @@ namespace netgen
     ///
     virtual Point<D> GetPoint (double t) const;
     ///
-    virtual const GeomPoint<D> & StartPI () const { return p1n; };
+    virtual const GeomPoint<D> & StartPI () const { return p1n; }
     ///
     virtual const GeomPoint<D> & EndPI () const { return p2n; }
     ///
-    virtual void GetCoeff (Vector & coeffs) const {;}
+    virtual void GetCoeff (Vector & /*coeffs*/) const {;}
 
     virtual double MaxCurvature(void) const {return 1;}
   };

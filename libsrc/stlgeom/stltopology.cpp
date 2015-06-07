@@ -353,7 +353,7 @@ STLGeometry *  STLTopology ::Load (istream & ist)
     {
       ist >> buf;
 
-      int n = strlen (buf);
+      int n = (int)strlen (buf);
       for (int i = 0; i < n; i++)
 	buf[i] = tolower (buf[i]);
 

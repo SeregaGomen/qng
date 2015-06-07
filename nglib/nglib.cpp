@@ -187,7 +187,7 @@ namespace nglib
 
 
    // Merge another mesh file into the currently loaded one
-   DLL_HEADER Ng_Result Ng_MergeMesh( Ng_Mesh* mesh1, Ng_Mesh* mesh2)
+   DLL_HEADER Ng_Result Ng_MergeMesh( Ng_Mesh* /*mesh1*/, Ng_Mesh* /*mesh2*/)
    {
       return NG_ERROR;
    }
@@ -206,7 +206,7 @@ namespace nglib
 
 
    // Manually add a surface element of a given type to an existing mesh object
-   DLL_HEADER void Ng_AddSurfaceElement (Ng_Mesh * mesh, Ng_Surface_Element_Type et,
+   DLL_HEADER void Ng_AddSurfaceElement (Ng_Mesh * mesh, Ng_Surface_Element_Type /*et*/,
                                          int * pi)
    {
       Mesh * m = (Mesh*)mesh;
@@ -222,7 +222,7 @@ namespace nglib
 
 
    // Manually add a volume element of a given type to an existing mesh object
-   DLL_HEADER void Ng_AddVolumeElement (Ng_Mesh * mesh, Ng_Volume_Element_Type et,
+   DLL_HEADER void Ng_AddVolumeElement (Ng_Mesh * mesh, Ng_Volume_Element_Type /*et*/,
                                         int * pi)
    {
       Mesh * m = (Mesh*)mesh;
@@ -877,7 +877,7 @@ namespace nglib
    // fills STL Geometry
    // positive orientation
    // normal vector may be null-pointer
-   DLL_HEADER void Ng_STL_AddTriangle (Ng_STL_Geometry * geom, 
+   DLL_HEADER void Ng_STL_AddTriangle (Ng_STL_Geometry * /*geom*/,
                                        double * p1, double * p2, double * p3, 
                                        double * nv)
    {
@@ -896,7 +896,7 @@ namespace nglib
    }
 
    // add (optional) edges:
-   DLL_HEADER void Ng_STL_AddEdge (Ng_STL_Geometry * geom, 
+   DLL_HEADER void Ng_STL_AddEdge (Ng_STL_Geometry * /*geom*/,
       double * p1, double * p2)
    {
       readedges.Append(Point3d(p1[0],p1[1],p1[2]));
@@ -1354,7 +1354,7 @@ namespace netgen
 
 
 
-   void MyBeep (int i)
+   void MyBeep (int /*i*/)
    {
       ;
    }

@@ -236,7 +236,7 @@ void Primitive :: GetPrimitiveData (const char *& classname,
   coeffs.SetSize (0);
 }
 
-void Primitive :: SetPrimitiveData (Array<double> & coeffs)
+void Primitive :: SetPrimitiveData (Array<double> & /*coeffs*/)
 {
   ;
 }
@@ -269,7 +269,7 @@ Primitive * Primitive :: Copy () const
 }
 
 
-void Primitive :: Transform (Transformation<3> & trans)
+void Primitive :: Transform (Transformation<3> & /*trans*/)
 {
   stringstream ost;
   ost << "Primitve::Transform not implemented for " << typeid(*this).name() << endl;
@@ -287,8 +287,8 @@ void Primitive :: GetTangentialSurfaceIndices (const Point<3> & p,
 
 
 void Primitive :: 
-GetTangentialVecSurfaceIndices (const Point<3> & p, const Vec<3> & v,
-				Array<int> & surfind, double eps) const
+GetTangentialVecSurfaceIndices (const Point<3> & /*p*/, const Vec<3> & /*v*/,
+                Array<int> & surfind, double /*eps*/) const
 {
   cout << "get tangvecsurfind not implemented" << endl;
   surfind.SetSize (0);
@@ -335,7 +335,7 @@ VecInSolid2 (const Point<3> & p,
 INSOLID_TYPE Primitive :: 
 VecInSolid3 (const Point<3> & p,
 	     const Vec<3> & v1,
-	     const Vec<3> & v2,
+         const Vec<3> & /*v2*/,
 	     double eps) const
 {
   //(*testout) << "Primitive::VecInSolid3" << endl;
@@ -345,7 +345,7 @@ VecInSolid3 (const Point<3> & p,
 INSOLID_TYPE Primitive :: 
 VecInSolid4 (const Point<3> & p,
 	     const Vec<3> & v,
-	     const Vec<3> & v2,
+         const Vec<3> & /*v2*/,
 	     const Vec<3> & m,
 	     double eps) const
 {
@@ -513,12 +513,12 @@ int OneSurfacePrimitive :: GetNSurfaces() const
   return 1;
 }
 
-Surface & OneSurfacePrimitive :: GetSurface (int i)
+Surface & OneSurfacePrimitive :: GetSurface (int /*i*/)
 {
   return *this;
 }
 
-const Surface & OneSurfacePrimitive :: GetSurface (int i) const
+const Surface & OneSurfacePrimitive :: GetSurface (int /*i*/) const
 {
   return *this;
 }

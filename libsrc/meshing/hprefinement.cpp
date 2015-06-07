@@ -635,7 +635,7 @@ namespace netgen
  
   /* *******************************  DoRefinement *************************************** */
   void DoRefinement (Mesh & mesh, Array<HPRefElement> & elements,
-		     Refinement * ref, double fac1) 
+             Refinement * /*ref*/, double fac1)
   {
     elements.SetAllocSize (5 * elements.Size());
     INDEX_2_HASHTABLE<int> newpts(elements.Size()+1);
@@ -882,8 +882,8 @@ namespace netgen
 
   /* ************************** DoRefineDummies ******************************** */
 
-  void DoRefineDummies (Mesh & mesh, Array<HPRefElement> & elements,
-			Refinement * ref)
+  void DoRefineDummies (Mesh & /*mesh*/, Array<HPRefElement> & elements,
+            Refinement * /*ref*/)
   {
     int oldelsize = elements.Size();
 
@@ -961,7 +961,7 @@ namespace netgen
 
 
 
-  void SubdivideDegeneratedHexes (Mesh & mesh, Array<HPRefElement> & elements, double fac1)
+  void SubdivideDegeneratedHexes (Mesh & mesh, Array<HPRefElement> & elements, double /*fac1*/)
   {
     int oldne = elements.Size();
     for (int i = 0; i < oldne; i++)
@@ -1100,7 +1100,7 @@ namespace netgen
   }
 
 
-  void CalcStatistics (Array<HPRefElement> & elements)
+  void CalcStatistics (Array<HPRefElement> & /*elements*/)
   {
     return;
 #ifdef ABC    
@@ -1315,7 +1315,7 @@ namespace netgen
 
   /* ***************************** HPRefinement ********************************** */
 
-  void HPRefinement (Mesh & mesh, Refinement * ref, int levels, double fac1, bool setorders, bool reflevels)
+  void HPRefinement (Mesh & mesh, Refinement * ref, int levels, double fac1, bool setorders, bool /*reflevels*/)
   {
     PrintMessage (1, "HP Refinement called, levels = ", levels);
 

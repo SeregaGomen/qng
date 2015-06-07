@@ -933,7 +933,7 @@ namespace netgen
 
 
   int SplineGeometry2d :: GenerateMesh (shared_ptr<Mesh> & mesh, MeshingParameters & mparam,
-					int perfstepsstart, int perfstepsend)
+                    int /*perfstepsstart*/, int /*perfstepsend*/)
   {
     MeshFromSpline2D (*this, mesh, mparam);
     return 0;

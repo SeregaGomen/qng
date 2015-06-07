@@ -40,7 +40,7 @@ void MinFunction :: Grad (const Vector & /* x */, Vector & /* g */) const
   cerr << "Grad of MinFunction called" << endl;
 }
   
-double MinFunction :: FuncGrad (const Vector & x, Vector & g) const
+double MinFunction :: FuncGrad (const Vector & /*x*/, Vector & /*g*/) const
 {
   cerr << "Grad of MinFunction called" << endl;
   return 0;

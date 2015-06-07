@@ -1520,7 +1520,7 @@ void Mesh :: ImproveMesh (const MeshingParameters & mp, OPTIMIZEGOAL goal)
 
 
 // Improve Condition number of Jacobian, any elements  
-void Mesh :: ImproveMeshJacobian (const MeshingParameters & mp,
+void Mesh :: ImproveMeshJacobian (const MeshingParameters & /*mp*/,
 				  OPTIMIZEGOAL goal, const BitArray * usepoint)
 {
   int i, j;
@@ -1641,7 +1641,7 @@ void Mesh :: ImproveMeshJacobian (const MeshingParameters & mp,
 
 
 // Improve Condition number of Jacobian, any elements  
-void Mesh :: ImproveMeshJacobianOnSurface (const MeshingParameters & mp,
+void Mesh :: ImproveMeshJacobianOnSurface (const MeshingParameters & /*mp*/,
 					   const BitArray & usepoint, 
 					   const Array< Vec<3>* > & nv,
 					   OPTIMIZEGOAL goal,

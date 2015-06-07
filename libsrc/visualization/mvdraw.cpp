@@ -125,7 +125,7 @@ namespace netgen
   }
 
 
-  void VisualScene :: BuildScene (int zoomall)
+  void VisualScene :: BuildScene (int /*zoomall*/)
   {
     center = Point3d (0,0,0);
     rad = 1;

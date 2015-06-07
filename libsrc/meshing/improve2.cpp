@@ -802,7 +802,7 @@ namespace netgen
   }
 
 
-  void MeshOptimize2d :: CheckMeshApproximation (Mesh & mesh)
+  void MeshOptimize2d :: CheckMeshApproximation (Mesh & /*mesh*/)
   {
     // Check angles between elements and normals at corners
     /*

@@ -94,7 +94,7 @@ namespace netgen
   }
 
 
-  void VisualSceneGeometry2d :: BuildScene (int zoomall)
+  void VisualSceneGeometry2d :: BuildScene (int /*zoomall*/)
   {
     Box<2> bbox;
 

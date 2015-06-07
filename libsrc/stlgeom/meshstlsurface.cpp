@@ -808,7 +808,7 @@ MeshingSTLSurface :: MeshingSTLSurface (STLGeometry & ageom,
 
 void MeshingSTLSurface :: DefineTransformation (const Point3d & p1, const Point3d & p2,
 						const PointGeomInfo * geominfo,
-						const PointGeomInfo * geominfo2)
+                        const PointGeomInfo * /*geominfo2*/)
 {
   transformationtrig = geominfo[0].trignum;
   
@@ -915,8 +915,8 @@ ChooseChartPointGeomInfo (const MultiPointGeomInfo & mpgi,
 
 
 int MeshingSTLSurface :: 
-IsLineVertexOnChart (const Point3d & p1, const Point3d & p2,
-		     int endpoint, const PointGeomInfo & gi)
+IsLineVertexOnChart (const Point3d & /*p1*/, const Point3d & /*p2*/,
+             int /*endpoint*/, const PointGeomInfo & gi)
 {
   int lineendtrig = gi.trignum;
   return geom.TrigIsInOC (lineendtrig, geom.meshchart);
@@ -955,7 +955,7 @@ int MeshingSTLSurface :: TransformFromPlain (Point2d & plainpoint,
 
 
 int MeshingSTLSurface :: 
-BelongsToActiveChart (const Point3d & p, 
+BelongsToActiveChart (const Point3d & /*p*/,
 		      const PointGeomInfo & gi)
 {
   return (geom.TrigIsInOC(gi.trignum, geom.meshchart) != 0);
@@ -963,7 +963,7 @@ BelongsToActiveChart (const Point3d & p,
 
 
 
-double MeshingSTLSurface :: CalcLocalH (const Point3d & p, double gh) const
+double MeshingSTLSurface :: CalcLocalH (const Point3d & /*p*/, double gh) const
 {
   return gh;
 }
@@ -985,7 +985,7 @@ MeshOptimizeSTLSurface :: MeshOptimizeSTLSurface (STLGeometry & ageom)
 }
 
 
-void MeshOptimizeSTLSurface :: SelectSurfaceOfPoint (const Point<3> & p,
+void MeshOptimizeSTLSurface :: SelectSurfaceOfPoint (const Point<3> & /*p*/,
 						     const PointGeomInfo & gi)
 {
   //  (*testout) << "sel char: " << gi.trignum << endl;
@@ -995,7 +995,7 @@ void MeshOptimizeSTLSurface :: SelectSurfaceOfPoint (const Point<3> & p,
 }
 
 
-void MeshOptimizeSTLSurface :: ProjectPoint (INDEX surfind, Point<3> & p) const
+void MeshOptimizeSTLSurface :: ProjectPoint (INDEX /*surfind*/, Point<3> & p) const
 {
   if (!geom.Project (p))
     {
@@ -1010,7 +1010,7 @@ void MeshOptimizeSTLSurface :: ProjectPoint (INDEX surfind, Point<3> & p) const
   //  geometry.GetSurface(surfind)->Project (p);
 }
 
-void MeshOptimizeSTLSurface :: ProjectPoint2 (INDEX surfind, INDEX surfind2, Point<3> & p) const
+void MeshOptimizeSTLSurface :: ProjectPoint2 (INDEX /*surfind*/, INDEX /*surfind2*/, Point<3> & /*p*/) const
 {
   /*
   ProjectToEdge ( geometry.GetSurface(surfind), 
@@ -1029,7 +1029,7 @@ int  MeshOptimizeSTLSurface :: CalcPointGeomInfo(PointGeomInfo& gi, const Point<
   
 }
 
-void MeshOptimizeSTLSurface :: GetNormalVector(INDEX surfind, const Point<3> & p, Vec<3> & n) const
+void MeshOptimizeSTLSurface :: GetNormalVector(INDEX /*surfind*/, const Point<3> & /*p*/, Vec<3> & n) const
 {
   n = geom.GetChartNormalVector();
 }
@@ -1056,7 +1056,7 @@ RefinementSTLGeometry :: ~RefinementSTLGeometry ()
   
 void RefinementSTLGeometry :: 
 PointBetween  (const Point<3> & p1, const Point<3> & p2, double secpoint,
-	       int surfi, 
+           int /*surfi*/,
 	       const PointGeomInfo & gi1, 
 	       const PointGeomInfo & gi2,
 	       Point<3> & newp, PointGeomInfo & newgi) const
@@ -1118,8 +1118,8 @@ PointBetween  (const Point<3> & p1, const Point<3> & p2, double secpoint,
 }
 
 void RefinementSTLGeometry ::
-PointBetween (const Point<3> & p1, const Point<3> & p2, double secpoint,
-	      int surfi1, int surfi2, 
+PointBetween (const Point<3> & /*p1*/, const Point<3> & /*p2*/, double secpoint,
+          int /*surfi1*/, int /*surfi2*/,
 	      const EdgePointGeomInfo & gi1, 
 	      const EdgePointGeomInfo & gi2,
 	      Point<3> & newp, EdgePointGeomInfo & newgi) const
@@ -1148,20 +1148,20 @@ PointBetween (const Point<3> & p1, const Point<3> & p2, double secpoint,
 }
 
 
-void RefinementSTLGeometry :: ProjectToSurface (Point<3> & p, int surfi) const
+void RefinementSTLGeometry :: ProjectToSurface (Point<3> & /*p*/, int /*surfi*/) const
 {
   cout << "RefinementSTLGeometry :: ProjectToSurface not implemented!" << endl;
-};
+}
 
 
-void RefinementSTLGeometry :: ProjectToSurface (Point<3> & p, int surfi,
+void RefinementSTLGeometry :: ProjectToSurface (Point<3> & p, int /*surfi*/,
 						PointGeomInfo & gi) const
 {
   ((STLGeometry&)geom).SelectChartOfTriangle (gi.trignum);
   gi.trignum = geom.Project (p);
   //  if (!gi.trignum) 
   //    cout << "projectSTL failed" << endl;
-};
+}
 
  
 }

@@ -301,7 +301,7 @@ namespace netgen
         ifstream inemt (filename);
       
         string pktfile = filename;
-        int len = strlen (filename);
+        int len = (int)strlen (filename);
         pktfile[len-3] = 'p';
         pktfile[len-2] = 'k';
         pktfile[len-1] = 't';

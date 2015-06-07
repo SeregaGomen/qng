@@ -181,8 +181,8 @@ namespace netgen
   
 
 
-  void FieldLineCalc :: GenerateFieldLines(Array<Point3d> & potential_startpoints, const int numlines, const int gllist,
-					   const double minval, const double maxval, const int logscale, double phaser, double phasei)
+  void FieldLineCalc :: GenerateFieldLines(Array<Point3d> & potential_startpoints, const int numlines, const int /*gllist*/,
+                       const double /*minval*/, const double /*maxval*/, const int /*logscale*/, double phaser, double phasei)
   {
 
     

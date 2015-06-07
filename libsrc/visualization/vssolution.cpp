@@ -1977,7 +1977,7 @@ namespace netgen
 
 
   void  VisualSceneSolution :: DrawTrigSurfaceVectors(const Array< Point<3> > & lp, 
-                                                      const Point<3> & pmin, const Point<3> & pmax,
+                                                      const Point<3> & pmin, const Point<3> & /*pmax*/,
                                                       const int sei, const SolData * vsol)
   {
     shared_ptr<Mesh> mesh = GetMesh();
@@ -4585,7 +4585,7 @@ void Ng_InitSolutionData (Ng_SolutionData * soldata)
   soldata -> solclass = 0;
 }
 
-void Ng_SetSolutionData (Ng_SolutionData * soldata)
+void Ng_SetSolutionData (Ng_SolutionData * /*soldata*/)
 {
 #ifdef OPENGL
   // if (nodisplay) return;
@@ -4615,7 +4615,7 @@ namespace netgen
   extern void Render (bool blocking);
 }
 
-void Ng_Redraw (bool blocking)
+void Ng_Redraw (bool /*blocking*/)
 {
 #ifdef OPENGL
   netgen::vssolution.UpdateSolutionTimeStamp();

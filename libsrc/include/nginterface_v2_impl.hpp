@@ -5,7 +5,7 @@ NGX_INLINE DLL_HEADER Ng_Point Ngx_Mesh :: GetPoint (int nr) const
 
 
 template <>
-NGX_INLINE DLL_HEADER int Ngx_Mesh :: GetElementIndex<0> (int nr) const
+NGX_INLINE DLL_HEADER int Ngx_Mesh :: GetElementIndex<0> (int /*nr*/) const
 {
   return 0;
 }

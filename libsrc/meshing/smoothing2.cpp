@@ -707,8 +707,8 @@ namespace netgen
   }
 
 
-  void MeshOptimize2d :: SelectSurfaceOfPoint (const Point<3> & p,
-					       const PointGeomInfo & gi)
+  void MeshOptimize2d :: SelectSurfaceOfPoint (const Point<3> & /*p*/,
+                           const PointGeomInfo & /*gi*/)
   {
     ;
   }
@@ -1089,12 +1089,12 @@ namespace netgen
     mesh.SetNextTimeStamp();
   }
 
-  void MeshOptimize2d :: GetNormalVector(INDEX /* surfind */, const Point<3> & p, Vec<3> & nv) const
+  void MeshOptimize2d :: GetNormalVector(INDEX /* surfind */, const Point<3> & /*p*/, Vec<3> & nv) const
   {
     nv = Vec<3> (0, 0, 1);
   }
 
-  void MeshOptimize2d :: GetNormalVector(INDEX surfind, const Point<3> & p, PointGeomInfo & gi, Vec<3> & n) const
+  void MeshOptimize2d :: GetNormalVector(INDEX surfind, const Point<3> & p, PointGeomInfo & /*gi*/, Vec<3> & n) const
   {
     GetNormalVector (surfind, p, n);
   }

@@ -117,7 +117,7 @@ namespace netgen
   public:
 
     // estimated number of points
-    MeshNB (Array<DelaunayTet> & atets, int np)
+    MeshNB (Array<DelaunayTet> & atets, int /*np*/)
       : faces(200), tets(atets)
     { ; }
 
@@ -597,7 +597,7 @@ namespace netgen
 
 
 
-  void Delaunay1 (Mesh & mesh, const MeshingParameters & mp, AdFront3 * adfront,
+  void Delaunay1 (Mesh & mesh, const MeshingParameters & /*mp*/, AdFront3 * adfront,
 		  Array<DelaunayTet> & tempels,
 		  int oldnp, DelaunayTet & startel, Point3d & pmin, Point3d & pmax)
   {

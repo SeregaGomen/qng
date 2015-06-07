@@ -4,9 +4,10 @@
 #
 #-------------------------------------------------
 
-QMAKE_CXXFLAGS += -std=c++0x
+unix:QMAKE_CXXFLAGS += -std=c++0x
 
-DEFINES += _AFXDLL
+DEFINES += _AFXDLL\
+           _CRT_SECURE_NO_WARNINGS
 
 QT       += core gui opengl
 

@@ -1427,7 +1427,7 @@ namespace netgen
   StoreShortEdge (const Array<Segment> & refedges,
 		  const Array<bool> & refedgesinv,
 		  const Array<Point<3> > & edgepoints,
-		  const Array<double> & curvelength,
+          const Array<double> & /*curvelength*/,
 		  int layer,
 		  Mesh & mesh)
   {

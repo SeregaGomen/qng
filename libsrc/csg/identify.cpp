@@ -36,16 +36,16 @@ void Identification :: IdentifySpecialPoints (Array<class SpecialPoint> & points
 
 
 int Identification :: 
-Identifyable (const SpecialPoint & sp1, const SpecialPoint & sp2,
-	      const TABLE<int> & specpoint2solid,
-	      const TABLE<int> & specpoint2surface) const
+Identifyable (const SpecialPoint & /*sp1*/, const SpecialPoint & /*sp2*/,
+          const TABLE<int> & /*specpoint2solid*/,
+          const TABLE<int> & /*specpoint2surface*/) const
 {
   cout << "Identification::Identifyable called for base-class" << endl;
   return 0;
 }
 
 int Identification :: 
-Identifyable (const Point<3> & p1, const Point<3> & sp2) const
+Identifyable (const Point<3> & /*p1*/, const Point<3> & /*sp2*/) const
 {
   cout << "Identification::Identifyable called for base-class" << endl;
   return 0;
@@ -53,39 +53,39 @@ Identifyable (const Point<3> & p1, const Point<3> & sp2) const
 
 
 int Identification :: 
-IdentifyableCandidate (const SpecialPoint & sp1) const
+IdentifyableCandidate (const SpecialPoint & /*sp1*/) const
 {
   return 1;
 }
 
 
 int Identification :: 
-ShortEdge (const SpecialPoint & sp1, const SpecialPoint & sp2) const
+ShortEdge (const SpecialPoint & /*sp1*/, const SpecialPoint & /*sp2*/) const
 {
   return 0;
 }
 
-int Identification :: GetIdentifiedPoint (class Mesh & mesh, int pi)
+int Identification :: GetIdentifiedPoint (class Mesh & /*mesh*/, int /*pi*/)
 {
   cout << "Identification::GetIdentifiedPoint called for base-class" << endl;
   return -1;
 }
 
-void Identification :: IdentifyPoints (Mesh & mesh)
+void Identification :: IdentifyPoints (Mesh & /*mesh*/)
 {
   cout << "Identification::IdentifyPoints called for base-class" << endl;
   ;
 }
 
-void Identification :: IdentifyFaces (class Mesh & mesh)
+void Identification :: IdentifyFaces (class Mesh & /*mesh*/)
 {
   cout << "Identification::IdentifyFaces called for base-class" << endl;
   ;
 }
 
 void Identification :: 
-BuildSurfaceElements (Array<Segment> & segs,
-		      Mesh & mesh, const Surface * surf)
+BuildSurfaceElements (Array<Segment> & /*segs*/,
+              Mesh & /*mesh*/, const Surface * /*surf*/)
 {
   cout << "Identification::BuildSurfaceElements called for base-class" << endl;
   ;
@@ -93,8 +93,8 @@ BuildSurfaceElements (Array<Segment> & segs,
 
 
 void Identification :: 
-BuildVolumeElements (Array<class Element2d> & surfels,
-			  class Mesh & mesh)
+BuildVolumeElements (Array<class Element2d> & /*surfels*/,
+              class Mesh & /*mesh*/)
 {
   ;
 }
@@ -195,8 +195,8 @@ void PeriodicIdentification :: IdentifySpecialPoints
 
 int PeriodicIdentification :: 
 Identifyable (const SpecialPoint & sp1, const SpecialPoint & sp2,
-	      const TABLE<int> & specpoint2solid,
-	      const TABLE<int> & specpoint2surface) const
+          const TABLE<int> & /*specpoint2solid*/,
+          const TABLE<int> & /*specpoint2surface*/) const
 {
   int i;
   double val;
@@ -438,7 +438,7 @@ void PeriodicIdentification :: IdentifyFaces (class Mesh & mesh)
 
 void PeriodicIdentification :: 
 BuildSurfaceElements (Array<Segment> & segs,
-		      Mesh & mesh, const Surface * surf)
+              Mesh & mesh, const Surface * /*surf*/)
 {
   int found = 0;
   int fother = -1;
@@ -1293,7 +1293,7 @@ BuildSurfaceElements (Array<Segment> & segs,
 
 void CloseSurfaceIdentification :: 
 BuildSurfaceElements2 (Array<Segment> & segs,
-		       Mesh & mesh, const Surface * surf)
+               Mesh & mesh, const Surface * /*surf*/)
 {
   // copy mesh
 
@@ -1393,8 +1393,8 @@ BuildSurfaceElements2 (Array<Segment> & segs,
 
 
 void CloseSurfaceIdentification :: 
-BuildVolumeElements (Array<class Element2d> & surfels,
-		     class Mesh & mesh)
+BuildVolumeElements (Array<class Element2d> & /*surfels*/,
+             class Mesh & /*mesh*/)
 {
   ;
 }
@@ -1514,8 +1514,8 @@ void CloseEdgesIdentification :: IdentifySpecialPoints
 
 int CloseEdgesIdentification :: 
 Identifyable (const SpecialPoint & sp1, const SpecialPoint & sp2,
-	      const TABLE<int> & specpoint2solid,
-	      const TABLE<int> & specpoint2surface) const
+          const TABLE<int> & /*specpoint2solid*/,
+          const TABLE<int> & /*specpoint2surface*/) const
 {
   int i;
   double val;

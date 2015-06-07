@@ -12,7 +12,7 @@
 
 namespace netgen
 {
-int EdgeUsed(int p1, int p2, Array<INDEX_2>& edges, INDEX_2_HASHTABLE<int>& hashtab)
+int EdgeUsed(int p1, int p2, Array<INDEX_2>& /*edges*/, INDEX_2_HASHTABLE<int>& hashtab)
 {
   if (p1 > p2) {swap (p1,p2);}
 

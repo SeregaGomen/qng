@@ -1065,7 +1065,7 @@ namespace netgen
 
 
   void BTDefineMarkedQuad (const Element2d & el,
-			   INDEX_2_CLOSED_HASHTABLE<int> & edgenumber,
+               INDEX_2_CLOSED_HASHTABLE<int> & /*edgenumber*/,
 			   MarkedQuad & mq)
   {
     for (int i = 0; i < 4; i++)
@@ -1910,7 +1910,7 @@ namespace netgen
 
 
   void BisectTetsCopyMesh (Mesh & mesh, const NetgenGeometry *,
-			   BisectionOptions & opt,
+               BisectionOptions & /*opt*/,
 			   const Array< Array<int,PointIndex::BASE>* > & idmaps,
 			   const string & refinfofile)
   {
@@ -3999,47 +3999,47 @@ namespace netgen
 
 
   void Refinement :: PointBetween (const Point<3> & p1, const Point<3> & p2, double secpoint,
-				   int surfi, 
-				   const PointGeomInfo & gi1, 
-				   const PointGeomInfo & gi2,
-				   Point<3> & newp, PointGeomInfo & newgi) const
+                   int /*surfi*/,
+                   const PointGeomInfo & /*gi1*/,
+                   const PointGeomInfo & /*gi2*/,
+                   Point<3> & newp, PointGeomInfo & /*newgi*/) const
   {
     newp = p1+secpoint*(p2-p1);
   }
 
   void Refinement :: PointBetween (const Point<3> & p1, const Point<3> & p2, double secpoint,
-				   int surfi1, int surfi2, 
-				   const EdgePointGeomInfo & ap1, 
-				   const EdgePointGeomInfo & ap2,
-				   Point<3> & newp, EdgePointGeomInfo & newgi) const
+                   int /*surfi1*/, int /*surfi2*/,
+                   const EdgePointGeomInfo & /*ap1*/,
+                   const EdgePointGeomInfo & /*ap2*/,
+                   Point<3> & newp, EdgePointGeomInfo & /*newgi*/) const
   {
     cout << "base class edge point between" << endl;
     newp = p1+secpoint*(p2-p1);
   }
 
 
-  Vec<3> Refinement :: GetTangent (const Point<3> & p, int surfi1, int surfi2,
-                                   const EdgePointGeomInfo & ap1) const
+  Vec<3> Refinement :: GetTangent (const Point<3> & /*p*/, int /*surfi1*/, int /*surfi2*/,
+                                   const EdgePointGeomInfo & /*ap1*/) const
   {
     cerr << "Refinement::GetTangent not overloaded" << endl;
     return Vec<3> (0,0,0);
   }
 
-  Vec<3> Refinement :: GetNormal (const Point<3> & p, int surfi1, 
-                                  const PointGeomInfo & gi) const
+  Vec<3> Refinement :: GetNormal (const Point<3> & /*p*/, int /*surfi1*/,
+                                  const PointGeomInfo & /*gi*/) const
   {
     cerr << "Refinement::GetNormal not overloaded" << endl;
     return Vec<3> (0,0,0);
   }
 
 
-  void Refinement :: ProjectToSurface (Point<3> & p, int surfi) const
+  void Refinement :: ProjectToSurface (Point<3> & /*p*/, int /*surfi*/) const
   {
     if (printmessage_importance>0)
       cerr << "Refinement :: ProjectToSurface    ERROR: no geometry set" << endl;
   };
 
-  void Refinement :: ProjectToEdge (Point<3> & p, int surfi1, int surfi2, const EdgePointGeomInfo & egi) const
+  void Refinement :: ProjectToEdge (Point<3> & /*p*/, int /*surfi1*/, int /*surfi2*/, const EdgePointGeomInfo & /*egi*/) const
   {
     cerr << "Refinement::ProjectToEdge not overloaded" << endl;
   }

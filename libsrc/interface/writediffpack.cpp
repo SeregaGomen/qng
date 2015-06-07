@@ -20,7 +20,7 @@ namespace netgen
 
 
 void WriteDiffPackFormat (const Mesh & mesh,
-			  const NetgenGeometry & geom,
+              const NetgenGeometry & /*geom*/,
 			  const string & filename)
 {
   //   double scale = globflags.GetNumFlag ("scale", 1);

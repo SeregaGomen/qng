@@ -391,7 +391,7 @@ int Polygon2d :: IsConvex () const
   }
 
 
-int Polygon2d :: IsStarPoint (const Point2d & p) const
+int Polygon2d :: IsStarPoint (const Point2d & /*p*/) const
   {
     /*
   Point2d *pnew, *pold;

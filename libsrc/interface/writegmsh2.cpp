@@ -48,7 +48,7 @@ namespace netgen
    *
    */
    void WriteGmsh2Format (const Mesh & mesh,
-      const NetgenGeometry & geom,
+      const NetgenGeometry & /*geom*/,
       const string & filename)
    {
       ofstream outfile (filename.c_str());

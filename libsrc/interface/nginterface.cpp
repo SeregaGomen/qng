@@ -2098,7 +2098,7 @@ void Ng_SaveMesh ( const char * meshfile )
 }
 
 
-int Ng_Bisect_WithInfo ( const char * refinementfile, double ** qualityloss, int * qualityloss_size )
+int Ng_Bisect_WithInfo ( const char * refinementfile, double ** qualityloss, int * /*qualityloss_size*/ )
 {
   BisectionOptions biopt;
   biopt.outfilename = NULL; // "ngfepp.vol";

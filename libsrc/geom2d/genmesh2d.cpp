@@ -12,7 +12,7 @@ namespace netgen
 
   void CalcPartition (const SplineSegExt & spline, 
 		      // double l, 
-		      MeshingParameters & mp, Mesh & mesh, 
+              MeshingParameters & /*mp*/, Mesh & mesh,
 		      // double h, double h1, double h2, double hcurve, 
 		      double elto0, Array<double> & points)
   {
@@ -91,7 +91,7 @@ namespace netgen
 
   // partitionizes spline curve
   void Partition (const SplineSegExt & spline,
-		  MeshingParameters & mp, double hxxx, double elto0,
+          MeshingParameters & mp, double /*hxxx*/, double elto0,
 		  Mesh & mesh, Point3dTree & searchtree, int segnr) 
   {
     int n = 100;
