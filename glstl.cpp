@@ -20,7 +20,7 @@ void GLSTLWidget::buildScene(void)
     maxX = Ng_STL_MaxX(object);
     minY = Ng_STL_MaxY(object);
     maxY = Ng_STL_MaxZ(object);
-    radius = sqrt((maxX - minX) * (maxX - minX) + (maxY - minY) * (maxY - minY)  + (maxZ - minZ) * (maxZ - minZ));
+    radius = sqrt((maxX - minX)*(maxX - minX) + (maxY - minY)*(maxY - minY)  + (maxZ - minZ)*(maxZ - minZ));
     setupCameraGL(width(),height());
     updateGL();
 }
@@ -123,7 +123,6 @@ void GLSTLWidget::createObject(void)
     xList1 = glGenLists(1);
     glNewList (xList1, GL_COMPILE);
 
-
     for (int i = 1; i <= numTri; i++)
     {
         setColor(0,1,0,params.alpha);
@@ -137,56 +136,4 @@ void GLSTLWidget::createObject(void)
     glEndList();
     QApplication::restoreOverrideCursor();
 }
-/*******************************************************************/
-//void GLSTLWidget::drawTRP_3D(void)
-//{
-//    vector<Float> &X = object->getMesh().getX(),
-//                  &Y = object->getMesh().getY(),
-//                  &Z = object->getMesh().getZ();
-//    matrix<unsigned>& Faces = object->getMesh().getSurface();
-//    size_t NumFaces = Faces.size1(),
-//        NumVertex = X.size(),
-//        SizeFaces = (Faces.size2() > 4) ? 3 : Faces.size2(); // Для обработки квадратичных элементов
-//    Float x0 = (maxX + minX) * 0.5,
-//          y0 = (maxY + minY) * 0.5,
-//          z0 = (maxZ + minZ) * 0.5;
-//    GLenum Val = (SizeFaces == 3) ? GL_TRIANGLES : GL_QUADS;
-
-//    for (unsigned i = 0; i < NumFaces; i++)
-//    {
-//        if (params.isFace)
-//        {
-//            setColor(0,1,0,params.alpha);
-//            glBegin(Val);
-//            glNormal3d(Normal[i][0],Normal[i][1],Normal[i][2]);
-//            for (unsigned j = 0; j < SizeFaces; j++)
-//                glVertex3d(X[Faces[i][j]] - x0, Y[Faces[i][j]] - y0, Z[Faces[i][j]] - z0);
-//            glEnd();
-//        }
-
-//        if (params.isMesh)
-//        {
-//            setColor(0,0,0,params.alpha);
-//            glBegin(GL_LINE_LOOP);
-//            for (unsigned j = 0; j < SizeFaces; j++)
-//                glVertex3d(X[Faces[i][j]] - x0, Y[Faces[i][j]] - y0, Z[Faces[i][j]] - z0);
-//            glEnd();
-//        }
-
-//    }
-
-//    if (params.isVertex)
-//    {
-//        setColor(0,0,0,params.alpha);
-//        glPointSize(2);
-//        glBegin(GL_POINTS);
-//        for (unsigned i = 0; i < NumVertex; i++)
-//            glVertex3d(X[i] - x0, Y[i] - y0, Z[i] - z0);
-//        glEnd();
-//    }
-//    if (params.isLimit)
-//        drawLimit();
-//    if (params.isForce)
-//        drawForce();
-//}
 /*******************************************************************/
