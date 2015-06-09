@@ -71,10 +71,10 @@ void RunParallel ( void* (*fun)(void *), void * in)
 
 // #include <pthread.h>
 
-namespace netgen
-{
-  MeshingParameters mparam;
-}
+//namespace netgen
+//{
+//  MeshingParameters mparam;
+//}
 
 static pthread_t meshingthread;
 void RunParallel ( void * (*fun)(void *), void * in)
@@ -2357,5 +2357,5 @@ void Ng_GetArgs (int & argc, char ** &argv)
 
 void LinkFunction ()
 {
-  Ng_Redraw();
+//  Ng_Redraw();
 }

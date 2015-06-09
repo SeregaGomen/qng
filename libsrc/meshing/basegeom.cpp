@@ -59,7 +59,7 @@ namespace netgen
   }
 
 
-  void NetgenGeometry :: Save (string filename) const
+  void NetgenGeometry :: Save (string /*filename*/) const
   {
     throw NgException("Cannot save geometry - no geometry available");
   }

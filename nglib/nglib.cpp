@@ -1345,12 +1345,12 @@ namespace netgen
   */
 
 
-#ifndef WIN32
-   void ResetTime ()
-   {
-      ;
-   }
-#endif
+//#ifndef WIN32
+//   void ResetTime ()
+//   {
+//      ;
+//   }
+//#endif
 
 
 
@@ -1400,3 +1400,40 @@ BOOST_PYTHON_MODULE(nglib) {
 }
 #endif
 #endif
+
+void Ng_InitSolutionData (Ng_SolutionData * soldata)
+{
+  soldata -> name = NULL;
+  soldata -> data = NULL;
+  soldata -> components = 1;
+  soldata -> dist = 1;
+  soldata -> order = 1;
+  soldata -> iscomplex = 0;
+  soldata -> draw_surface = 1;
+  soldata -> draw_volume = 1;
+  soldata -> soltype = NG_SOLUTION_NODAL;
+  soldata -> solclass = 0;
+}
+
+void Ng_SetSolutionData (Ng_SolutionData * /*soldata*/)
+{
+#ifdef OPENGL
+  // if (nodisplay) return;
+  //   vssolution.ClearSolutionData ();
+  netgen::VisualSceneSolution::SolData * vss = new netgen::VisualSceneSolution::SolData;
+
+  vss->name = new char[strlen (soldata->name)+1];
+  strcpy (vss->name, soldata->name);
+
+  vss->data = soldata->data;
+  vss->components = soldata->components;
+  vss->dist = soldata->dist;
+  vss->order = soldata->order;
+  vss->iscomplex = bool(soldata->iscomplex);
+  vss->draw_surface = soldata->draw_surface;
+  vss->draw_volume = soldata->draw_volume;
+  vss->soltype = netgen::VisualSceneSolution::SolType (soldata->soltype);
+  vss->solclass = soldata->solclass;
+  netgen::vssolution.AddSolutionData (vss);
+#endif
+}

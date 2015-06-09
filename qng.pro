@@ -26,18 +26,11 @@ SOURCES += main.cpp\
         glwidget.cpp \
         glstl.cpp \
         libsrc/csg/python_csg.cpp \
-        libsrc/csg/vscsg.cpp \
         libsrc/csg/zrefine.cpp \
         libsrc/geom2d/python_geom2d.cpp \
-        libsrc/geom2d/vsgeom2d.cpp \
         libsrc/meshing/python_mesh.cpp \
         libsrc/occ/vsocc.cpp \
-        libsrc/stlgeom/vsstl.cpp \
         libsrc/visualization/importsolution.cpp \
-        libsrc/visualization/mvdraw.cpp \
-        libsrc/visualization/vsfieldlines.cpp \
-        libsrc/visualization/vsmesh.cpp \
-        libsrc/visualization/vssolution.cpp \
         libsrc/csg/algprim.cpp \
         libsrc/csg/brick.cpp \
         libsrc/csg/bspline2d.cpp \
