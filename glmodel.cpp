@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "glstl.h"
+#include "glmodel.h"
 
 namespace nglib
 {
@@ -113,6 +113,22 @@ void GLSTLWidget::displayObject(void)
 /*******************************************************************/
 void GLSTLWidget::createObject(void)
 {
+    switch (mType)
+    {
+        case STL_MODEL:
+            createSTL();
+            break;
+        case GEO_MODEL:
+            createGEO();
+            break;
+        case MESH_MODEL:
+            createMesh();
+            break;
+    }
+}
+/*******************************************************************/
+void GLSTLWidget::createSTL(void)
+{
     GLfloat x0 = (maxX + minX)*0.5,
             y0 = (maxY + minY)*0.5,
             z0 = (maxZ + minZ)*0.5;
@@ -123,11 +139,41 @@ void GLSTLWidget::createObject(void)
     xList1 = glGenLists(1);
     glNewList (xList1, GL_COMPILE);
 
+    setColor(0,1,0,params.alpha);
     for (int i = 1; i <= numTri; i++)
     {
-        setColor(0,1,0,params.alpha);
-        glBegin(GL_TRIANGLES);
         glNormal3d(Ng_STL_Normal_X(object,i),Ng_STL_Normal_Y(object,i),Ng_STL_Normal_Z(object,i));
+        glBegin(GL_TRIANGLES);
+        for (unsigned j = 1; j <= 3; j++)
+            glVertex3d(Ng_STL_TRI_X(object,i,j) - x0, Ng_STL_TRI_Y(object,i,j) - y0, Ng_STL_TRI_Z(object,i,j) - z0);
+        glEnd();
+    }
+
+    glEndList();
+    QApplication::restoreOverrideCursor();
+}
+/*******************************************************************/
+void GLSTLWidget::createGEO(void)
+{
+}
+/*******************************************************************/
+void GLSTLWidget::createMesh(void)
+{
+    GLfloat x0 = (maxX + minX)*0.5,
+            y0 = (maxY + minY)*0.5,
+            z0 = (maxZ + minZ)*0.5;
+    int numTri = Ng_STL_NT(object);
+
+    QApplication::setOverrideCursor(Qt::BusyCursor);
+
+    xList1 = glGenLists(1);
+    glNewList (xList1, GL_COMPILE);
+
+    setColor(0,1,0,params.alpha);
+    for (int i = 1; i <= numTri; i++)
+    {
+        glNormal3d(Ng_STL_Normal_X(object,i),Ng_STL_Normal_Y(object,i),Ng_STL_Normal_Z(object,i));
+        glBegin(GL_TRIANGLES);
         for (unsigned j = 1; j <= 3; j++)
             glVertex3d(Ng_STL_TRI_X(object,i,j) - x0, Ng_STL_TRI_Y(object,i,j) - y0, Ng_STL_TRI_Z(object,i,j) - z0);
         glEnd();

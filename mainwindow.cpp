@@ -14,7 +14,7 @@
 #include <QDockWidget>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "glstl.h"
+#include "glmodel.h"
 
 
 
@@ -708,7 +708,7 @@ void MainWindow::showSTL(void)
         }
     if (!isFind)
     {
-        tabWidget->addTab(new GLSTLWidget(stl_geom,this),tr("Model"));
+        tabWidget->addTab(new GLSTLWidget(stl_geom,STL_MODEL,this),tr("Model"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
 }

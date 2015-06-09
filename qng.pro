@@ -24,13 +24,12 @@ unix:LIBS += -lz
 SOURCES += main.cpp\
         mainwindow.cpp\
         glwidget.cpp \
-        glstl.cpp \
+        glmodel.cpp \
         libsrc/csg/python_csg.cpp \
         libsrc/csg/zrefine.cpp \
         libsrc/geom2d/python_geom2d.cpp \
         libsrc/meshing/python_mesh.cpp \
         libsrc/occ/vsocc.cpp \
-        libsrc/visualization/importsolution.cpp \
         libsrc/csg/algprim.cpp \
         libsrc/csg/brick.cpp \
         libsrc/csg/bspline2d.cpp \
@@ -173,21 +172,16 @@ SOURCES += main.cpp\
         libsrc/stlgeom/stltopology.cpp \
         nglib/nglib.cpp
 
+
 HEADERS  += mainwindow.h \
         qstdredirector.h\
         glwidget.h \
+        glmodel.h \
         imageparams.h \
-        glstl.h \
         libsrc/general/ngpython.hpp \
         libsrc/include/incopengl.hpp \
         libsrc/include/incvis.hpp \
         libsrc/include/visual.hpp \
-        libsrc/visualization/meshdoc.hpp \
-        libsrc/visualization/mvdraw.hpp \
-        libsrc/visualization/soldata.hpp \
-        libsrc/visualization/vispar.hpp \
-        libsrc/visualization/visual.hpp \
-        libsrc/visualization/vssolution.hpp \
         libsrc/csg/algprim.hpp \
         libsrc/csg/brick.hpp \
         libsrc/csg/csg.hpp \
@@ -328,6 +322,7 @@ HEADERS  += mainwindow.h \
         libsrc/stlgeom/stltopology.hpp \
         libsrc/stlgeom/vsstl.hpp \
         nglib/nglib.h
+
 
 FORMS    += mainwindow.ui
 

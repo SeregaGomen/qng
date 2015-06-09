@@ -18,7 +18,6 @@
 #include <stlgeom.hpp>
 #include <geometry2d.hpp>
 #include <meshing.hpp>
-#include <../visualization/soldata.hpp>
 
 #ifdef OCCGEOMETRY
 #include <occgeom.hpp>
@@ -245,15 +244,11 @@ namespace nglib
    }
 
 
-
-
    // Obtain the number of surface elements in the mesh
    DLL_HEADER int Ng_GetNSE (Ng_Mesh * mesh)
    {
       return ((Mesh*)mesh) -> GetNSE();
    }
-
-
 
 
    // Obtain the number of volume elements in the mesh
