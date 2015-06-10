@@ -5,12 +5,12 @@
 
 typedef enum { STL_MODEL, GEO_MODEL, MESH_MODEL } ModelType;
 
-class GLSTLWidget : public GLWidget
+class GLModelWidget : public GLWidget
 {
     Q_OBJECT
 
 public:
-    GLSTLWidget(void** p,ModelType m,QWidget* parent) : GLWidget(parent)
+    GLModelWidget(void** p,ModelType m,QWidget* parent) : GLWidget(parent)
     {
         object = p;
         mType = m;
@@ -18,7 +18,24 @@ public:
         isLeftBtn = isScale = isTranslate = false;
         buildScene();
     }
-    ~GLSTLWidget() {}
+    ~GLModelWidget() {}
+    void setObject(void** p, ModelType m)
+    {
+        object = p;
+        mType = m;
+        if (xList1)
+        {
+            glDeleteLists(xList1, 1);
+            xList1 = 0;
+        }
+        if (xList2)
+        {
+            glDeleteLists(xList2, 1);
+            xList2 = 0;
+        }
+        buildScene();
+    }
+
 protected:
     void paintGL(void);
 
@@ -33,6 +50,10 @@ private:
     void createGEO(void);
     void createMesh(void);
     void buildScene(void);
+    void createSceletonGEO(void);
+    void createSceletonMesh(void);
+    void createSceletonSTL(void);
+    void calcRadius(void);
 };
 
 

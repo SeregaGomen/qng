@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    Ng_DeleteMesh(mesh);
+    Ng_STL_DeleteGeometry(stl_geom);
     delete ui;
 }
 
@@ -53,6 +55,9 @@ void MainWindow::initApp(void)
     #ifndef Q_OS_LINUX
         setWindowIcon(QIcon(":/images/app.ico"));
     #endif
+
+    mesh = NULL;
+    stl_geom = NULL;
 
     setupRecentActions();
     readSettings();
@@ -593,19 +598,17 @@ void MainWindow::genMeshSTL(void)
 {
     Ng_Result ng_res;
     Ng_Meshing_Parameters mp;
-    Ng_Mesh *mesh;
-    Ng_STL_Geometry *stl_geom;
-    int np,
-        ne;
-
+    bool isFind = false;
 
     // Initialise the Netgen Core library
     Ng_Init();
 
+    Ng_DeleteMesh(mesh);
+    Ng_STL_DeleteGeometry(stl_geom);
     // Actually create the mesh structure
     mesh = Ng_NewMesh();
 
-    stl_geom = Ng_STL_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
+    stl_geom = (Ng_STL_Geometry *)Ng_STL_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
     if(!stl_geom)
     {
         cout << "Error reading in current STL data" << endl;
@@ -654,11 +657,9 @@ void MainWindow::genMeshSTL(void)
     cout << "Meshing successfully completed....!!" << endl;
 
     // volume mesh output
-    np = Ng_GetNP(mesh);
-    cout << "Points: " << np << endl;
+    cout << "Points: " << Ng_GetNP(mesh) << endl;
 
-    ne = Ng_GetNE(mesh);
-    cout << "Elements: " << ne << endl;
+    cout << "Elements: " << Ng_GetNE(mesh) << endl;
 
     cout << "Saving Mesh in VOL Format...." << endl;
     Ng_SaveMesh(mesh,"test.vol");
@@ -673,18 +674,31 @@ void MainWindow::genMeshSTL(void)
     cout << "elements after refinement: " << Ng_GetNE(mesh) << endl;
     cout << "points   after refinement: " << Ng_GetNP(mesh) << endl;
 
-    Ng_SaveMesh(mesh,"test_ref.vol");
-    Ng_DeleteMesh(mesh);
+    // Обновление визуализации
+    for (int i = 0; i < tabWidget->count(); i++)
+        if (tabWidget->tabText(i) == tr("Model"))
+        {
+            isFind = true;
+            qobject_cast<GLModelWidget*>(tabWidget->widget(i))->setObject(mesh,MESH_MODEL);
+            tabWidget->repaint();
+            tabWidget->setCurrentIndex(i);
+            break;
+        }
+    if (!isFind)
+    {
+        tabWidget->addTab(new GLModelWidget(mesh,MESH_MODEL,this),tr("Model"));
+        tabWidget->setCurrentIndex(tabWidget->count() - 1);
+    }
+
+
+//    Ng_SaveMesh(mesh,"test_ref.vol");
 }
 
 void MainWindow::showSTL(void)
 {
-    Ng_STL_Geometry *stl_geom;
     bool isFind = false;
-    vector<double> x,
-                   y,
-                   z;
 
+    Ng_STL_DeleteGeometry(stl_geom);
     stl_geom = Ng_STL_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
     if (!stl_geom)
     {
@@ -708,7 +722,7 @@ void MainWindow::showSTL(void)
         }
     if (!isFind)
     {
-        tabWidget->addTab(new GLSTLWidget(stl_geom,STL_MODEL,this),tr("Model"));
+        tabWidget->addTab(new GLModelWidget(stl_geom,STL_MODEL,this),tr("Model"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
 }

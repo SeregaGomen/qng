@@ -740,6 +740,95 @@ namespace nglib
       return (Ng_STL_Geometry*)(void*)new STLGeometry;
    } 
 
+   DLL_HEADER double Ng_Mesh_MinX (Ng_Mesh *mesh)
+   {
+       Point3d pmin,
+               pmax;
+       Mesh* me = (Mesh*)mesh;
+
+
+       me->GetBox(pmin,pmax);
+
+       return pmin.X();
+   }
+   DLL_HEADER double Ng_Mesh_MinY (Ng_Mesh *mesh)
+   {
+       Point3d pmin,
+               pmax;
+       Mesh* me = (Mesh*)mesh;
+
+
+       me->GetBox(pmin,pmax);
+
+       return pmin.Y();
+   }
+   DLL_HEADER double Ng_Mesh_MinZ (Ng_Mesh *mesh)
+   {
+       Point3d pmin,
+               pmax;
+       Mesh* me = (Mesh*)mesh;
+
+
+       me->GetBox(pmin,pmax);
+
+       return pmin.Z();
+   }
+
+   DLL_HEADER double Ng_Mesh_MaxX (Ng_Mesh *mesh)
+   {
+       Point3d pmin,
+               pmax;
+       Mesh* me = (Mesh*)mesh;
+
+
+       me->GetBox(pmin,pmax);
+
+       return pmax.X();
+   }
+   DLL_HEADER double Ng_Mesh_MaxY (Ng_Mesh *mesh)
+   {
+       Point3d pmin,
+               pmax;
+       Mesh* me = (Mesh*)mesh;
+
+
+       me->GetBox(pmin,pmax);
+
+       return pmax.Y();
+   }
+   DLL_HEADER double Ng_Mesh_MaxZ (Ng_Mesh *mesh)
+   {
+       Point3d pmin,
+               pmax;
+       Mesh* me = (Mesh*)mesh;
+
+
+       me->GetBox(pmin,pmax);
+
+       return pmax.Z();
+   }
+
+   DLL_HEADER void Ng_Mesh_Normal (Ng_Mesh *mesh,int i,double& nx,double& ny,double& nz)
+   {
+       Element2d &face = ((Mesh*)mesh)->SurfaceElement(i);
+       const Point3d &lp1 = ((Mesh*)mesh)->Point (face.PNum(1)),
+                     &lp2 = ((Mesh*)mesh)->Point (face.PNum(2)),
+                     &lp3 = ((Mesh*)mesh)->Point (face.PNum(3));
+       Vec3d n = Cross (Vec3d (lp1, lp2), Vec3d (lp1, lp3));
+
+       n /= (n.Length()+1e-12);
+       nx = n.X();
+       ny = n.Y();
+       nz = n.Z();
+   }
+
+
+   // generate new STL Geometry
+   DLL_HEADER void Ng_STL_DeleteGeometry (Ng_STL_Geometry *stl_geom)
+   {
+      if (stl_geom)
+          delete stl_geom;
+   }
 
 
 

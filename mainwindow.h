@@ -9,7 +9,6 @@ class QTextEdit;
 class QProgressBar;
 class QTranslator;
 QT_END_NAMESPACE
-class NGInterface;
 
 
 typedef enum { EN = 0, RU = 1 } Lang;
@@ -60,7 +59,6 @@ private slots:
     void stopMesh(void);
 
 private:
-    NGInterface* ng;
     bool isUntitled = true;
     bool isGenMeshStarted = false;
     FileType fType = EMPTY;
@@ -77,6 +75,8 @@ private:
     QStdRedirector<> *wout;
     QStdRedirector<> *werr;
     QString curFile;
+    void **stl_geom;
+    void **mesh;
     void initApp(void);
     void setupRecentActions(void);
     void readSettings(void);

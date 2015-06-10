@@ -616,11 +616,22 @@ DLL_HEADER double Ng_STL_Normal_Z (Ng_STL_Geometry*,int);
 DLL_HEADER int Ng_STL_NP (Ng_STL_Geometry*);
 DLL_HEADER int Ng_STL_NT (Ng_STL_Geometry*);
 
+DLL_HEADER double Ng_Mesh_MinX (Ng_Mesh*);
+DLL_HEADER double Ng_Mesh_MinY (Ng_Mesh*);
+DLL_HEADER double Ng_Mesh_MinZ (Ng_Mesh*);
+DLL_HEADER double Ng_Mesh_MaxX (Ng_Mesh*);
+DLL_HEADER double Ng_Mesh_MaxY (Ng_Mesh*);
+DLL_HEADER double Ng_Mesh_MaxZ (Ng_Mesh*);
+
+DLL_HEADER void Ng_Mesh_Normal (Ng_STL_Geometry*,int,double&,double&,double&);
 
 
 // generate new STL Geometry
 DLL_HEADER Ng_STL_Geometry * Ng_STL_NewGeometry ();
-  
+
+DLL_HEADER void Ng_STL_DeleteGeometry (Ng_STL_Geometry *);
+
+
 
 // fills STL Geometry
 // positive orientation
