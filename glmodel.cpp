@@ -47,6 +47,8 @@ void GLModelWidget::calcRadius(void)
 /*******************************************************************/
 void GLModelWidget::paintGL(void)
 {
+    setupCameraGL(width(),height());
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
@@ -251,9 +253,9 @@ void GLModelWidget::createMesh(void)
     xList1 = glGenLists(1);
     glNewList (xList1, GL_COMPILE);
 
-    setColor(0,1,0,params.alpha);
     for (int i = 1; i <= numTri; i++)
     {
+        setColor(0,1,0,params.alpha);
         Ng_GetSurfaceElement(object,i,index);
         Ng_Mesh_Normal(object,i,nx,ny,nz);
         glNormal3d(nx,ny,nz);
@@ -264,13 +266,21 @@ void GLModelWidget::createMesh(void)
             glVertex3d(coord[0] - x0, coord[1] - y0, coord[2] - z0);
         }
         glEnd();
+        if (params.isMesh)
+        {
+            setColor(0,0,0,params.alpha);
+            glBegin(GL_LINE_LOOP);
+            for (unsigned j = 1; j <= 3; j++)
+            {
+                Ng_GetPoint(object,index[j - 1],coord);
+                glVertex3d(coord[0] - x0, coord[1] - y0, coord[2] - z0);
+            }
+            glEnd();
+
+        }
     }
 
     glEndList();
     QApplication::restoreOverrideCursor();
 }
 /*******************************************************************/
-void calcRadius(void)
-{
-
-}

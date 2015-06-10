@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QClipboard>
 #include <QLibraryInfo>
 #include <QTranslator>
@@ -182,9 +183,12 @@ void MainWindow::setScroll(void)
     terminal->moveCursor(QTextCursor::End);
 }
 
-void MainWindow::changeTab(int /*nTab*/)
+void MainWindow::changeTab(int nTab)
 {
-//    bool isEnabled = (qobject_cast<QGLWidget*>(tabWidget->widget(nTab)) == NULL) ? false : true;
+    bool isGL = (qobject_cast<QGLWidget*>(tabWidget->widget(nTab)) == NULL) ? false : true;
+
+    if (isGL)
+        qobject_cast<QGLWidget*>(tabWidget->widget(nTab))->updateGL();
 
 //    ui->actionInfo->setEnabled(isEnabled);
 //    ui->actionRotate->setEnabled(isEnabled);
@@ -676,17 +680,16 @@ void MainWindow::genMeshSTL(void)
 
     // Обновление визуализации
     for (int i = 0; i < tabWidget->count(); i++)
-        if (tabWidget->tabText(i) == tr("Model"))
+        if (tabWidget->tabText(i).replace("&","") == tr("Mesh"))
         {
             isFind = true;
-            qobject_cast<GLModelWidget*>(tabWidget->widget(i))->setObject(mesh,MESH_MODEL);
-            tabWidget->repaint();
+            tabWidget->widget(i)->repaint();
             tabWidget->setCurrentIndex(i);
             break;
         }
     if (!isFind)
     {
-        tabWidget->addTab(new GLModelWidget(mesh,MESH_MODEL,this),tr("Model"));
+        tabWidget->addTab(new GLModelWidget(mesh,MESH_MODEL,this),tr("Mesh"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
 
@@ -714,7 +717,7 @@ void MainWindow::showSTL(void)
 
     // Проверка наличия такой закладки
     for (int i = 0; i < tabWidget->count(); i++)
-        if (tabWidget->tabText(i) == tr("Model"))
+        if (tabWidget->tabText(i).replace("&","") == tr("Model"))
         {
             isFind = true;
             tabWidget->setCurrentIndex(i);

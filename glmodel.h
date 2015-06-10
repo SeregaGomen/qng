@@ -19,22 +19,6 @@ public:
         buildScene();
     }
     ~GLModelWidget() {}
-    void setObject(void** p, ModelType m)
-    {
-        object = p;
-        mType = m;
-        if (xList1)
-        {
-            glDeleteLists(xList1, 1);
-            xList1 = 0;
-        }
-        if (xList2)
-        {
-            glDeleteLists(xList2, 1);
-            xList2 = 0;
-        }
-        buildScene();
-    }
 
 protected:
     void paintGL(void);
