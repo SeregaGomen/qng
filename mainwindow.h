@@ -75,8 +75,9 @@ private:
     QStdRedirector<> *wout;
     QStdRedirector<> *werr;
     QString curFile;
-    void **stl_geom;
-    void **mesh;
+    void **csg_geom = NULL;
+    void **stl_geom = NULL;
+    void **mesh = NULL;
     void initApp(void);
     void setupRecentActions(void);
     void readSettings(void);
@@ -89,7 +90,9 @@ private:
     void setCurrentFile(const QString &);
     void updateRecentFileActions(const QString &);
     void genMeshSTL(void);
+    void genMeshGEO(void);
     void showSTL(void);
+    void showGEO(void);
     bool loadGeometry(const QString &);
     bool loadGEO(const QString &);
     bool loadSTL(const QString &);

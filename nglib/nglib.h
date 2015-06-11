@@ -630,7 +630,9 @@ DLL_HEADER void Ng_Mesh_Normal (Ng_STL_Geometry*,int,double&,double&,double&);
 DLL_HEADER Ng_STL_Geometry * Ng_STL_NewGeometry ();
 
 DLL_HEADER void Ng_STL_DeleteGeometry (Ng_STL_Geometry *);
+DLL_HEADER void Ng_CSG_DeleteGeometry (Ng_CSG_Geometry *);
 
+DLL_HEADER Ng_CSG_Geometry * Ng_CSG_LoadGeometry (std::string);
 
 
 // fills STL Geometry
