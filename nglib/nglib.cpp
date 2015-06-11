@@ -634,8 +634,8 @@ namespace nglib
    DLL_HEADER Ng_CSG_Geometry * Ng_CSG_LoadGeometry (string data)
    {
       int i;
-      Ng_CSG_Geometry geom;
-      Ng_CSG_Geometry* geo;
+      CSGGeometry geom;
+      STLGeometry* geo;
       strstream ist;
 
       ist << data;
