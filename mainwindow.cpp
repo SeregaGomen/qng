@@ -255,8 +255,8 @@ void MainWindow::loadFile(const QString& fileName)
 
     if (!closeTab(0))
         return;
-    if (QFileInfo(fileName).completeSuffix().toUpper() == "GEO")
-        isOk = loadGEO(fileName);
+    if (QFileInfo(fileName).completeSuffix().toUpper() == "CSG")
+        isOk = loadCSG(fileName);
     else if (QFileInfo(fileName).completeSuffix().toUpper() == "STL")
         isOk = loadSTL(fileName);
 
@@ -345,12 +345,12 @@ bool MainWindow::loadGeometry(const QString& fileName)
     return true;
 }
 
-bool MainWindow::loadGEO(const QString& fileName)
+bool MainWindow::loadCSG(const QString& fileName)
 {
     if (!loadGeometry(fileName))
         return false;
-    fType = GEO;
-    showGEO();
+    fType = CSG;
+    showCSG();
     return true;
 }
 
@@ -523,7 +523,7 @@ void MainWindow::newGEO(void)
 {
     if (!closeTab(0))
         return;
-    fType = GEO;
+    fType = CSG;
     tabWidget->insertTab(0,new QTextEdit(this),tr("Geometry"));
     tabWidget->setTabsClosable(true);
     tabWidget->setCurrentIndex(0);
@@ -583,8 +583,8 @@ void MainWindow::startMesh(void)
         case STL:
             genMeshSTL();
             break;
-        case GEO:
-            genMeshGEO();
+        case CSG:
+            genMeshCSG();
         default:
             break;
     }
@@ -730,7 +730,7 @@ void MainWindow::showSTL(void)
     }
 }
 
-void MainWindow::genMeshGEO(void)
+void MainWindow::genMeshCSG(void)
 {
     Ng_Result ng_res;
     Ng_Meshing_Parameters mp;
@@ -829,7 +829,7 @@ void MainWindow::genMeshGEO(void)
 
 }
 
-void MainWindow::showGEO(void)
+void MainWindow::showCSG(void)
 {
 
 }

@@ -12,7 +12,7 @@ QT_END_NAMESPACE
 
 
 typedef enum { EN = 0, RU = 1 } Lang;
-typedef enum { EMPTY = 0, GEO = 1, STL = 2 } FileType;
+typedef enum { EMPTY = 0, CSG = 1, STL = 2 } FileType;
 
 const int maxRecentFiles = 5;
 
@@ -90,11 +90,11 @@ private:
     void setCurrentFile(const QString &);
     void updateRecentFileActions(const QString &);
     void genMeshSTL(void);
-    void genMeshGEO(void);
+    void genMeshCSG(void);
     void showSTL(void);
-    void showGEO(void);
+    void showCSG(void);
     bool loadGeometry(const QString &);
-    bool loadGEO(const QString &);
+    bool loadCSG(const QString &);
     bool loadSTL(const QString &);
     bool canClose(void);
 };

@@ -15,6 +15,7 @@
 
 #include <linalg.hpp>
 #include <csg.hpp>
+#include <csgeom.hpp>
 #include <stlgeom.hpp>
 #include <geometry2d.hpp>
 #include <meshing.hpp>
@@ -633,41 +634,13 @@ namespace nglib
 
    DLL_HEADER Ng_CSG_Geometry * Ng_CSG_LoadGeometry (string data)
    {
-      int i;
-      CSGGeometry geom;
-      STLGeometry* geo;
+      Ng_CSG_Geometry* geom = Ng_CSG_NewGeometry();
       strstream ist;
 
       ist << data;
-      geo = geom.Load(ist);
+      ((CSGeometry*)geom)->LoadSurfaces(ist);
 
-      readtrias.SetSize(0);
-      readedges.SetSize(0);
-
-      Point3d p;
-      Vec3d normal;
-      double p1[3];
-      double p2[3];
-      double p3[3];
-      double n[3];
-
-      Ng_STL_Geometry * geo2 = Ng_STL_NewGeometry();
-
-      for (i = 1; i <= geo->GetNT(); i++)
-      {
-         const STLTriangle& t = geo->GetTriangle(i);
-         p = geo->GetPoint(t.PNum(1));
-         p1[0] = p.X(); p1[1] = p.Y(); p1[2] = p.Z();
-         p = geo->GetPoint(t.PNum(2));
-         p2[0] = p.X(); p2[1] = p.Y(); p2[2] = p.Z();
-         p = geo->GetPoint(t.PNum(3));
-         p3[0] = p.X(); p3[1] = p.Y(); p3[2] = p.Z();
-         normal = t.Normal();
-         n[0] = normal.X(); n[1] = normal.Y(); n[2] = normal.Z();
-
-         Ng_STL_AddTriangle(geo2, p1, p2, p3, n);
-      }
-      return geo2;
+      return geom;
    }
 
 
@@ -781,6 +754,10 @@ namespace nglib
    {
       return (Ng_STL_Geometry*)(void*)new STLGeometry;
    } 
+   DLL_HEADER Ng_CSG_Geometry * Ng_CSG_NewGeometry (void)
+   {
+      return (Ng_CSG_Geometry*)(void*)new CSGeometry;
+   }
 
    DLL_HEADER double Ng_Mesh_MinX (Ng_Mesh *mesh)
    {

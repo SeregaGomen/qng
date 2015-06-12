@@ -321,7 +321,8 @@ HEADERS  += mainwindow.h \
         libsrc/stlgeom/stltool.hpp \
         libsrc/stlgeom/stltopology.hpp \
         libsrc/stlgeom/vsstl.hpp \
-        nglib/nglib.h
+        nglib/nglib.h \
+    libsrc/include/csgeom.hpp
 
 
 FORMS    += mainwindow.ui
