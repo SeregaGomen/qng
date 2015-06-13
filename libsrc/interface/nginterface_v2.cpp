@@ -153,12 +153,12 @@ namespace netgen
   }
   */
 
-  template <> DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<0> (int /*nr*/) const
-  {
-    cout << "Netgen does not support 0-D elements" << endl;
-    Ng_Element ret;
-	return ret;
-  }
+//  template <> DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<0> (int /*nr*/) const
+//  {
+//    cout << "Netgen does not support 0-D elements" << endl;
+//    Ng_Element ret;
+//    return ret;
+//  }
 
   /*
   template <> DLL_HEADER Ng_Element Ngx_Mesh :: GetElement<1> (int nr) const

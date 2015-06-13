@@ -30,8 +30,6 @@
 #include <meshing.hpp>
 #include <sys/stat.h>
 
-#define PACKAGE_VERSION "6.0"
-
 namespace netgen
 {
 #include "writeuser.hpp"

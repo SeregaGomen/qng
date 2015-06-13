@@ -19,9 +19,9 @@
 // in Linux, "PACKAGE_VERSION" is replaced 
 // in the configure/make phases, with the 
 // right version number
-#ifdef WIN32
+//#ifdef WIN32
 #define PACKAGE_VERSION "6.0-beta"
-#endif
+//#endif
 
 
 //#ifdef WIN32

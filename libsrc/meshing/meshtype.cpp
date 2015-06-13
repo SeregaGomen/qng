@@ -293,7 +293,7 @@ namespace netgen
   bool Element2d :: operator==(const Element2d & el2) const
   {
     bool retval = (el2.GetNP() == np);
-    for(int i= 0; retval && i<np; i++)
+    for(int i= 0; retval && i<(int)np; i++)
       retval = (el2[i] == (*this)[i]);
 
     return retval;
