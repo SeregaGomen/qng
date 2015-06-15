@@ -506,7 +506,7 @@ namespace netgen
 
   Solid * CreateSolidPrim (istream & ist, const SYMBOLTABLE<Solid*> & solids)
   {
-    Solid * s1;
+    Solid * s1 = NULL;
     char ch;
     char str[100];
 

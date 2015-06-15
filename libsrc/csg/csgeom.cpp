@@ -273,7 +273,7 @@ namespace netgen
 	  }
 	else if (strcmp (key, "solid") == 0)
 	  {
-	    ist >> name;
+        ist >> name;
 	    Solid * nsol = Solid::CreateSolid (ist, solids);
 
 	    cout << " I have found solid " << name << " = ";

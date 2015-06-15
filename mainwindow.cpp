@@ -255,7 +255,7 @@ void MainWindow::loadFile(const QString& fileName)
 
     if (!closeTab(0))
         return;
-    if (QFileInfo(fileName).completeSuffix().toUpper() == "CSG")
+    if (QFileInfo(fileName).completeSuffix().toUpper() == "GEO")
         isOk = loadCSG(fileName);
     else if (QFileInfo(fileName).completeSuffix().toUpper() == "STL")
         isOk = loadSTL(fileName);
@@ -745,7 +745,7 @@ void MainWindow::genMeshCSG(void)
     mesh = Ng_NewMesh();
 
     csg_geom = (Ng_CSG_Geometry *)Ng_CSG_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
-    if(!csg_geom)
+    if (!csg_geom)
     {
         cout << "Error reading in current CSG data" << endl;
         return;
@@ -758,38 +758,13 @@ void MainWindow::genMeshCSG(void)
     mp.fineness = 0.4;
     mp.second_order = 0;
 
-    cout << "Initialise the STL Geometry structure...." << endl;
-    ng_res = Ng_STL_InitSTLGeometry(stl_geom);
+    cout << "Start Meshing...." << endl;
+    ng_res = Ng_CSG_GenerateMesh(csg_geom, mesh, &mp);
     if (ng_res != NG_OK)
     {
-        cout << "Error Initialising the STL Geometry....Aborting!!" << endl;
+        cout << "Error in Meshing....Aborting!!" << endl;
         return;
     }
-
-    cout << "Start Edge Meshing...." << endl;
-    ng_res = Ng_STL_MakeEdges(stl_geom, mesh, &mp);
-    if (ng_res != NG_OK)
-    {
-        cout << "Error in Edge Meshing....Aborting!!" << endl;
-        return;
-    }
-
-    cout << "Start Surface Meshing...." << endl;
-    ng_res = Ng_STL_GenerateSurfaceMesh(stl_geom, mesh, &mp);
-    if (ng_res != NG_OK)
-    {
-        cout << "Error in Surface Meshing....Aborting!!" << endl;
-        return;
-    }
-
-    cout << "Start Volume Meshing...." << endl;
-    ng_res = Ng_GenerateVolumeMesh (mesh, &mp);
-    if(ng_res != NG_OK)
-    {
-        cout << "Error in Volume Meshing....Aborting!!" << endl;
-        return;
-    }
-
     cout << "Meshing successfully completed....!!" << endl;
 
     // volume mesh output
@@ -797,18 +772,8 @@ void MainWindow::genMeshCSG(void)
 
     cout << "Elements: " << Ng_GetNE(mesh) << endl;
 
-    cout << "Saving Mesh in VOL Format...." << endl;
-    Ng_SaveMesh(mesh,"test.vol");
-
-
-    // refinement without geomety adaption:
-    // Ng_Uniform_Refinement (mesh);
-
-    // refinement with geomety adaption:
-    Ng_STL_Uniform_Refinement (stl_geom, mesh);
-
-    cout << "elements after refinement: " << Ng_GetNE(mesh) << endl;
-    cout << "points   after refinement: " << Ng_GetNP(mesh) << endl;
+//    cout << "Saving Mesh in VOL Format...." << endl;
+//    Ng_SaveMesh(mesh,"test.vol");
 
     // Обновление визуализации
     for (int i = 0; i < tabWidget->count(); i++)

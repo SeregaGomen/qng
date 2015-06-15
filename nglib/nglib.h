@@ -662,6 +662,12 @@ DLL_HEADER Ng_Result Ng_STL_GenerateSurfaceMesh (Ng_STL_Geometry * geom,
                                                  Ng_Mesh * mesh,
                                                  Ng_Meshing_Parameters * mp);
 
+// generates mesh, empty mesh must be already created.
+DLL_HEADER Ng_Result Ng_CSG_GenerateMesh (Ng_CSG_Geometry * geom,
+                                          Ng_Mesh * mesh,
+                                          Ng_Meshing_Parameters * mp);
+
+
 
 #ifdef ACIS
 

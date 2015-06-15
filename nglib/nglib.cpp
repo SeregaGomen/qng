@@ -631,6 +631,7 @@ namespace nglib
       return geo2;
    }
 
+   extern CSGeometry * ParseCSG (istream & istr);
 
    DLL_HEADER Ng_CSG_Geometry * Ng_CSG_LoadGeometry (string data)
    {
@@ -638,7 +639,14 @@ namespace nglib
       strstream ist;
 
       ist << data;
-      ((CSGeometry*)geom)->LoadSurfaces(ist);
+//      ((CSGeometry*)geom)->Load(ist);
+
+
+
+
+      CSGeometry * hgeom = ParseCSG (ist);
+
+      hgeom->Load(ist);
 
       return geom;
    }
@@ -917,6 +925,29 @@ namespace nglib
       stlgeometry->volumemeshed = 0;
 
       return NG_OK;
+   }
+
+
+   DLL_HEADER Ng_Result Ng_CSG_GenerateMesh (Ng_CSG_Geometry * geom,
+                                             Ng_Mesh* mesh,
+                                             Ng_Meshing_Parameters * mp)
+   {
+      CSGeometry* csgeometry = (CSGeometry*)geom;
+      shared_ptr<Mesh> m;
+      Ng_Result res;
+
+//      csgeometry = new CSGeometry("E:/Work/netgen-6.0-beta/tutorials/cube.geo");
+
+      mp->Transfer_Parameters();
+      res = (Ng_Result)csgeometry->GenerateMesh(m,mparam,1,10);
+      if (res != NG_OK)
+      {
+          cout << "Error meshing!" << endl;
+          return res;
+      }
+      *mesh = (Ng_Mesh*)m.get();
+      return NG_OK;
+
    }
 
 
