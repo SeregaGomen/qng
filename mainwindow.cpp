@@ -19,13 +19,6 @@
 
 
 
-namespace nglib
-{
-    #include "nglib.h"
-}
-using namespace nglib;
-using namespace std;
-
 int langNo = EN;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -38,9 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    Ng_DeleteMesh(mesh);
-    Ng_STL_DeleteGeometry(stl_geom);
-    Ng_CSG_DeleteGeometry(csg_geom);
+    if (ngObject)
+        delete ngObject;
     delete ui;
 }
 
@@ -600,83 +592,10 @@ void MainWindow::stopMesh(void)
 
 void MainWindow::genMeshSTL(void)
 {
-    Ng_Result ng_res;
-    Ng_Meshing_Parameters mp;
     bool isFind = false;
 
-    // Initialise the Netgen Core library
-    Ng_Init();
-
-    Ng_DeleteMesh(mesh);
-    Ng_STL_DeleteGeometry(stl_geom);
-    // Actually create the mesh structure
-    mesh = Ng_NewMesh();
-
-    stl_geom = (Ng_STL_Geometry *)Ng_STL_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
-    if(!stl_geom)
-    {
-        cout << "Error reading in current STL data" << endl;
+    if (!ngObject->genMeshSTL(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString()))
         return;
-    }
-    cout << "Successfully loaded STL data" << endl;
-
-
-    // Set the Meshing Parameters to be used
-    mp.maxh = 1.0e+6;
-    mp.fineness = 0.4;
-    mp.second_order = 0;
-
-    cout << "Initialise the STL Geometry structure...." << endl;
-    ng_res = Ng_STL_InitSTLGeometry(stl_geom);
-    if (ng_res != NG_OK)
-    {
-        cout << "Error Initialising the STL Geometry....Aborting!!" << endl;
-        return;
-    }
-
-    cout << "Start Edge Meshing...." << endl;
-    ng_res = Ng_STL_MakeEdges(stl_geom, mesh, &mp);
-    if (ng_res != NG_OK)
-    {
-        cout << "Error in Edge Meshing....Aborting!!" << endl;
-        return;
-    }
-
-    cout << "Start Surface Meshing...." << endl;
-    ng_res = Ng_STL_GenerateSurfaceMesh(stl_geom, mesh, &mp);
-    if (ng_res != NG_OK)
-    {
-        cout << "Error in Surface Meshing....Aborting!!" << endl;
-        return;
-    }
-
-    cout << "Start Volume Meshing...." << endl;
-    ng_res = Ng_GenerateVolumeMesh (mesh, &mp);
-    if(ng_res != NG_OK)
-    {
-        cout << "Error in Volume Meshing....Aborting!!" << endl;
-        return;
-    }
-
-    cout << "Meshing successfully completed....!!" << endl;
-
-    // volume mesh output
-    cout << "Points: " << Ng_GetNP(mesh) << endl;
-
-    cout << "Elements: " << Ng_GetNE(mesh) << endl;
-
-    cout << "Saving Mesh in VOL Format...." << endl;
-    Ng_SaveMesh(mesh,"test.vol");
-
-
-    // refinement without geomety adaption:
-    // Ng_Uniform_Refinement (mesh);
-
-    // refinement with geomety adaption:
-    Ng_STL_Uniform_Refinement (stl_geom, mesh);
-
-    cout << "elements after refinement: " << Ng_GetNE(mesh) << endl;
-    cout << "points   after refinement: " << Ng_GetNP(mesh) << endl;
 
     // Обновление визуализации
     for (int i = 0; i < tabWidget->count(); i++)
@@ -689,7 +608,7 @@ void MainWindow::genMeshSTL(void)
         }
     if (!isFind)
     {
-        tabWidget->addTab(new GLModelWidget(mesh,MESH_MODEL,this),tr("Mesh"));
+        tabWidget->addTab(new GLModelWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
 

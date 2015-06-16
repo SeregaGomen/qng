@@ -1,5 +1,6 @@
 #include <QApplication>
 #include "glmodel.h"
+#include "nglib.h"
 
 namespace nglib
 {
@@ -24,8 +25,8 @@ void GLModelWidget::calcRadius(void)
     switch (mType)
     {
         case STL_MODEL:
-            minX = Ng_STL_MinX(object);
-            minY = Ng_STL_MinY(object);
+            minX = ((NGInterface*)(object))->geometry_STL;
+            minY = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMin()(1);;
             minZ = Ng_STL_MinZ(object);
             maxX = Ng_STL_MaxX(object);
             minY = Ng_STL_MaxY(object);

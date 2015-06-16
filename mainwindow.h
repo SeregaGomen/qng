@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "qstdredirector.h"
+#include "nglib.h"
 
 QT_BEGIN_NAMESPACE
 class QTextEdit;
@@ -75,9 +76,7 @@ private:
     QStdRedirector<> *wout;
     QStdRedirector<> *werr;
     QString curFile;
-    void **csg_geom = NULL;
-    void **stl_geom = NULL;
-    void **mesh = NULL;
+    NGInterface* ngObject = NULL;
     void initApp(void);
     void setupRecentActions(void);
     void readSettings(void);

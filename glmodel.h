@@ -10,7 +10,7 @@ class GLModelWidget : public GLWidget
     Q_OBJECT
 
 public:
-    GLModelWidget(void** p,ModelType m,QWidget* parent) : GLWidget(parent)
+    GLModelWidget(void* p,ModelType m,QWidget* parent) : GLWidget(parent)
     {
         object = p;
         mType = m;
@@ -25,7 +25,7 @@ protected:
 
 private:
     ModelType mType;
-    void **object = NULL;
+    void *object = NULL;
     void displayObject(void);
     void displaySceleton(void);
     void createObject(void);
