@@ -115,6 +115,8 @@ void MainWindow::initApp(void)
     connect(ui->action_Stop, SIGNAL(triggered(void)), this, SLOT(stopMesh(void)));
 
 
+    ngObject = new NGInterface();
+
     checkMenuState();
 }
 
@@ -620,15 +622,13 @@ void MainWindow::showSTL(void)
 {
     bool isFind = false;
 
-    Ng_STL_DeleteGeometry(stl_geom);
-    stl_geom = Ng_STL_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
-    if (!stl_geom)
+    if (!ngObject->loadSTL(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString()))
     {
         cout << "Error reading in current STL data" << endl;
         return;
     }
     cout << "Successfully loaded STL data" << endl;
-    if (Ng_STL_InitSTLGeometry(stl_geom) != NG_OK)
+    if (!ngObject->initSTL())
     {
         cout << "Error Initialising the STL Geometry....Aborting!!" << endl;
         return;
@@ -644,70 +644,70 @@ void MainWindow::showSTL(void)
         }
     if (!isFind)
     {
-        tabWidget->addTab(new GLModelWidget(stl_geom,STL_MODEL,this),tr("Model"));
+        tabWidget->addTab(new GLModelWidget(ngObject,STL_MODEL,this),tr("Model"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
 }
 
 void MainWindow::genMeshCSG(void)
 {
-    Ng_Result ng_res;
-    Ng_Meshing_Parameters mp;
-    bool isFind = false;
+//    Ng_Result ng_res;
+//    Ng_Meshing_Parameters mp;
+//    bool isFind = false;
 
-    // Initialise the Netgen Core library
-    Ng_Init();
+//    // Initialise the Netgen Core library
+//    Ng_Init();
 
-    Ng_DeleteMesh(mesh);
-    Ng_CSG_DeleteGeometry(csg_geom);
-    // Actually create the mesh structure
-    mesh = Ng_NewMesh();
+//    Ng_DeleteMesh(mesh);
+//    Ng_CSG_DeleteGeometry(csg_geom);
+//    // Actually create the mesh structure
+//    mesh = Ng_NewMesh();
 
-    csg_geom = (Ng_CSG_Geometry *)Ng_CSG_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
-    if (!csg_geom)
-    {
-        cout << "Error reading in current CSG data" << endl;
-        return;
-    }
-    cout << "Successfully loaded CSG data" << endl;
+//    csg_geom = (Ng_CSG_Geometry *)Ng_CSG_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
+//    if (!csg_geom)
+//    {
+//        cout << "Error reading in current CSG data" << endl;
+//        return;
+//    }
+//    cout << "Successfully loaded CSG data" << endl;
 
 
-    // Set the Meshing Parameters to be used
-    mp.maxh = 1.0e+6;
-    mp.fineness = 0.4;
-    mp.second_order = 0;
+//    // Set the Meshing Parameters to be used
+//    mp.maxh = 1.0e+6;
+//    mp.fineness = 0.4;
+//    mp.second_order = 0;
 
-    cout << "Start Meshing...." << endl;
-    ng_res = Ng_CSG_GenerateMesh(csg_geom, mesh, &mp);
-    if (ng_res != NG_OK)
-    {
-        cout << "Error in Meshing....Aborting!!" << endl;
-        return;
-    }
-    cout << "Meshing successfully completed....!!" << endl;
+//    cout << "Start Meshing...." << endl;
+//    ng_res = Ng_CSG_GenerateMesh(csg_geom, mesh, &mp);
+//    if (ng_res != NG_OK)
+//    {
+//        cout << "Error in Meshing....Aborting!!" << endl;
+//        return;
+//    }
+//    cout << "Meshing successfully completed....!!" << endl;
 
-    // volume mesh output
-    cout << "Points: " << Ng_GetNP(mesh) << endl;
+//    // volume mesh output
+//    cout << "Points: " << Ng_GetNP(mesh) << endl;
 
-    cout << "Elements: " << Ng_GetNE(mesh) << endl;
+//    cout << "Elements: " << Ng_GetNE(mesh) << endl;
 
-//    cout << "Saving Mesh in VOL Format...." << endl;
-//    Ng_SaveMesh(mesh,"test.vol");
+////    cout << "Saving Mesh in VOL Format...." << endl;
+////    Ng_SaveMesh(mesh,"test.vol");
 
-    // Обновление визуализации
-    for (int i = 0; i < tabWidget->count(); i++)
-        if (tabWidget->tabText(i).replace("&","") == tr("Mesh"))
-        {
-            isFind = true;
-            tabWidget->widget(i)->repaint();
-            tabWidget->setCurrentIndex(i);
-            break;
-        }
-    if (!isFind)
-    {
-        tabWidget->addTab(new GLModelWidget(mesh,MESH_MODEL,this),tr("Mesh"));
-        tabWidget->setCurrentIndex(tabWidget->count() - 1);
-    }
+//    // Обновление визуализации
+//    for (int i = 0; i < tabWidget->count(); i++)
+//        if (tabWidget->tabText(i).replace("&","") == tr("Mesh"))
+//        {
+//            isFind = true;
+//            tabWidget->widget(i)->repaint();
+//            tabWidget->setCurrentIndex(i);
+//            break;
+//        }
+//    if (!isFind)
+//    {
+//        tabWidget->addTab(new GLModelWidget(mesh,MESH_MODEL,this),tr("Mesh"));
+//        tabWidget->setCurrentIndex(tabWidget->count() - 1);
+//    }
 
 
 

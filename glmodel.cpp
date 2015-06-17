@@ -22,23 +22,27 @@ void GLModelWidget::buildScene(void)
 /*******************************************************************/
 void GLModelWidget::calcRadius(void)
 {
+    Point3d pMin,
+            pMax;
+
     switch (mType)
     {
         case STL_MODEL:
-            minX = ((NGInterface*)(object))->geometry_STL;
-            minY = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMin()(1);;
-            minZ = Ng_STL_MinZ(object);
-            maxX = Ng_STL_MaxX(object);
-            minY = Ng_STL_MaxY(object);
-            maxY = Ng_STL_MaxZ(object);
+            minX = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMin()(0);
+            minY = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMin()(1);
+            minZ = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMin()(2);
+            maxX = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMax()(0);
+            minY = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMax()(1);
+            maxY = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMax()(2);
             break;
         case MESH_MODEL:
-            minX = Ng_Mesh_MinX(object);
-            minY = Ng_Mesh_MinY(object);
-            minZ = Ng_Mesh_MinZ(object);
-            maxX = Ng_Mesh_MaxX(object);
-            minY = Ng_Mesh_MaxY(object);
-            maxY = Ng_Mesh_MaxZ(object);
+            ((NGInterface*)object)->mesh->GetBox(pMin,pMax);
+            minX = pMin.X();
+            minY = pMin.Y();
+            minZ = pMin.Z();
+            maxX = pMax.X();
+            minY = pMax.Y();
+            maxY = pMax.Z();
             break;
         case GEO_MODEL:
             break;
@@ -119,7 +123,7 @@ void GLModelWidget::createSceletonSTL(void)
     GLdouble x0 = (maxX + minX)*0.5,
              y0 = (maxY + minY)*0.5,
              z0 = (maxZ + minZ)*0.5;
-    int numVertex = Ng_STL_NP(object);
+    int numVertex = ((NGInterface*)object)->geometry_STL->GetNP();
 
     xList2 = glGenLists(1);
     glNewList(xList2, GL_COMPILE);
@@ -132,7 +136,7 @@ void GLModelWidget::createSceletonSTL(void)
     glPointSize(1);
     glBegin(GL_POINTS);
     for (int i = 1; i <= numVertex; i++)
-        glVertex3d(Ng_STL_X(object,i) - x0, Ng_STL_Y(object,i) - y0, Ng_STL_Z(object,i) - z0);
+        glVertex3d(((NGInterface*)object)->geometry_STL->GetPoint(i)(0) - x0, ((NGInterface*)object)->geometry_STL->GetPoint(i)(1) - y0, ((NGInterface*)object)->geometry_STL->GetPoint(i)(2) - z0);
     glEnd();
     if (params.isLight)
     {
@@ -148,7 +152,7 @@ void GLModelWidget::createSceletonMesh(void)
              y0 = (maxY + minY)*0.5,
              z0 = (maxZ + minZ)*0.5,
              coord[3];
-    int numTri = Ng_GetNSE(object),
+    int numTri = ((NGInterface*)object)->mesh->GetNSE(),
         index[3];
 
     xList2 = glGenLists(1);
@@ -163,10 +167,10 @@ void GLModelWidget::createSceletonMesh(void)
     glBegin(GL_POINTS);
     for (int i = 1; i <= numTri; i++)
     {
-        Ng_GetSurfaceElement(object,i,index);
+        ((NGInterface*)object)->getMeshSurfaceElement(i,index);
         for (unsigned j = 1; j <= 3; j++)
         {
-            Ng_GetPoint(object,index[j - 1],coord);
+            ((NGInterface*)object)->getMeshPoint(index[j - 1],coord);
             glVertex3d(coord[0] - x0, coord[1] - y0, coord[2] - z0);
         }
     }
@@ -211,8 +215,9 @@ void GLModelWidget::createSTL(void)
 {
     GLdouble x0 = (maxX + minX)*0.5,
              y0 = (maxY + minY)*0.5,
-             z0 = (maxZ + minZ)*0.5;
-    int numTri = Ng_STL_NT(object);
+             z0 = (maxZ + minZ)*0.5,
+             coord[3];
+    int numTri = ((NGInterface*)object)->geometry_STL->GetNT();
 
     QApplication::setOverrideCursor(Qt::BusyCursor);
 
@@ -222,10 +227,14 @@ void GLModelWidget::createSTL(void)
     setColor(0,1,0,params.alpha);
     for (int i = 1; i <= numTri; i++)
     {
-        glNormal3d(Ng_STL_Normal_X(object,i),Ng_STL_Normal_Y(object,i),Ng_STL_Normal_Z(object,i));
+        ((NGInterface*)object)->getSTLNormal(i,coord);
+        glNormal3d(coord[0],coord[1],coord[2]);
         glBegin(GL_TRIANGLES);
         for (unsigned j = 1; j <= 3; j++)
-            glVertex3d(Ng_STL_TRI_X(object,i,j) - x0, Ng_STL_TRI_Y(object,i,j) - y0, Ng_STL_TRI_Z(object,i,j) - z0);
+        {
+            ((NGInterface*)object)->getTriangleSTL(i,j,coord);
+            glVertex3d(coord[0] - x0, coord[1] - y0, coord[2] - z0);
+        }
         glEnd();
     }
 
@@ -242,11 +251,8 @@ void GLModelWidget::createMesh(void)
     GLdouble x0 = (maxX + minX)*0.5,
              y0 = (maxY + minY)*0.5,
              z0 = (maxZ + minZ)*0.5,
-             coord[3],
-             nx,
-             ny,
-             nz;
-    int numTri = Ng_GetNSE(object),
+             coord[3];
+    int numTri = ((NGInterface*)object)->mesh->GetNSE(),
         index[3];
 
     QApplication::setOverrideCursor(Qt::BusyCursor);
@@ -257,13 +263,13 @@ void GLModelWidget::createMesh(void)
     for (int i = 1; i <= numTri; i++)
     {
         setColor(0,1,0,params.alpha);
-        Ng_GetSurfaceElement(object,i,index);
-        Ng_Mesh_Normal(object,i,nx,ny,nz);
-        glNormal3d(nx,ny,nz);
+        ((NGInterface*)object)->getMeshSurfaceElement(i,index);
+        ((NGInterface*)object)->getMeshNormal(i,coord);
+        glNormal3d(coord[0],coord[1],coord[2]);
         glBegin(GL_TRIANGLES);
         for (unsigned j = 1; j <= 3; j++)
         {
-            Ng_GetPoint(object,index[j - 1],coord);
+            ((NGInterface*)object)->getMeshPoint(index[j - 1],coord);
             glVertex3d(coord[0] - x0, coord[1] - y0, coord[2] - z0);
         }
         glEnd();
@@ -273,7 +279,7 @@ void GLModelWidget::createMesh(void)
             glBegin(GL_LINE_LOOP);
             for (unsigned j = 1; j <= 3; j++)
             {
-                Ng_GetPoint(object,index[j - 1],coord);
+                ((NGInterface*)object)->getMeshPoint(index[j - 1],coord);
                 glVertex3d(coord[0] - x0, coord[1] - y0, coord[2] - z0);
             }
             glEnd();

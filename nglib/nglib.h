@@ -11,6 +11,12 @@ namespace netgen
 
 class NGInterface
 {
+private:
+    Array<STLReadTriangle> readtrias;
+    Array<Point<3> > readedges;
+    int makeEdgesSTL(void);
+    int generateSurfaceMeshSTL(void);
+    int generateVolumeMesh(void);
 public:
     Mesh* mesh = NULL;
     CSGeometry* geometry_CSG = NULL;
@@ -25,7 +31,15 @@ public:
         if (geometry_STL)
             delete geometry_STL;
     }
+    void createMesh(void);
+    void getMeshPoint(int,double*);
+    void getSTLNormal(int,double*);
+    void getMeshNormal(int,double*);
+    void getTriangleSTL(int,int,double*);
     int genMeshSTL(std::string);
+    int initSTL(void);
+    NG_ELEMENT_TYPE getMeshSurfaceElement(int,int*);
+    STLGeometry* loadSTL(std::string data);
     CSGeometry* parseGeometry (char* data)
     {
         CSGeometry* ParseCSG (char*);
