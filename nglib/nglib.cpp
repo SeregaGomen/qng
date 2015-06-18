@@ -11,16 +11,53 @@ void NGInterface::createMesh(void)
     mesh->AddFaceDescriptor (FaceDescriptor (1, 1, 0, 1));
 }
 
-STLGeometry* NGInterface::loadSTL(std::string data)
+CSGeometry* NGInterface::loadCSG(string data)
 {
     strstream in;
-    STLGeometry geom;
+    CSGeometry *geom,
+               *ParseCSG(istream&);
 
     in << data;
-    if (geometry_STL)
-        delete geometry_STL;
-    geometry_STL = geom.Load(in);
-    return geometry_STL;
+    geom = ParseCSG(in);
+    if (!geom)
+        cout << "geo-file should start with 'algebraic3d'" << endl;
+    else
+        geom->FindIdenticSurfaces(1e-8*geom->MaxSize());
+    return (geometry_CSG = geom);
+}
+
+STLGeometry* NGInterface::loadSTL(string data)
+{
+    strstream ist;
+    STLGeometry geom,
+                *geo;
+    Point3d p;
+    Vec3d normal;
+    double p1[3],
+           p2[3],
+           p3[3],
+           n[3];
+
+    ist << data;
+    geo = geom.Load(ist);
+
+    readtrias.SetSize(0);
+    readedges.SetSize(0);
+    for (int i = 1; i <= geo->GetNT(); i++)
+    {
+        const STLTriangle& t = geo->GetTriangle(i);
+
+        p = geo->GetPoint(t.PNum(1));
+        p1[0] = p.X(); p1[1] = p.Y(); p1[2] = p.Z();
+        p = geo->GetPoint(t.PNum(2));
+        p2[0] = p.X(); p2[1] = p.Y(); p2[2] = p.Z();
+        p = geo->GetPoint(t.PNum(3));
+        p3[0] = p.X(); p3[1] = p.Y(); p3[2] = p.Z();
+        normal = t.Normal();
+        n[0] = normal.X(); n[1] = normal.Y(); n[2] = normal.Z();
+        addTriangleSTL(p1,p2,p3,n);
+    }
+    return (geometry_STL = geo);
 }
 
 int NGInterface::genMeshSTL(string data)
@@ -81,7 +118,7 @@ int NGInterface::genMeshSTL(string data)
     // Ng_Uniform_Refinement (mesh);
 
     // refinement with geomety adaption:
-    geometry_STL->GetRefinement().Refine (*mesh );
+    geometry_STL->GetRefinement().Refine (*mesh);
     cout << "elements after refinement: " << mesh->GetNP() << endl;
     cout << "points   after refinement: " << mesh->GetNE() << endl;
     return 1;
@@ -232,3 +269,37 @@ int NGInterface::generateVolumeMesh(void)
     return 1;
 }
 
+void NGInterface::addTriangleSTL(double *p1, double *p2, double *p3,double *nv)
+{
+   Point<3> apts[3];
+   Vec<3> n;
+
+   apts[0] = Point<3>(p1[0],p1[1],p1[2]);
+   apts[1] = Point<3>(p2[0],p2[1],p2[2]);
+   apts[2] = Point<3>(p3[0],p3[1],p3[2]);
+
+   if (!nv)
+      n = Cross (apts[0]-apts[1], apts[0]-apts[2]);
+   else
+      n = Vec<3>(nv[0],nv[1],nv[2]);
+
+   readtrias.Append(STLReadTriangle(apts,n));
+}
+
+int NGInterface::genMeshCSG(string data)
+{
+    int ng_res = 0;
+    shared_ptr<Mesh> m;
+
+    createMesh();
+    if (!loadCSG(data))
+    {
+        cout << "Error reading in current CSG data" << endl;
+        return ng_res;
+    }
+    cout << "Successfully loaded CSG data" << endl;
+    geometry_CSG->GenerateMesh(m,mparam,1,10);
+    mesh = m.get();
+
+    return ng_res;
+}

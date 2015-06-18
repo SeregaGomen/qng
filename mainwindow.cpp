@@ -651,66 +651,25 @@ void MainWindow::showSTL(void)
 
 void MainWindow::genMeshCSG(void)
 {
-//    Ng_Result ng_res;
-//    Ng_Meshing_Parameters mp;
-//    bool isFind = false;
+    bool isFind = false;
 
-//    // Initialise the Netgen Core library
-//    Ng_Init();
+    if (!ngObject->genMeshCSG(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString()))
+        return;
 
-//    Ng_DeleteMesh(mesh);
-//    Ng_CSG_DeleteGeometry(csg_geom);
-//    // Actually create the mesh structure
-//    mesh = Ng_NewMesh();
-
-//    csg_geom = (Ng_CSG_Geometry *)Ng_CSG_LoadGeometry(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
-//    if (!csg_geom)
-//    {
-//        cout << "Error reading in current CSG data" << endl;
-//        return;
-//    }
-//    cout << "Successfully loaded CSG data" << endl;
-
-
-//    // Set the Meshing Parameters to be used
-//    mp.maxh = 1.0e+6;
-//    mp.fineness = 0.4;
-//    mp.second_order = 0;
-
-//    cout << "Start Meshing...." << endl;
-//    ng_res = Ng_CSG_GenerateMesh(csg_geom, mesh, &mp);
-//    if (ng_res != NG_OK)
-//    {
-//        cout << "Error in Meshing....Aborting!!" << endl;
-//        return;
-//    }
-//    cout << "Meshing successfully completed....!!" << endl;
-
-//    // volume mesh output
-//    cout << "Points: " << Ng_GetNP(mesh) << endl;
-
-//    cout << "Elements: " << Ng_GetNE(mesh) << endl;
-
-////    cout << "Saving Mesh in VOL Format...." << endl;
-////    Ng_SaveMesh(mesh,"test.vol");
-
-//    // Обновление визуализации
-//    for (int i = 0; i < tabWidget->count(); i++)
-//        if (tabWidget->tabText(i).replace("&","") == tr("Mesh"))
-//        {
-//            isFind = true;
-//            tabWidget->widget(i)->repaint();
-//            tabWidget->setCurrentIndex(i);
-//            break;
-//        }
-//    if (!isFind)
-//    {
-//        tabWidget->addTab(new GLModelWidget(mesh,MESH_MODEL,this),tr("Mesh"));
-//        tabWidget->setCurrentIndex(tabWidget->count() - 1);
-//    }
-
-
-
+    // Обновление визуализации
+    for (int i = 0; i < tabWidget->count(); i++)
+        if (tabWidget->tabText(i).replace("&","") == tr("Mesh"))
+        {
+            isFind = true;
+            tabWidget->widget(i)->repaint();
+            tabWidget->setCurrentIndex(i);
+            break;
+        }
+    if (!isFind)
+    {
+        tabWidget->addTab(new GLModelWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
+        tabWidget->setCurrentIndex(tabWidget->count() - 1);
+    }
 }
 
 void MainWindow::showCSG(void)
