@@ -99,8 +99,8 @@ namespace netgen
 
   void Mesh :: DeleteMesh()
   {
-    NgLock lock(mutex);
-    lock.Lock();
+//    NgLock lock(mutex);
+//    lock.Lock();
     points.SetSize(0);
     segments.SetSize(0);
     surfelements.SetSize(0);
@@ -131,7 +131,7 @@ namespace netgen
     paralleltop = new ParallelMeshTopology (*this);
 #endif
 
-    lock.UnLock();
+//    lock.UnLock();
 
     timestamp = NextTimeStamp();
   }
@@ -168,15 +168,15 @@ namespace netgen
 
   PointIndex Mesh :: AddPoint (const Point3d & p, int layer, POINTTYPE type)
   { 
-    NgLock lock(mutex);
-    lock.Lock();
+//    NgLock lock(mutex);
+//    lock.Lock();
 
     timestamp = NextTimeStamp();
 
     PointIndex pi = points.End();
     points.Append ( MeshPoint (p, layer, type) ); 
 
-    lock.UnLock();
+//    lock.UnLock();
 
     return pi;
   }
@@ -219,8 +219,8 @@ namespace netgen
 
   SegmentIndex Mesh :: AddSegment (const Segment & s)
   { 
-    NgLock lock(mutex);	
-    lock.Lock();
+//    NgLock lock(mutex);
+//    lock.Lock();
     timestamp = NextTimeStamp();
 
     int maxn = max2 (s[0], s[1]);
@@ -256,14 +256,14 @@ namespace netgen
     SegmentIndex si = segments.Size();
     segments.Append (s); 
 
-    lock.UnLock();
+//    lock.UnLock();
     return si;
   }
 
   SurfaceElementIndex Mesh :: AddSurfaceElement (const Element2d & el)
   {     
-    NgLock lock(mutex);
-    lock.Lock();
+//    NgLock lock(mutex);
+//    lock.Lock();
     timestamp = NextTimeStamp();
 
     int maxn = el[0];
@@ -308,15 +308,15 @@ namespace netgen
     if (SurfaceArea().Valid())
       SurfaceArea().Add (el);
 
-    lock.UnLock();
+//    lock.UnLock();
     return si;
   }
 
 
   ElementIndex Mesh :: AddVolumeElement (const Element & el)
   { 
-    NgLock lock(mutex);
-    lock.Lock();
+//    NgLock lock(mutex);
+//    lock.Lock();
 
     int maxn = el[0];
     for (int i = 1; i < el.GetNP(); i++)
@@ -351,7 +351,7 @@ namespace netgen
 
     timestamp = NextTimeStamp();
 
-    lock.UnLock();
+//    lock.UnLock();
     return ve;
   }
 
@@ -4099,8 +4099,8 @@ namespace netgen
     {
       if (elementsearchtreets != GetTimeStamp())
         {
-          NgLock lock(mutex);
-          lock.Lock();
+//          NgLock lock(mutex);
+//          lock.Lock();
           
           PrintMessage (4, "Rebuild element searchtree");
           

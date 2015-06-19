@@ -11,11 +11,15 @@ void NGInterface::createMesh(void)
     mesh->AddFaceDescriptor (FaceDescriptor (1, 1, 0, 1));
 }
 
+namespace netgen
+{
+  extern CSGeometry * ParseCSG (istream & istr);
+}
+
 CSGeometry* NGInterface::loadCSG(string data)
 {
     strstream in;
-    CSGeometry *geom,
-               *ParseCSG(istream&);
+    CSGeometry *geom;
 
     in << data;
     geom = ParseCSG(in);
@@ -288,18 +292,17 @@ void NGInterface::addTriangleSTL(double *p1, double *p2, double *p3,double *nv)
 
 int NGInterface::genMeshCSG(string data)
 {
-    int ng_res = 0;
     shared_ptr<Mesh> m;
 
     createMesh();
     if (!loadCSG(data))
     {
         cout << "Error reading in current CSG data" << endl;
-        return ng_res;
+        return 0;
     }
     cout << "Successfully loaded CSG data" << endl;
     geometry_CSG->GenerateMesh(m,mparam,1,10);
     mesh = m.get();
 
-    return ng_res;
+    return 1;
 }

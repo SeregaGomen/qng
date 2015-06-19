@@ -116,9 +116,9 @@ namespace netgen
     int majortimestamp;
 
     /// mesh access semaphors.
-    NgMutex mutex;
+//    NgMutex mutex;
     /// mesh access semaphors.
-    NgMutex majormutex;
+//    NgMutex majormutex;
 
     SYMBOLTABLE< Array<int>* > userdata_int;
     SYMBOLTABLE< Array<double>* > userdata_double; 
@@ -713,8 +713,8 @@ namespace netgen
 
 
     /// return mutex
-    NgMutex & Mutex ()   { return mutex; }
-    NgMutex & MajorMutex ()   { return majormutex; }
+//    NgMutex & Mutex ()   { return mutex; }
+//    NgMutex & MajorMutex ()   { return majormutex; }
 
 
     ///

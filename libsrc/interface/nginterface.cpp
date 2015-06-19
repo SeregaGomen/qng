@@ -58,10 +58,10 @@ unsigned int fun2 (void * val)
 void RunParallel ( void* (*fun)(void *), void * in)
 {
   sfun = fun;
-  if (netgen::mparam.parthread)
-    AfxBeginThread (fun2, in);
-  //AfxBeginThread (fun2, NULL);
-  else
+//  if (netgen::mparam.parthread)
+//    AfxBeginThread (fun2, in);
+//  //AfxBeginThread (fun2, NULL);
+//  else
     fun (in);
 }
 
@@ -1010,7 +1010,7 @@ void Ng_SetSurfaceRefinementFlag (int ei, int flag)
 
 void Ng_Refine (NG_REFINEMENT_TYPE reftype)
 {
-  NgLock meshlock (mesh->MajorMutex(), 1);
+//  NgLock meshlock (mesh->MajorMutex(), 1);
 
   BisectionOptions biopt;
   biopt.usemarkedelements = 1;
@@ -1133,7 +1133,7 @@ void Ng_SecondOrder ()
 void Ng_HPRefinement (int levels, double parameter, bool setorders,
                       bool ref_level)
 {
-  NgLock meshlock (mesh->MajorMutex(), true);
+//  NgLock meshlock (mesh->MajorMutex(), true);
   Refinement & ref = const_cast<Refinement&> (ng_geometry -> GetRefinement());
   HPRefinement (*mesh, &ref, levels, parameter, setorders, ref_level);
   /*
@@ -1153,7 +1153,7 @@ void Ng_HPRefinement (int levels, double parameter, bool setorders,
 
 void Ng_HighOrder (int order, bool rational)
 {
-  NgLock meshlock (mesh->MajorMutex(), true);
+//  NgLock meshlock (mesh->MajorMutex(), true);
 
   mesh -> GetCurvedElements().BuildCurvedElements 
     (&const_cast<Refinement&> (ng_geometry -> GetRefinement()),

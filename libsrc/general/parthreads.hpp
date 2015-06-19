@@ -21,7 +21,7 @@ class NgMutex { };
 class NgLock
 {
 public:
-  NgLock (NgMutex & mut, bool lock = 0) { ; }
+  NgLock (NgMutex & /*mut*/, bool /*lock = 0*/) { ; }
   void Lock () { ; }
   void UnLock () { ; }
 };
@@ -87,45 +87,45 @@ public:
 #else // Using MS VC++ Standard / Enterprise / Professional edition...
 
 
-class NgMutex
-{
-  CCriticalSection cs;
+//class NgMutex
+//{
+//  CCriticalSection cs;
 
-public:
-  NgMutex ()
-  { ; }
-  friend class NgLock;
-};
+//public:
+//  NgMutex ()
+//  { ; }
+//  friend class NgLock;
+//};
 
-class NgLock
-{
-  CSingleLock sl;
-  bool locked;
-public:
-  NgLock (NgMutex & mut, bool lock = 0)
-    : sl(&mut.cs)
-  {
-    if (lock) sl.Lock();
-    locked = lock;
-  }
+//class NgLock
+//{
+//  CSingleLock sl;
+//  bool locked;
+//public:
+//  NgLock (NgMutex & mut, bool lock = 0)
+//    : sl(&mut.cs)
+//  {
+//    if (lock) sl.Lock();
+//    locked = lock;
+//  }
 
-  ~NgLock ()
-  {
-    if (locked) sl.Unlock();
-  }
+//  ~NgLock ()
+//  {
+//    if (locked) sl.Unlock();
+//  }
 
-  void Lock ()
-  {
-    sl.Lock();
-    locked = 1;
-  }
+//  void Lock ()
+//  {
+//    sl.Lock();
+//    locked = 1;
+//  }
 
-  void UnLock ()
-  {
-    sl.Unlock();
-    locked = 0;
-  }
-};
+//  void UnLock ()
+//  {
+//    sl.Unlock();
+//    locked = 0;
+//  }
+//};
 
 #endif // MSVC_EXPRESS
 
