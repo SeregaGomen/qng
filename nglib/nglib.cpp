@@ -301,7 +301,11 @@ int NGInterface::genMeshCSG(string data)
         return 0;
     }
     cout << "Successfully loaded CSG data" << endl;
+//    mparam.maxh = 0.05;
     geometry_CSG->GenerateMesh(m,mparam,1,10);
+
+    new shared_ptr<Mesh> (m);  // hack to keep mesh m alive
+
     mesh = m.get();
 
     return 1;

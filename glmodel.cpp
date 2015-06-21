@@ -22,27 +22,38 @@ void GLModelWidget::buildScene(void)
 /*******************************************************************/
 void GLModelWidget::calcRadius(void)
 {
-    Point3d pMin,
-            pMax;
-
+    GLdouble coord[3];
     switch (mType)
     {
         case STL_MODEL:
-            minX = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMin()(0);
-            minY = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMin()(1);
-            minZ = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMin()(2);
-            maxX = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMax()(0);
-            minY = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMax()(1);
-            maxY = ((NGInterface*)object)->geometry_STL->GetBoundingBox().PMax()(2);
+            minX = maxX = ((NGInterface*)object)->geometry_STL->GetPoint(1)(0);
+            minY = maxY = ((NGInterface*)object)->geometry_STL->GetPoint(1)(1);
+            minZ = maxZ = ((NGInterface*)object)->geometry_STL->GetPoint(1)(2);
+            for (int i = 2; i <= ((NGInterface*)object)->geometry_STL->GetNP(); i++)
+            {
+                minX = (((NGInterface*)object)->geometry_STL->GetPoint(i)(0) < minX) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(0) : minX;
+                minY = (((NGInterface*)object)->geometry_STL->GetPoint(i)(1) < minY) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(1) : minY;
+                minZ = (((NGInterface*)object)->geometry_STL->GetPoint(i)(2) < minZ) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(2) : minZ;
+                maxX = (((NGInterface*)object)->geometry_STL->GetPoint(i)(0) > maxX) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(0) : maxX;
+                maxY = (((NGInterface*)object)->geometry_STL->GetPoint(i)(1) > maxY) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(1) : maxY;
+                maxZ = (((NGInterface*)object)->geometry_STL->GetPoint(i)(2) > maxZ) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(2) : maxZ;
+            }
             break;
         case MESH_MODEL:
-            ((NGInterface*)object)->mesh->GetBox(pMin,pMax);
-            minX = pMin.X();
-            minY = pMin.Y();
-            minZ = pMin.Z();
-            maxX = pMax.X();
-            minY = pMax.Y();
-            maxY = pMax.Z();
+            ((NGInterface*)object)->getMeshPoint(1,coord);
+            minX = maxX = coord[0];
+            minY = maxY = coord[1];
+            minZ = maxZ = coord[2];
+            for (int i = 2; i <= ((NGInterface*)object)->mesh->GetNP(); i++)
+            {
+                ((NGInterface*)object)->getMeshPoint(i,coord);
+                minX = (coord[0] < minX) ? coord[0] : minX;
+                minY = (coord[1] < minY) ? coord[1] : minY;
+                minZ = (coord[2] < minZ) ? coord[2] : minZ;
+                maxX = (coord[0] > maxX) ? coord[0] : maxX;
+                maxY = (coord[1] > maxY) ? coord[1] : maxY;
+                maxZ = (coord[2] > maxZ) ? coord[2] : maxZ;
+            }
             break;
         case GEO_MODEL:
             break;
