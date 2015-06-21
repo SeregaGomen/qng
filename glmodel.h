@@ -3,7 +3,7 @@
 
 #include "glwidget.h"
 
-typedef enum { STL_MODEL, GEO_MODEL, MESH_MODEL } ModelType;
+typedef enum { STL_MODEL, CSG_MODEL, MESH_MODEL } ModelType;
 
 class GLModelWidget : public GLWidget
 {
@@ -31,10 +31,10 @@ private:
     void createObject(void);
     void createSceleton(void);
     void createSTL(void);
-    void createGEO(void);
+    void createCSG(void);
     void createMesh(void);
     void buildScene(void);
-    void createSceletonGEO(void);
+    void createSceletonCSG(void);
     void createSceletonMesh(void);
     void createSceletonSTL(void);
     void calcRadius(void);

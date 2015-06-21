@@ -23,6 +23,7 @@ void GLModelWidget::buildScene(void)
 void GLModelWidget::calcRadius(void)
 {
     GLdouble coord[3];
+
     switch (mType)
     {
         case STL_MODEL:
@@ -55,7 +56,25 @@ void GLModelWidget::calcRadius(void)
                 maxZ = (coord[2] > maxZ) ? coord[2] : maxZ;
             }
             break;
-        case GEO_MODEL:
+        case CSG_MODEL:
+            for (int i = 1; i <= ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
+            {
+                const TriangleApproximation &ta = *((NGInterface*)object)->geometry_CSG->GetTriApprox(i);
+
+                minX = maxX = minY = maxY = minZ = maxZ = 0;
+                if (&ta)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        minX = (ta.GetPoint(j)(0) < minX) ? ta.GetPoint(j)(0) : minX;
+                        minY = (ta.GetPoint(j)(1) < minY) ? ta.GetPoint(j)(1) : minY;
+                        minZ = (ta.GetPoint(j)(2) < minZ) ? ta.GetPoint(j)(2) : minZ;
+                        maxX = (ta.GetPoint(j)(0) > maxX) ? ta.GetPoint(j)(0) : maxX;
+                        maxY = (ta.GetPoint(j)(1) > maxY) ? ta.GetPoint(j)(1) : maxY;
+                        maxZ = (ta.GetPoint(j)(2) > maxZ) ? ta.GetPoint(j)(2) : maxZ;
+                    }
+                }
+            }
             break;
     }
     radius = sqrt((maxX - minX)*(maxX - minX) + (maxY - minY)*(maxY - minY)  + (maxZ - minZ)*(maxZ - minZ));
@@ -120,8 +139,8 @@ void GLModelWidget::createSceleton(void)
         case STL_MODEL:
             createSceletonSTL();
             break;
-        case GEO_MODEL:
-            createSceletonGEO();
+        case CSG_MODEL:
+            createSceletonCSG();
             break;
         case MESH_MODEL:
             createSceletonMesh();
@@ -194,9 +213,35 @@ void GLModelWidget::createSceletonMesh(void)
     glEndList();
 }
 /*******************************************************************/
-void GLModelWidget::createSceletonGEO(void)
+void GLModelWidget::createSceletonCSG(void)
 {
+    GLdouble x0 = (maxX + minX)*0.5,
+             y0 = (maxY + minY)*0.5,
+             z0 = (maxZ + minZ)*0.5,
 
+    xList2 = glGenLists(1);
+    glNewList(xList2, GL_COMPILE);
+    if (params.isLight)
+    {
+        glEnable (GL_COLOR_MATERIAL);
+        glDisable (GL_LIGHTING);
+    }
+    glColor3d(0,0,0);
+    glPointSize(1);
+    glBegin(GL_POINTS);
+    for (int i = 1; i <= ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
+    {
+        const TriangleApproximation &ta = *((NGInterface*)object)->geometry_CSG->GetTriApprox(i);
+        if (&ta)
+            glVertex3d(ta.GetPoint(0)(0) - x0, ta.GetPoint(0)(1) - y0, ta.GetPoint(0)(2) - z0);
+    }
+    glEnd();
+    if (params.isLight)
+    {
+        glEnable(GL_LIGHTING);
+        glDisable (GL_COLOR_MATERIAL);
+    }
+    glEndList();
 }
 /*******************************************************************/
 void GLModelWidget::displayObject(void)
@@ -213,8 +258,8 @@ void GLModelWidget::createObject(void)
         case STL_MODEL:
             createSTL();
             break;
-        case GEO_MODEL:
-            createGEO();
+        case CSG_MODEL:
+            createCSG();
             break;
         case MESH_MODEL:
             createMesh();
@@ -253,7 +298,7 @@ void GLModelWidget::createSTL(void)
     QApplication::restoreOverrideCursor();
 }
 /*******************************************************************/
-void GLModelWidget::createGEO(void)
+void GLModelWidget::createCSG(void)
 {
 }
 /*******************************************************************/

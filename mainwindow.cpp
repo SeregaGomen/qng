@@ -674,5 +674,25 @@ void MainWindow::genMeshCSG(void)
 
 void MainWindow::showCSG(void)
 {
+    bool isFind = false;
 
+    if (!ngObject->loadCSG(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString()))
+    {
+        cout << "Error reading in current CSG data" << endl;
+        return;
+    }
+    cout << "Successfully loaded CSG data" << endl;
+    // Проверка наличия такой закладки
+    for (int i = 0; i < tabWidget->count(); i++)
+        if (tabWidget->tabText(i).replace("&","") == tr("Model"))
+        {
+            isFind = true;
+            tabWidget->setCurrentIndex(i);
+            break;
+        }
+    if (!isFind)
+    {
+        tabWidget->addTab(new GLModelWidget(ngObject,CSG_MODEL,this),tr("Model"));
+        tabWidget->setCurrentIndex(tabWidget->count() - 1);
+    }
 }
