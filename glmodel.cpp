@@ -314,10 +314,6 @@ void GLModelWidget::createCSG(void)
     xList1 = glGenLists(1);
     glNewList(xList1, GL_COMPILE);
 
-//    glEnable(GL_CULL_FACE);
-//    glFrontFace(GL_CW);
-
-    glEnable(GL_NORMALIZE);
     setColor(0,1,0,params.alpha);
     for (int i = 0; i < ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
     {
