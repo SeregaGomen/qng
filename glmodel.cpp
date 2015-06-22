@@ -57,23 +57,24 @@ void GLModelWidget::calcRadius(void)
             }
             break;
         case CSG_MODEL:
-            for (int i = 1; i <= ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
+            for (int i = 0; i < ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
             {
                 const TriangleApproximation &ta = *((NGInterface*)object)->geometry_CSG->GetTriApprox(i);
 
                 minX = maxX = minY = maxY = minZ = maxZ = 0;
                 if (&ta)
-                {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        minX = (ta.GetPoint(j)(0) < minX) ? ta.GetPoint(j)(0) : minX;
-                        minY = (ta.GetPoint(j)(1) < minY) ? ta.GetPoint(j)(1) : minY;
-                        minZ = (ta.GetPoint(j)(2) < minZ) ? ta.GetPoint(j)(2) : minZ;
-                        maxX = (ta.GetPoint(j)(0) > maxX) ? ta.GetPoint(j)(0) : maxX;
-                        maxY = (ta.GetPoint(j)(1) > maxY) ? ta.GetPoint(j)(1) : maxY;
-                        maxZ = (ta.GetPoint(j)(2) > maxZ) ? ta.GetPoint(j)(2) : maxZ;
-                    }
-                }
+                    for (int j = 0; j < ta.GetNT(); j++)
+                        for (int k = 0; k < 3; k++)
+                        {
+                            int pi = ta.GetTriangle(j)[k];
+
+                            minX = (ta.GetPoint(pi)(0) < minX) ? ta.GetPoint(pi)(0) : minX;
+                            minY = (ta.GetPoint(pi)(1) < minY) ? ta.GetPoint(pi)(1) : minY;
+                            minZ = (ta.GetPoint(pi)(2) < minZ) ? ta.GetPoint(pi)(2) : minZ;
+                            maxX = (ta.GetPoint(pi)(0) > maxX) ? ta.GetPoint(pi)(0) : maxX;
+                            maxY = (ta.GetPoint(pi)(1) > maxY) ? ta.GetPoint(pi)(1) : maxY;
+                            maxZ = (ta.GetPoint(pi)(2) > maxZ) ? ta.GetPoint(pi)(2) : maxZ;
+                        }
             }
             break;
     }
@@ -217,7 +218,7 @@ void GLModelWidget::createSceletonCSG(void)
 {
     GLdouble x0 = (maxX + minX)*0.5,
              y0 = (maxY + minY)*0.5,
-             z0 = (maxZ + minZ)*0.5,
+             z0 = (maxZ + minZ)*0.5;
 
     xList2 = glGenLists(1);
     glNewList(xList2, GL_COMPILE);
@@ -229,11 +230,17 @@ void GLModelWidget::createSceletonCSG(void)
     glColor3d(0,0,0);
     glPointSize(1);
     glBegin(GL_POINTS);
-    for (int i = 1; i <= ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
+    for (int i = 0; i < ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
     {
         const TriangleApproximation &ta = *((NGInterface*)object)->geometry_CSG->GetTriApprox(i);
         if (&ta)
-            glVertex3d(ta.GetPoint(0)(0) - x0, ta.GetPoint(0)(1) - y0, ta.GetPoint(0)(2) - z0);
+            for (int j = 0; j < ta.GetNT(); j++)
+                for (int k = 0; k < 3; k++)
+                {
+                    int pi = ta.GetTriangle(j)[k];
+
+                    glVertex3f (ta.GetPoint(pi)(0) - x0,ta.GetPoint(pi)(1) - y0,ta.GetPoint(pi)(2) - z0);
+                }
     }
     glEnd();
     if (params.isLight)
@@ -300,6 +307,33 @@ void GLModelWidget::createSTL(void)
 /*******************************************************************/
 void GLModelWidget::createCSG(void)
 {
+    GLdouble x0 = (maxX + minX)*0.5,
+             y0 = (maxY + minY)*0.5,
+             z0 = (maxZ + minZ)*0.5;
+
+    xList1 = glGenLists(1);
+    glNewList(xList1, GL_COMPILE);
+
+    setColor(0,1,0,params.alpha);
+    for (int i = 0; i < ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
+    {
+        const TriangleApproximation &ta = *((NGInterface*)object)->geometry_CSG->GetTriApprox(i);
+        if (&ta)
+            for (int j = 0; j < ta.GetNT(); j++)
+            {
+                glBegin(GL_TRIANGLES);
+//                glNormal3f(ta.GetNormal(j)(0),ta.GetNormal(j)(1),ta.GetNormal(j)(2));
+                for (int k = 0; k < 3; k++)
+                {
+                    int pi = ta.GetTriangle(j)[k];
+
+                    glNormal3f(ta.GetNormal(pi)(0),ta.GetNormal(pi)(1),ta.GetNormal(pi)(2));
+                    glVertex3f(ta.GetPoint(pi)(0) - x0,ta.GetPoint(pi)(1) - y0,ta.GetPoint(pi)(2) - z0);
+                }
+                glEnd();
+            }
+    }
+    glEndList();
 }
 /*******************************************************************/
 void GLModelWidget::createMesh(void)
