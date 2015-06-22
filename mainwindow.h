@@ -50,7 +50,7 @@ private slots:
     void copySelection(void);
     void pasteClipboard(void);
     void selectAll(void);
-    void newGEO(void);
+    void newCSG(void);
     void newSTL(void);
     void undo(void);
     void redo(void);

@@ -314,20 +314,24 @@ void GLModelWidget::createCSG(void)
     xList1 = glGenLists(1);
     glNewList(xList1, GL_COMPILE);
 
+//    glEnable(GL_CULL_FACE);
+//    glFrontFace(GL_CW);
+
+    glEnable(GL_NORMALIZE);
     setColor(0,1,0,params.alpha);
     for (int i = 0; i < ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
     {
         const TriangleApproximation &ta = *((NGInterface*)object)->geometry_CSG->GetTriApprox(i);
+
         if (&ta)
             for (int j = 0; j < ta.GetNT(); j++)
             {
                 glBegin(GL_TRIANGLES);
-//                glNormal3f(ta.GetNormal(j)(0),ta.GetNormal(j)(1),ta.GetNormal(j)(2));
                 for (int k = 0; k < 3; k++)
                 {
                     int pi = ta.GetTriangle(j)[k];
 
-                    glNormal3f(ta.GetNormal(pi)(0),ta.GetNormal(pi)(1),ta.GetNormal(pi)(2));
+                    glNormal3dv(ta.GetNormal(pi));
                     glVertex3f(ta.GetPoint(pi)(0) - x0,ta.GetPoint(pi)(1) - y0,ta.GetPoint(pi)(2) - z0);
                 }
                 glEnd();

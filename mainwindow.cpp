@@ -109,7 +109,7 @@ void MainWindow::initApp(void)
     connect(ui->action_Redo, SIGNAL(triggered(void)), this, SLOT(redo(void)));
     connect(ui->action_Save, SIGNAL(triggered(void)), this, SLOT(save(void)));
     connect(ui->action_SaveAs, SIGNAL(triggered(void)), this, SLOT(saveAs(void)));
-    connect(ui->action_NewGeometry, SIGNAL(triggered(void)), this, SLOT(newGEO(void)));
+    connect(ui->action_NewGeometry, SIGNAL(triggered(void)), this, SLOT(newCSG(void)));
     connect(ui->action_NewSTL, SIGNAL(triggered(void)), this, SLOT(newSTL(void)));
     connect(ui->action_Start, SIGNAL(triggered(void)), this, SLOT(startMesh(void)));
     connect(ui->action_Stop, SIGNAL(triggered(void)), this, SLOT(stopMesh(void)));
@@ -513,7 +513,7 @@ void MainWindow::saveFile(const QString & fileName)
     statusBar()->showMessage(tr("File saved"), 2000);
 }
 
-void MainWindow::newGEO(void)
+void MainWindow::newCSG(void)
 {
     if (!closeTab(0))
         return;

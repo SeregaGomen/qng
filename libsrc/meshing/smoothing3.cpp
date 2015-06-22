@@ -446,8 +446,8 @@ namespace netgen
 	// cout << "inner point found" << endl;
 	points[actpind] = Point<3> (hp);
       }
-    else
-      ;
+//    else
+//      ;
     //      cout << "no inner point found" << endl;
 
     /*

@@ -128,7 +128,7 @@ void GLWidget::setupLightGL(void)
     glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec_col);
 
     glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_FALSE);
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+    glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 
     glEnable (GL_LIGHTING);
     glEnable (GL_LIGHT0);
