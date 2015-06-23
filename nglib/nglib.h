@@ -2,9 +2,9 @@
 #define NGLIB
 
 #include "csg.hpp"
-#include "geometry2d.hpp"
 #include "stlgeom.hpp"
 #include "nginterface.h"
+
 //---------------------------------------------------------------------------
 namespace netgen
 {
@@ -29,6 +29,8 @@ public:
     }
     ~NGInterface(void)
     {
+        if (dynamic_cast<STLGeometry*>(geometry))
+            delete mesh;
         if (geometry)
             delete geometry;
     }
