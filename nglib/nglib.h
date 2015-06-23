@@ -18,6 +18,7 @@ private:
     int generateSurfaceMeshSTL(void);
     int generateVolumeMesh(void);
     void addTriangleSTL(double*,double*, double*,double*);
+    shared_ptr<Mesh> s_ptr;
 public:
     Mesh* mesh = NULL;
     CSGeometry* geometry_CSG = NULL;

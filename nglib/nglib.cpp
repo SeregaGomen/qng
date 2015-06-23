@@ -286,8 +286,6 @@ void NGInterface::addTriangleSTL(double *p1, double *p2, double *p3,double *nv)
 
 int NGInterface::genMeshCSG(string data)
 {
-    shared_ptr<Mesh> m;
-
     if (!loadCSG(data))
     {
         cout << "Error reading in current CSG data" << endl;
@@ -295,11 +293,11 @@ int NGInterface::genMeshCSG(string data)
     }
     cout << "Successfully loaded CSG data" << endl;
 //    mparam.maxh = 0.05;
-    geometry_CSG->GenerateMesh(m,mparam,1,10);
+    geometry_CSG->GenerateMesh(s_ptr,mparam,1,10);
 
-    new shared_ptr<Mesh> (m);  // hack to keep mesh m alive
+    new shared_ptr<Mesh> (s_ptr);  // hack to keep mesh m alive
 
-    mesh = m.get();
+    mesh = s_ptr.get();
 
     return 1;
 }
