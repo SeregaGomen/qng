@@ -22,7 +22,7 @@ CSGeometry* NGInterface::loadCSG(string data)
     else
         geom->FindIdenticSurfaces(1e-8*geom->MaxSize());
     geom->CalcTriangleApproximation(detail,facets);
-    return (geometry_CSG = geom);
+    return (CSGeometry*)(geometry = geom);
 }
 
 STLGeometry* NGInterface::loadSTL(string data)
@@ -56,7 +56,7 @@ STLGeometry* NGInterface::loadSTL(string data)
         n[0] = normal.X(); n[1] = normal.Y(); n[2] = normal.Z();
         addTriangleSTL(p1,p2,p3,n);
     }
-    return (geometry_STL = geo);
+    return (STLGeometry*)(geometry = geo);
 }
 
 int NGInterface::genMeshSTL(string data)
@@ -115,7 +115,7 @@ int NGInterface::genMeshSTL(string data)
     // Ng_Uniform_Refinement (mesh);
 
     // refinement with geomety adaption:
-    geometry_STL->GetRefinement().Refine (*mesh);
+    ((STLGeometry*)geometry)->GetRefinement().Refine (*mesh);
     cout << "Elements after refinement: " << mesh->GetNP() << endl;
     cout << "Points   after refinement: " << mesh->GetNE() << endl;
     return 1;
@@ -123,13 +123,13 @@ int NGInterface::genMeshSTL(string data)
 
 int NGInterface::initSTL(void)
 {
-   geometry_STL->InitSTLGeometry(readtrias);
+   ((STLGeometry*)geometry)->InitSTLGeometry(readtrias);
    readtrias.SetSize(0);
 
    if (readedges.Size() != 0)
-      geometry_STL->AddEdges(readedges);
+      ((STLGeometry*)geometry)->AddEdges(readedges);
 
-   if (geometry_STL->GetStatus() == STLTopology::STL_GOOD || geometry_STL->GetStatus() == STLTopology::STL_WARNING)
+   if (((STLGeometry*)geometry)->GetStatus() == STLTopology::STL_GOOD || ((STLGeometry*)geometry)->GetStatus() == STLTopology::STL_WARNING)
        return 1;
    return 0;
 }
@@ -184,7 +184,7 @@ void NGInterface::getMeshPoint(int i, double *x)
 
 void NGInterface::getSTLNormal(int i, double *x)
 {
-    const Vec3d &n = geometry_STL->GetTriangle(i).Normal();
+    const Vec3d &n = ((STLGeometry*)geometry)->GetTriangle(i).Normal();
 
     x[0] = n.X();
     x[1] = n.Y();
@@ -193,7 +193,7 @@ void NGInterface::getSTLNormal(int i, double *x)
 
 void NGInterface::getTriangleSTL(int i,int j,double *x)
 {
-    const Point3d &tp = geometry_STL->GetPoint((geometry_STL)->GetTriangle(i).PNum(j));
+    const Point3d &tp = ((STLGeometry*)geometry)->GetPoint(((STLGeometry*)geometry)->GetTriangle(i).PNum(j));
 
     x[0] = tp.X();
     x[1] = tp.Y();
@@ -217,28 +217,28 @@ void NGInterface::getMeshNormal(int i,double* x)
 int NGInterface::makeEdgesSTL(void)
 {
     mesh->SetGlobalH (mparam.maxh);
-    mesh->SetLocalH (geometry_STL->GetBoundingBox().PMin() - Vec3d(10, 10, 10),
-                     geometry_STL->GetBoundingBox().PMax() + Vec3d(10, 10, 10),
+    mesh->SetLocalH (((STLGeometry*)geometry)->GetBoundingBox().PMin() - Vec3d(10, 10, 10),
+                     ((STLGeometry*)geometry)->GetBoundingBox().PMax() + Vec3d(10, 10, 10),
                      0.3);
 
-    STLMeshing (*geometry_STL, *mesh);
-    geometry_STL->edgesfound = 1;
-    geometry_STL->surfacemeshed = 0;
-    geometry_STL->surfaceoptimized = 0;
-    geometry_STL->volumemeshed = 0;
+    STLMeshing (*(STLGeometry*)geometry, *mesh);
+    ((STLGeometry*)geometry)->edgesfound = 1;
+    ((STLGeometry*)geometry)->surfacemeshed = 0;
+    ((STLGeometry*)geometry)->surfaceoptimized = 0;
+    ((STLGeometry*)geometry)->volumemeshed = 0;
     return 1;
 }
 
 int NGInterface::generateSurfaceMeshSTL(void)
 {
-    int retval = STLSurfaceMeshing(*geometry_STL, *mesh);
+    int retval = STLSurfaceMeshing(*(STLGeometry*)geometry, *mesh);
 
     if (retval == MESHING3_OK)
     {
         (*mycout) << "Success !!!!" << endl;
-        geometry_STL->surfacemeshed = 1;
-        geometry_STL->surfaceoptimized = 0;
-        geometry_STL->volumemeshed = 0;
+        ((STLGeometry*)geometry)->surfacemeshed = 1;
+        ((STLGeometry*)geometry)->surfaceoptimized = 0;
+        ((STLGeometry*)geometry)->volumemeshed = 0;
     }
     else if (retval == MESHING3_OUTERSTEPSEXCEEDED)
     {
@@ -252,7 +252,7 @@ int NGInterface::generateSurfaceMeshSTL(void)
     {
         (*mycout) << "ERROR: Surface meshing not successful. Meshing aborted!" << endl;
     }
-    STLSurfaceOptimization (*geometry_STL, *mesh, mparam);
+    STLSurfaceOptimization (*(STLGeometry*)geometry, *mesh, mparam);
     return 1;
 }
 
@@ -292,14 +292,14 @@ int NGInterface::genMeshCSG(string data)
     }
     cout << "Successfully loaded CSG data" << endl;
 //    mparam.maxh = 0.05;
-    geometry_CSG->GenerateMesh(s_ptr,mparam,1,10);
+    ((CSGeometry*)geometry)->GenerateMesh(s_ptr,mparam,1,10);
 
     new shared_ptr<Mesh> (s_ptr);  // hack to keep mesh m alive
 
     mesh = s_ptr.get();
     cout << "Points:   " << mesh->GetNP() << endl;
     cout << "Elements: " << mesh->GetNE() << endl;
-    geometry_CSG->GetRefinement().Refine(*mesh);
+    ((CSGeometry*)geometry)->GetRefinement().Refine(*mesh);
     cout << "Elements after refinement: " << mesh->GetNP() << endl;
     cout << "Points   after refinement: " << mesh->GetNE() << endl;
     return 1;

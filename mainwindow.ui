@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>3D-mesh generator</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="qng.qrc">
+    <normaloff>:/images/app.ico</normaloff>:/images/app.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -20,7 +24,7 @@
      <x>0</x>
      <y>0</y>
      <width>823</width>
-     <height>21</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -109,7 +113,7 @@
      <normaloff>:/images/new.png</normaloff>:/images/new.png</iconset>
    </property>
    <property name="text">
-    <string>Geometry</string>
+    <string>&amp;Geometry</string>
    </property>
    <property name="toolTip">
     <string>Create a new NETGEN geometry file</string>
@@ -123,7 +127,7 @@
   </action>
   <action name="action_NewSTL">
    <property name="text">
-    <string>STL</string>
+    <string>&amp;STL</string>
    </property>
    <property name="toolTip">
     <string>Create a new STL file</string>
