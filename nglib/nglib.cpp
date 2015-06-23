@@ -3,17 +3,9 @@
 
 MeshingParameters mparam;
 
-void NGInterface::createMesh(void)
-{
-    if (mesh)
-        delete mesh;
-    mesh = new Mesh();
-    mesh->AddFaceDescriptor (FaceDescriptor (1, 1, 0, 1));
-}
-
 namespace netgen
 {
-  extern CSGeometry * ParseCSG (istream & istr);
+    extern CSGeometry * ParseCSG (istream & istr);
 }
 
 CSGeometry* NGInterface::loadCSG(string data)
@@ -71,7 +63,6 @@ int NGInterface::genMeshSTL(string data)
 {
     int ng_res = 0;
 
-    createMesh();
     if (!loadSTL(data))
     {
         cout << "Error reading in current STL data" << endl;
@@ -297,7 +288,6 @@ int NGInterface::genMeshCSG(string data)
 {
     shared_ptr<Mesh> m;
 
-    createMesh();
     if (!loadCSG(data))
     {
         cout << "Error reading in current CSG data" << endl;

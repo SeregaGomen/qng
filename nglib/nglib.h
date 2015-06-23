@@ -22,17 +22,19 @@ public:
     Mesh* mesh = NULL;
     CSGeometry* geometry_CSG = NULL;
     STLGeometry* geometry_STL = NULL;
-    NGInterface(void) {}
+    NGInterface(void)
+    {
+        mesh = new Mesh();
+        mesh->AddFaceDescriptor(FaceDescriptor(1, 1, 0, 1));
+    }
     ~NGInterface(void)
     {
-        if (mesh)
-            delete mesh;
+        delete mesh;
         if (geometry_STL)
             delete geometry_STL;
         if (geometry_CSG)
             delete geometry_CSG;
     }
-    void createMesh(void);
     void getMeshPoint(int,double*);
     void getSTLNormal(int,double*);
     void getMeshNormal(int,double*);
