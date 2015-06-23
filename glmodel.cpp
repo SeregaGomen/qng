@@ -27,17 +27,17 @@ void GLModelWidget::calcRadius(void)
     switch (mType)
     {
         case STL_MODEL:
-            minX = maxX = ((NGInterface*)object)->geometry_STL->GetPoint(1)(0);
-            minY = maxY = ((NGInterface*)object)->geometry_STL->GetPoint(1)(1);
-            minZ = maxZ = ((NGInterface*)object)->geometry_STL->GetPoint(1)(2);
-            for (int i = 2; i <= ((NGInterface*)object)->geometry_STL->GetNP(); i++)
+            minX = maxX = ((NGInterface*)object)->getGeometrySTL()->GetPoint(1)(0);
+            minY = maxY = ((NGInterface*)object)->getGeometrySTL()->GetPoint(1)(1);
+            minZ = maxZ = ((NGInterface*)object)->getGeometrySTL()->GetPoint(1)(2);
+            for (int i = 2; i <= ((NGInterface*)object)->getGeometrySTL()->GetNP(); i++)
             {
-                minX = (((NGInterface*)object)->geometry_STL->GetPoint(i)(0) < minX) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(0) : minX;
-                minY = (((NGInterface*)object)->geometry_STL->GetPoint(i)(1) < minY) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(1) : minY;
-                minZ = (((NGInterface*)object)->geometry_STL->GetPoint(i)(2) < minZ) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(2) : minZ;
-                maxX = (((NGInterface*)object)->geometry_STL->GetPoint(i)(0) > maxX) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(0) : maxX;
-                maxY = (((NGInterface*)object)->geometry_STL->GetPoint(i)(1) > maxY) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(1) : maxY;
-                maxZ = (((NGInterface*)object)->geometry_STL->GetPoint(i)(2) > maxZ) ? ((NGInterface*)object)->geometry_STL->GetPoint(i)(2) : maxZ;
+                minX = (((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(0) < minX) ? ((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(0) : minX;
+                minY = (((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(1) < minY) ? ((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(1) : minY;
+                minZ = (((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(2) < minZ) ? ((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(2) : minZ;
+                maxX = (((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(0) > maxX) ? ((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(0) : maxX;
+                maxY = (((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(1) > maxY) ? ((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(1) : maxY;
+                maxZ = (((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(2) > maxZ) ? ((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(2) : maxZ;
             }
             break;
         case MESH_MODEL:
@@ -45,7 +45,7 @@ void GLModelWidget::calcRadius(void)
             minX = maxX = coord[0];
             minY = maxY = coord[1];
             minZ = maxZ = coord[2];
-            for (int i = 2; i <= ((NGInterface*)object)->mesh->GetNP(); i++)
+            for (int i = 2; i <= ((NGInterface*)object)->getMesh()->GetNP(); i++)
             {
                 ((NGInterface*)object)->getMeshPoint(i,coord);
                 minX = (coord[0] < minX) ? coord[0] : minX;
@@ -57,9 +57,9 @@ void GLModelWidget::calcRadius(void)
             }
             break;
         case CSG_MODEL:
-            for (int i = 0; i < ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
+            for (int i = 0; i < ((NGInterface*)object)->getGeometryCSG()->GetNTopLevelObjects(); i++)
             {
-                const TriangleApproximation &ta = *((NGInterface*)object)->geometry_CSG->GetTriApprox(i);
+                const TriangleApproximation &ta = *((NGInterface*)object)->getGeometryCSG()->GetTriApprox(i);
 
                 minX = maxX = minY = maxY = minZ = maxZ = 0;
                 if (&ta)
@@ -154,7 +154,7 @@ void GLModelWidget::createSceletonSTL(void)
     GLdouble x0 = (maxX + minX)*0.5,
              y0 = (maxY + minY)*0.5,
              z0 = (maxZ + minZ)*0.5;
-    int numVertex = ((NGInterface*)object)->geometry_STL->GetNP();
+    int numVertex = ((NGInterface*)object)->getGeometrySTL()->GetNP();
 
     xList2 = glGenLists(1);
     glNewList(xList2, GL_COMPILE);
@@ -167,7 +167,7 @@ void GLModelWidget::createSceletonSTL(void)
     glPointSize(1);
     glBegin(GL_POINTS);
     for (int i = 1; i <= numVertex; i++)
-        glVertex3d(((NGInterface*)object)->geometry_STL->GetPoint(i)(0) - x0, ((NGInterface*)object)->geometry_STL->GetPoint(i)(1) - y0, ((NGInterface*)object)->geometry_STL->GetPoint(i)(2) - z0);
+        glVertex3d(((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(0) - x0, ((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(1) - y0, ((NGInterface*)object)->getGeometrySTL()->GetPoint(i)(2) - z0);
     glEnd();
     if (params.isLight)
     {
@@ -183,7 +183,7 @@ void GLModelWidget::createSceletonMesh(void)
              y0 = (maxY + minY)*0.5,
              z0 = (maxZ + minZ)*0.5,
              coord[3];
-    int numTri = ((NGInterface*)object)->mesh->GetNSE(),
+    int numTri = ((NGInterface*)object)->getMesh()->GetNSE(),
         index[3];
 
     xList2 = glGenLists(1);
@@ -230,9 +230,9 @@ void GLModelWidget::createSceletonCSG(void)
     glColor3d(0,0,0);
     glPointSize(1);
     glBegin(GL_POINTS);
-    for (int i = 0; i < ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
+    for (int i = 0; i < ((NGInterface*)object)->getGeometryCSG()->GetNTopLevelObjects(); i++)
     {
-        const TriangleApproximation &ta = *((NGInterface*)object)->geometry_CSG->GetTriApprox(i);
+        const TriangleApproximation &ta = *((NGInterface*)object)->getGeometryCSG()->GetTriApprox(i);
         if (&ta)
             for (int j = 0; j < ta.GetNT(); j++)
                 for (int k = 0; k < 3; k++)
@@ -280,7 +280,7 @@ void GLModelWidget::createSTL(void)
              y0 = (maxY + minY)*0.5,
              z0 = (maxZ + minZ)*0.5,
              coord[3];
-    int numTri = ((NGInterface*)object)->geometry_STL->GetNT();
+    int numTri = ((NGInterface*)object)->getGeometrySTL()->GetNT();
 
     QApplication::setOverrideCursor(Qt::BusyCursor);
 
@@ -315,9 +315,9 @@ void GLModelWidget::createCSG(void)
     glNewList(xList1, GL_COMPILE);
 
     setColor(0,1,0,params.alpha);
-    for (int i = 0; i < ((NGInterface*)object)->geometry_CSG->GetNTopLevelObjects(); i++)
+    for (int i = 0; i < ((NGInterface*)object)->getGeometryCSG()->GetNTopLevelObjects(); i++)
     {
-        const TriangleApproximation &ta = *((NGInterface*)object)->geometry_CSG->GetTriApprox(i);
+        const TriangleApproximation &ta = *((NGInterface*)object)->getGeometryCSG()->GetTriApprox(i);
 
         if (&ta)
             for (int j = 0; j < ta.GetNT(); j++)
@@ -342,7 +342,7 @@ void GLModelWidget::createMesh(void)
              y0 = (maxY + minY)*0.5,
              z0 = (maxZ + minZ)*0.5,
              coord[3];
-    int numTri = ((NGInterface*)object)->mesh->GetNSE(),
+    int numTri = ((NGInterface*)object)->getMesh()->GetNSE(),
         index[3];
 
     QApplication::setOverrideCursor(Qt::BusyCursor);

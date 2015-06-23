@@ -12,6 +12,9 @@ namespace netgen
 class NGInterface
 {
 private:
+    CSGeometry* geometry_CSG = NULL;
+    STLGeometry* geometry_STL = NULL;
+    Mesh* mesh = NULL;
     Array<STLReadTriangle> readtrias;
     Array<Point<3> > readedges;
     int makeEdgesSTL(void);
@@ -20,9 +23,6 @@ private:
     void addTriangleSTL(double*,double*, double*,double*);
     shared_ptr<Mesh> s_ptr;
 public:
-    Mesh* mesh = NULL;
-    CSGeometry* geometry_CSG = NULL;
-    STLGeometry* geometry_STL = NULL;
     NGInterface(void)
     {
         mesh = new Mesh();
@@ -37,6 +37,18 @@ public:
         }
         if (geometry_CSG)
             delete geometry_CSG;
+    }
+    Mesh* getMesh(void)
+    {
+        return mesh;
+    }
+    CSGeometry* getGeometryCSG(void)
+    {
+        return geometry_CSG;
+    }
+    STLGeometry* getGeometrySTL(void)
+    {
+        return geometry_STL;
     }
     void getMeshPoint(int,double*);
     void getSTLNormal(int,double*);
