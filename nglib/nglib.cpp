@@ -107,9 +107,8 @@ int NGInterface::genMeshSTL(string data)
     cout << "Meshing successfully completed....!!" << endl;
 
     // volume mesh output
-    cout << "Points: " << mesh->GetNP() << endl;
+    cout << "Points:   " << mesh->GetNP() << endl;
     cout << "Elements: " << mesh->GetNE() << endl;
-    cout << "Saving Mesh in VOL Format...." << endl;
 
 
     // refinement without geomety adaption:
@@ -117,8 +116,8 @@ int NGInterface::genMeshSTL(string data)
 
     // refinement with geomety adaption:
     geometry_STL->GetRefinement().Refine (*mesh);
-    cout << "elements after refinement: " << mesh->GetNP() << endl;
-    cout << "points   after refinement: " << mesh->GetNE() << endl;
+    cout << "Elements after refinement: " << mesh->GetNP() << endl;
+    cout << "Points   after refinement: " << mesh->GetNE() << endl;
     return 1;
 }
 
@@ -298,6 +297,10 @@ int NGInterface::genMeshCSG(string data)
     new shared_ptr<Mesh> (s_ptr);  // hack to keep mesh m alive
 
     mesh = s_ptr.get();
-
+    cout << "Points:   " << mesh->GetNP() << endl;
+    cout << "Elements: " << mesh->GetNE() << endl;
+    geometry_CSG->GetRefinement().Refine(*mesh);
+    cout << "Elements after refinement: " << mesh->GetNP() << endl;
+    cout << "Points   after refinement: " << mesh->GetNE() << endl;
     return 1;
 }

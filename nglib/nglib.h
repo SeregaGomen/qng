@@ -30,9 +30,11 @@ public:
     }
     ~NGInterface(void)
     {
-        delete mesh;
         if (geometry_STL)
+        {
             delete geometry_STL;
+            delete mesh;
+        }
         if (geometry_CSG)
             delete geometry_CSG;
     }
