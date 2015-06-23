@@ -143,6 +143,9 @@ bool MainWindow::closeTab(int nTab)
             return false;
         while (tabWidget->count() > 0)
             tabWidget->removeTab(i--);
+        if (ngObject)
+            delete ngObject;
+        ngObject = new NGInterface();
         setWindowTitle("3D-mesh generator");
         isUntitled = true;
         checkMenuState();
