@@ -107,6 +107,7 @@ int NGInterface::genMeshSTL(string data)
     cout << "Meshing successfully completed....!!" << endl;
 
     // volume mesh output
+    cout << "------------------------------------------------" << endl;
     cout << "Points:   " << mesh->GetNP() << endl;
     cout << "Elements: " << mesh->GetNE() << endl;
 
@@ -297,6 +298,7 @@ int NGInterface::genMeshCSG(string data)
     new shared_ptr<Mesh> (s_ptr);  // hack to keep mesh m alive
 
     mesh = s_ptr.get();
+    cout << "------------------------------------------------" << endl;
     cout << "Points:   " << mesh->GetNP() << endl;
     cout << "Elements: " << mesh->GetNE() << endl;
     ((CSGeometry*)geometry)->GetRefinement().Refine(*mesh);
