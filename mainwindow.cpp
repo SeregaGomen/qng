@@ -109,7 +109,7 @@ void MainWindow::initApp(void)
     connect(ui->action_Redo, SIGNAL(triggered(void)), this, SLOT(redo(void)));
     connect(ui->action_Save, SIGNAL(triggered(void)), this, SLOT(save(void)));
     connect(ui->action_SaveAs, SIGNAL(triggered(void)), this, SLOT(saveAs(void)));
-    connect(ui->action_NewGeometry, SIGNAL(triggered(void)), this, SLOT(newCSG(void)));
+    connect(ui->action_NewCSG, SIGNAL(triggered(void)), this, SLOT(newCSG(void)));
     connect(ui->action_NewSTL, SIGNAL(triggered(void)), this, SLOT(newSTL(void)));
     connect(ui->action_Start, SIGNAL(triggered(void)), this, SLOT(startMesh(void)));
     connect(ui->action_Stop, SIGNAL(triggered(void)), this, SLOT(stopMesh(void)));

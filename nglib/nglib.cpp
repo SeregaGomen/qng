@@ -304,5 +304,6 @@ int NGInterface::genMeshCSG(string data)
     ((CSGeometry*)geometry)->GetRefinement().Refine(*mesh);
     cout << "Elements after refinement: " << mesh->GetNP() << endl;
     cout << "Points   after refinement: " << mesh->GetNE() << endl;
+    mesh->Save("tmp.vol");
     return 1;
 }

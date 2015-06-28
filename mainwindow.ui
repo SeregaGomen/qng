@@ -24,7 +24,7 @@
      <x>0</x>
      <y>0</y>
      <width>823</width>
-     <height>30</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -35,7 +35,7 @@
      <property name="title">
       <string>&amp;New</string>
      </property>
-     <addaction name="action_NewGeometry"/>
+     <addaction name="action_NewCSG"/>
      <addaction name="action_NewSTL"/>
     </widget>
     <addaction name="menu_New"/>
@@ -87,7 +87,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="action_NewGeometry"/>
+   <addaction name="action_NewCSG"/>
    <addaction name="action_Open"/>
    <addaction name="separator"/>
    <addaction name="action_Save"/>
@@ -107,16 +107,16 @@
    <addaction name="action_Terminal"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action_NewGeometry">
+  <action name="action_NewCSG">
    <property name="icon">
     <iconset resource="qng.qrc">
      <normaloff>:/images/new.png</normaloff>:/images/new.png</iconset>
    </property>
    <property name="text">
-    <string>&amp;Geometry</string>
+    <string>&amp;CSG</string>
    </property>
    <property name="toolTip">
-    <string>Create a new NETGEN geometry file</string>
+    <string>Create a new CSG geometry file</string>
    </property>
    <property name="statusTip">
     <string>Create a new NETGEN geometry file</string>
