@@ -58,10 +58,12 @@ private slots:
     void saveAs(void);
     void startMesh(void);
     void stopMesh(void);
+    void refinementMesh(void);
 
 private:
     bool isUntitled = true;
     bool isGenMeshStarted = false;
+    bool isMeshGenerated = false;
     FileType fType = EMPTY;
     Ui::MainWindow *ui;
     QTranslator *translator;

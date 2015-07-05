@@ -113,6 +113,7 @@ void MainWindow::initApp(void)
     connect(ui->action_NewSTL, SIGNAL(triggered(void)), this, SLOT(newSTL(void)));
     connect(ui->action_Start, SIGNAL(triggered(void)), this, SLOT(startMesh(void)));
     connect(ui->action_Stop, SIGNAL(triggered(void)), this, SLOT(stopMesh(void)));
+    connect(ui->action_Refinement, SIGNAL(triggered(void)), this, SLOT(refinementMesh(void)));
 
 
     ngObject = new NGInterface();
@@ -148,6 +149,7 @@ bool MainWindow::closeTab(int nTab)
         ngObject = new NGInterface();
         setWindowTitle("3D-mesh generator");
         isUntitled = true;
+        isMeshGenerated = false;
         checkMenuState();
     }
     return true;
@@ -413,6 +415,7 @@ void MainWindow::checkMenuState(void)
 //    ui->actionObjectParameters->setEnabled(!isUntitled);
     ui->action_Start->setEnabled(!isUntitled && !isGenMeshStarted);
     ui->action_Stop->setEnabled(!isUntitled && isGenMeshStarted);
+    ui->action_Refinement->setEnabled(!isUntitled && isMeshGenerated);
 //    ui->actionSetupImage->setEnabled(!isUntitled && isEnabled);
 //    ui->actionInfo->setEnabled(!isUntitled);
 //    ui->actionSaveResults->setEnabled(!isUntitled && femObject->isCalculated());
@@ -601,6 +604,7 @@ void MainWindow::genMeshSTL(void)
 
     if (!ngObject->genMeshSTL(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString()))
         return;
+    isMeshGenerated = true;
 
     // Обновление визуализации
     for (int i = 0; i < tabWidget->count(); i++)
@@ -658,6 +662,7 @@ void MainWindow::genMeshCSG(void)
 
     if (!ngObject->genMeshCSG(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString()))
         return;
+    isMeshGenerated = true;
 
     // Обновление визуализации
     for (int i = 0; i < tabWidget->count(); i++)
@@ -696,6 +701,37 @@ void MainWindow::showCSG(void)
     if (!isFind)
     {
         tabWidget->addTab(new GLModelWidget(ngObject,CSG_MODEL,this),tr("Model"));
+        tabWidget->setCurrentIndex(tabWidget->count() - 1);
+    }
+}
+
+void MainWindow::refinementMesh(void)
+{
+    bool isFind = false;
+
+    switch (fType)
+    {
+        case STL:
+            ngObject->refinementMeshSTL();
+            break;
+        case CSG:
+            ngObject->refinementMeshCSG();
+        default:
+            break;
+    }
+
+    // Обновление визуализации
+    for (int i = 0; i < tabWidget->count(); i++)
+        if (tabWidget->tabText(i).replace("&","") == tr("Mesh"))
+        {
+            isFind = true;
+            qobject_cast<GLWidget*>(tabWidget->widget(i))->repaint();
+            tabWidget->setCurrentIndex(i);
+            break;
+        }
+    if (!isFind)
+    {
+        tabWidget->addTab(new GLModelWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
 }

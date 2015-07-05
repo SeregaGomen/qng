@@ -67,6 +67,8 @@
     <addaction name="action_Start"/>
     <addaction name="action_Stop"/>
     <addaction name="separator"/>
+    <addaction name="action_Refinement"/>
+    <addaction name="separator"/>
     <addaction name="action_MeshOptions"/>
    </widget>
    <widget class="QMenu" name="menu_Setup">
@@ -385,6 +387,14 @@
    </property>
    <property name="toolTip">
     <string>Show/hide the Terminal</string>
+   </property>
+  </action>
+  <action name="action_Refinement">
+   <property name="text">
+    <string>&amp;Refinement</string>
+   </property>
+   <property name="toolTip">
+    <string>Refinement current mesh</string>
    </property>
   </action>
  </widget>

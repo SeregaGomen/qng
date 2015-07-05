@@ -116,9 +116,9 @@ int NGInterface::genMeshSTL(string data)
     // Ng_Uniform_Refinement (mesh);
 
     // refinement with geomety adaption:
-    ((STLGeometry*)geometry)->GetRefinement().Refine (*mesh);
-    cout << "Elements after refinement: " << mesh->GetNP() << endl;
-    cout << "Points   after refinement: " << mesh->GetNE() << endl;
+//    ((STLGeometry*)geometry)->GetRefinement().Refine (*mesh);
+//    cout << "Elements after refinement: " << mesh->GetNP() << endl;
+//    cout << "Points   after refinement: " << mesh->GetNE() << endl;
     return 1;
 }
 
@@ -301,9 +301,23 @@ int NGInterface::genMeshCSG(string data)
     cout << "------------------------------------------------" << endl;
     cout << "Points:   " << mesh->GetNP() << endl;
     cout << "Elements: " << mesh->GetNE() << endl;
-    ((CSGeometry*)geometry)->GetRefinement().Refine(*mesh);
+//    ((CSGeometry*)geometry)->GetRefinement().Refine(*mesh);
+//    cout << "Elements after refinement: " << mesh->GetNP() << endl;
+//    cout << "Points   after refinement: " << mesh->GetNE() << endl;
+//    mesh->Save("tmp.vol");
+    return 1;
+}
+
+void NGInterface::refinementMeshSTL(void)
+{
+    ((STLGeometry*)geometry)->GetRefinement().Refine (*mesh);
     cout << "Elements after refinement: " << mesh->GetNP() << endl;
     cout << "Points   after refinement: " << mesh->GetNE() << endl;
-    mesh->Save("tmp.vol");
-    return 1;
+}
+
+void NGInterface::refinementMeshCSG(void)
+{
+    ((STLGeometry*)geometry)->GetRefinement().Refine (*mesh);
+    cout << "Elements after refinement: " << mesh->GetNP() << endl;
+    cout << "Points   after refinement: " << mesh->GetNE() << endl;
 }

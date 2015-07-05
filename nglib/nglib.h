@@ -50,6 +50,8 @@ public:
     void getSTLNormal(int,double*);
     void getMeshNormal(int,double*);
     void getTriangleSTL(int,int,double*);
+    void refinementMeshSTL(void);
+    void refinementMeshCSG(void);
     int genMeshSTL(string);
     int genMeshCSG(string);
     int initSTL(void);
