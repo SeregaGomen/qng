@@ -63,6 +63,7 @@ private slots:
     void setScale(void);
     void setTranslate(void);
     void restoreImage(void);
+    void imageParams(void);
 
 private:
     bool isUntitled = true;

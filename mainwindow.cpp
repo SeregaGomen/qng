@@ -15,6 +15,7 @@
 #include <QDockWidget>
 #include "mainwindow.h"
 #include "glwidget.h"
+#include "setupimagedialog.h"
 #include "ui_mainwindow.h"
 
 
@@ -117,6 +118,7 @@ void MainWindow::initApp(void)
     connect(ui->action_Scale, SIGNAL(triggered(void)), this, SLOT(setScale(void)));
     connect(ui->action_Translate, SIGNAL(triggered(void)), this, SLOT(setTranslate(void)));
     connect(ui->action_Restore, SIGNAL(triggered(void)), this, SLOT(restoreImage(void)));
+    connect(ui->action_Parameters, SIGNAL(triggered(void)), this, SLOT(imageParams(void)));
 
     ngObject = new NGInterface();
 
@@ -767,4 +769,17 @@ void MainWindow::setRotate(void)
 void MainWindow::restoreImage(void)
 {
     qobject_cast<GLWidget*>(tabWidget->currentWidget())->restore();
+}
+
+void MainWindow::imageParams(void)
+{
+    bool isMesh = (tabWidget->tabText(tabWidget->currentIndex()).replace("&","") == tr("Mesh")) ? true : false;
+    SetupImageDialog *iDlg = new SetupImageDialog(this);
+
+    iDlg->setImageParams(qobject_cast<GLWidget*>(tabWidget->currentWidget())->getImageParams(),isMesh);
+    if (iDlg->exec() == QDialog::Accepted)
+    {
+        qobject_cast<GLWidget*>(tabWidget->currentWidget())->setImageParams(iDlg->getImageParams());
+        qobject_cast<GLWidget*>(tabWidget->currentWidget())->repaint();
+    }
 }
