@@ -77,10 +77,30 @@
     </property>
     <addaction name="action_Terminal"/>
    </widget>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>&amp;View</string>
+    </property>
+    <addaction name="action_Rotate"/>
+    <addaction name="action_Scale"/>
+    <addaction name="action_Translate"/>
+    <addaction name="separator"/>
+    <addaction name="action_Restore"/>
+    <addaction name="separator"/>
+    <addaction name="action_Parameters"/>
+   </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>&amp;?</string>
+    </property>
+    <addaction name="action_About"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
    <addaction name="menu_Mesh"/>
+   <addaction name="menu_View"/>
    <addaction name="menu_Setup"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -105,6 +125,12 @@
    <addaction name="action_Stop"/>
    <addaction name="separator"/>
    <addaction name="action_MeshOptions"/>
+   <addaction name="separator"/>
+   <addaction name="action_Rotate"/>
+   <addaction name="action_Scale"/>
+   <addaction name="action_Translate"/>
+   <addaction name="separator"/>
+   <addaction name="action_Parameters"/>
    <addaction name="separator"/>
    <addaction name="action_Terminal"/>
   </widget>
@@ -395,6 +421,79 @@
    </property>
    <property name="toolTip">
     <string>Refinement current mesh</string>
+   </property>
+  </action>
+  <action name="action_Rotate">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="qng.qrc">
+     <normaloff>:/images/rotate.png</normaloff>:/images/rotate.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Rotate</string>
+   </property>
+   <property name="toolTip">
+    <string>Rotate current image</string>
+   </property>
+  </action>
+  <action name="action_About">
+   <property name="text">
+    <string>&amp;About...</string>
+   </property>
+  </action>
+  <action name="action_Translate">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="qng.qrc">
+     <normaloff>:/images/translate.png</normaloff>:/images/translate.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Translate</string>
+   </property>
+   <property name="toolTip">
+    <string>Translate current image</string>
+   </property>
+  </action>
+  <action name="action_Scale">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="qng.qrc">
+     <normaloff>:/images/scale.png</normaloff>:/images/scale.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Scale</string>
+   </property>
+   <property name="toolTip">
+    <string>Scale current image</string>
+   </property>
+  </action>
+  <action name="action_Restore">
+   <property name="text">
+    <string>R&amp;estore</string>
+   </property>
+   <property name="toolTip">
+    <string>Restore current image</string>
+   </property>
+  </action>
+  <action name="action_Parameters">
+   <property name="icon">
+    <iconset resource="qng.qrc">
+     <normaloff>:/images/parameters.png</normaloff>:/images/parameters.png</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Parameters</string>
+   </property>
+   <property name="toolTip">
+    <string>Setup image parameters</string>
    </property>
   </action>
  </widget>

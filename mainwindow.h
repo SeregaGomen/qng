@@ -59,6 +59,10 @@ private slots:
     void startMesh(void);
     void stopMesh(void);
     void refinementMesh(void);
+    void setRotate(void);
+    void setScale(void);
+    void setTranslate(void);
+    void restoreImage(void);
 
 private:
     bool isUntitled = true;

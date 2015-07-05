@@ -114,7 +114,10 @@ void MainWindow::initApp(void)
     connect(ui->action_Start, SIGNAL(triggered(void)), this, SLOT(startMesh(void)));
     connect(ui->action_Stop, SIGNAL(triggered(void)), this, SLOT(stopMesh(void)));
     connect(ui->action_Refinement, SIGNAL(triggered(void)), this, SLOT(refinementMesh(void)));
-
+    connect(ui->action_Rotate, SIGNAL(triggered(void)), this, SLOT(setRotate(void)));
+    connect(ui->action_Scale, SIGNAL(triggered(void)), this, SLOT(setScale(void)));
+    connect(ui->action_Translate, SIGNAL(triggered(void)), this, SLOT(setTranslate(void)));
+    connect(ui->action_Restore, SIGNAL(triggered(void)), this, SLOT(restoreImage(void)));
 
     ngObject = new NGInterface();
 
@@ -187,22 +190,20 @@ void MainWindow::changeTab(int nTab)
     if (isGL)
         qobject_cast<QGLWidget*>(tabWidget->widget(nTab))->updateGL();
 
-//    ui->actionInfo->setEnabled(isEnabled);
-//    ui->actionRotate->setEnabled(isEnabled);
-//    ui->actionScale->setEnabled(isEnabled);
-//    ui->actionTranslate->setEnabled(isEnabled);
-//    ui->actionRestore->setEnabled(isEnabled);
-//    ui->actionAnalyse->setEnabled(femObject->isCalculated());
-//    ui->actionSetupImage->setEnabled(isEnabled);
-//    if (isEnabled && !isUntitled)
-//    {
-//        if (qobject_cast<GLWidget*>(tabWidget->widget(nTab))->getRotate())
-//            setRotate();
-//        else if (qobject_cast<GLWidget*>(tabWidget->widget(nTab))->getScale())
-//            setScale();
-//        else
-//            setTranslate();
-//    }
+    ui->action_Rotate->setEnabled(isGL);
+    ui->action_Scale->setEnabled(isGL);
+    ui->action_Translate->setEnabled(isGL);
+    ui->action_Restore->setEnabled(isGL);
+    ui->action_Parameters->setEnabled(isGL);
+    if (isGL)
+    {
+        if (qobject_cast<GLWidget*>(tabWidget->widget(nTab))->getRotate())
+            setRotate();
+        else if (qobject_cast<GLWidget*>(tabWidget->widget(nTab))->getScale())
+            setScale();
+        else
+            setTranslate();
+    }
 }
 
 void MainWindow::readSettings(void)
@@ -402,17 +403,20 @@ void MainWindow::setupLanguage(void)
 void MainWindow::checkMenuState(void)
 {
     bool isEditor = (qobject_cast<QTextEdit *>(tabWidget->currentWidget()) == NULL) ? false : true,
-         isPaste = (isEditor) ? QApplication::clipboard()->text().length() : false;
+         isPaste = (isEditor) ? QApplication::clipboard()->text().length() : false,
+         isGL = (qobject_cast<QGLWidget*>(tabWidget->currentWidget()) == NULL) ? false : true;
 
     ui->action_SelectAll->setEnabled(isEditor);
     ui->action_Paste->setEnabled(isPaste);
     ui->action_Close->setEnabled(!isUntitled);
     ui->action_SaveAs->setEnabled(!isUntitled);
-//    ui->actionRotate->setEnabled(!isUntitled && isEnabled);
-//    ui->actionScale->setEnabled(!isUntitled && isEnabled);
-//    ui->actionTranslate->setEnabled(!isUntitled && isEnabled);
-//    ui->actionRestore->setEnabled(!isUntitled);
-//    ui->actionObjectParameters->setEnabled(!isUntitled);
+
+    ui->action_Rotate->setEnabled(!isUntitled && isGL);
+    ui->action_Scale->setEnabled(!isUntitled && isGL);
+    ui->action_Translate->setEnabled(!isUntitled && isGL);
+    ui->action_Restore->setEnabled(!isUntitled && isGL);
+    ui->action_Parameters->setEnabled(!isUntitled && isGL);
+
     ui->action_Start->setEnabled(!isUntitled && !isGenMeshStarted);
     ui->action_Stop->setEnabled(!isUntitled && isGenMeshStarted);
     ui->action_Refinement->setEnabled(!isUntitled && isMeshGenerated);
@@ -734,4 +738,34 @@ void MainWindow::refinementMesh(void)
         tabWidget->addTab(new GLModelWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
+}
+
+void MainWindow::setScale(void)
+{
+    ui->action_Rotate->setChecked(false);
+    ui->action_Scale->setChecked(true);
+    ui->action_Translate->setChecked(false);
+    qobject_cast<GLWidget*>(tabWidget->currentWidget())->setScale();
+}
+
+void MainWindow::setTranslate(void)
+{
+    ui->action_Rotate->setChecked(false);
+    ui->action_Scale->setChecked(false);
+    ui->action_Translate->setChecked(true);
+    qobject_cast<GLWidget*>(tabWidget->currentWidget())->setTranslate();
+}
+
+void MainWindow::setRotate(void)
+{
+    ui->action_Rotate->setChecked(true);
+    ui->action_Scale->setChecked(false);
+    ui->action_Translate->setChecked(false);
+
+    qobject_cast<GLWidget*>(tabWidget->currentWidget())->setRotate();
+}
+
+void MainWindow::restoreImage(void)
+{
+    qobject_cast<GLWidget*>(tabWidget->currentWidget())->restore();
 }

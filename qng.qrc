@@ -13,5 +13,9 @@
         <file>images/app.ico</file>
         <file>images/redo.png</file>
         <file>images/undo.png</file>
+        <file>images/parameters.png</file>
+        <file>images/rotate.png</file>
+        <file>images/scale.png</file>
+        <file>images/translate.png</file>
     </qresource>
 </RCC>
