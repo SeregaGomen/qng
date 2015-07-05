@@ -4,15 +4,31 @@
 #include <QGLWidget>
 #include "imageparams.h"
 
+typedef enum { STL_MODEL, CSG_MODEL, MESH_MODEL } ModelType;
+
 
 class GLWidget : public QGLWidget
 {
     Q_OBJECT
 
 public:
-    GLWidget(QWidget *parent = 0);
-    ~GLWidget(void);
-
+    GLWidget(void* p,ModelType m,QWidget* parent) : QGLWidget(parent)
+    {
+        object = p;
+        mType = m;
+        isIdle = isRotate = true;
+        isLeftBtn = isScale = isTranslate = false;
+        initParams();
+        setFocusPolicy(Qt::ClickFocus);
+        buildScene();
+    }
+    ~GLWidget(void)
+    {
+        if (xList1)
+            glDeleteLists(xList1, 1);
+        if (xList2)
+            glDeleteLists(xList2, 1);
+    }
     QSize minimumSizeHint() const;
     QSize sizeHint() const;
     void init(void)
@@ -84,7 +100,7 @@ protected:
     GLdouble minZ;
     GLdouble radius;
     void initializeGL(void);
-    virtual void paintGL(void) = 0;
+    virtual void paintGL(void);
     void resizeGL(int,int);
     void mousePressEvent(QMouseEvent *);
     void mouseReleaseEvent(QMouseEvent *);
@@ -97,6 +113,7 @@ protected:
     void makeMaterial(float,float,float,float);
 
 private:
+    ModelType mType;
     QPoint lastPos;
     GLdouble diffuse;
     GLdouble ambient;
@@ -110,6 +127,19 @@ private:
     void normalize(GLdouble*);
     void cross(GLdouble*,GLdouble*,GLdouble*);
     void makeIdentity(GLdouble*);
+    void *object = NULL;
+    void displayObject(void);
+    void displaySceleton(void);
+    void createObject(void);
+    void createSceleton(void);
+    void createSTL(void);
+    void createCSG(void);
+    void createMesh(void);
+    void buildScene(void);
+    void createSceletonCSG(void);
+    void createSceletonMesh(void);
+    void createSceletonSTL(void);
+    void calcRadius(void);
 };
 
 #endif

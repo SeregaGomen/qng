@@ -24,7 +24,6 @@ unix:LIBS += -lz
 SOURCES += main.cpp\
         mainwindow.cpp\
         glwidget.cpp \
-        glmodel.cpp \
         libsrc/csg/python_csg.cpp \
         libsrc/csg/zrefine.cpp \
         libsrc/geom2d/python_geom2d.cpp \
@@ -176,7 +175,6 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
         qstdredirector.h\
         glwidget.h \
-        glmodel.h \
         imageparams.h \
         libsrc/general/ngpython.hpp \
         libsrc/include/incopengl.hpp \

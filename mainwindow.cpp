@@ -14,9 +14,8 @@
 #include <QTextEdit>
 #include <QDockWidget>
 #include "mainwindow.h"
+#include "glwidget.h"
 #include "ui_mainwindow.h"
-#include "glmodel.h"
-
 
 
 int langNo = EN;
@@ -621,7 +620,7 @@ void MainWindow::genMeshSTL(void)
         }
     if (!isFind)
     {
-        tabWidget->addTab(new GLModelWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
+        tabWidget->addTab(new GLWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
 
@@ -655,7 +654,7 @@ void MainWindow::showSTL(void)
         }
     if (!isFind)
     {
-        tabWidget->addTab(new GLModelWidget(ngObject,STL_MODEL,this),tr("Model"));
+        tabWidget->addTab(new GLWidget(ngObject,STL_MODEL,this),tr("Model"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
 }
@@ -679,7 +678,7 @@ void MainWindow::genMeshCSG(void)
         }
     if (!isFind)
     {
-        tabWidget->addTab(new GLModelWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
+        tabWidget->addTab(new GLWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
 }
@@ -704,7 +703,7 @@ void MainWindow::showCSG(void)
         }
     if (!isFind)
     {
-        tabWidget->addTab(new GLModelWidget(ngObject,CSG_MODEL,this),tr("Model"));
+        tabWidget->addTab(new GLWidget(ngObject,CSG_MODEL,this),tr("Model"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
 }
@@ -735,7 +734,7 @@ void MainWindow::refinementMesh(void)
         }
     if (!isFind)
     {
-        tabWidget->addTab(new GLModelWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
+        tabWidget->addTab(new GLWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
         tabWidget->setCurrentIndex(tabWidget->count() - 1);
     }
 }
