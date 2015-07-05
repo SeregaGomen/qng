@@ -765,17 +765,20 @@ void GLWidget::createMesh(void)
 
     for (int i = 1; i <= numTri; i++)
     {
-        setColor(0,1,0,params.alpha);
         ((NGInterface*)object)->getMeshSurfaceElement(i,index);
-        ((NGInterface*)object)->getMeshNormal(i,coord);
-        glNormal3d(coord[0],coord[1],coord[2]);
-        glBegin(GL_TRIANGLES);
-        for (unsigned j = 1; j <= 3; j++)
+        if (params.isFace)
         {
-            ((NGInterface*)object)->getMeshPoint(index[j - 1],coord);
-            glVertex3d(coord[0] - x0, coord[1] - y0, coord[2] - z0);
+            setColor(0,1,0,params.alpha);
+            ((NGInterface*)object)->getMeshNormal(i,coord);
+            glNormal3d(coord[0],coord[1],coord[2]);
+            glBegin(GL_TRIANGLES);
+            for (unsigned j = 1; j <= 3; j++)
+            {
+                ((NGInterface*)object)->getMeshPoint(index[j - 1],coord);
+                glVertex3d(coord[0] - x0, coord[1] - y0, coord[2] - z0);
+            }
+            glEnd();
         }
-        glEnd();
         if (params.isMesh)
         {
             setColor(0,0,0,params.alpha);
@@ -788,6 +791,18 @@ void GLWidget::createMesh(void)
             glEnd();
 
         }
+    }
+    if (params.isVertex)
+    {
+        setColor(0,0,0,params.alpha);
+        glPointSize(2);
+        glBegin(GL_POINTS);
+        for (int i = 0; i < ((NGInterface*)object)->getMesh()->GetNP(); i++)
+        {
+            ((NGInterface*)object)->getMeshPoint(i,coord);
+            glVertex3d(coord[0] - x0, coord[1] - y0, coord[2] - z0);
+        }
+        glEnd();
     }
 
     glEndList();
