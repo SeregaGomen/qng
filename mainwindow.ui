@@ -44,6 +44,7 @@
     <addaction name="separator"/>
     <addaction name="action_Save"/>
     <addaction name="action_SaveAs"/>
+    <addaction name="action_SaveMesh"/>
     <addaction name="separator"/>
     <addaction name="action_Exit"/>
    </widget>
@@ -494,6 +495,14 @@
    </property>
    <property name="toolTip">
     <string>Setup image parameters</string>
+   </property>
+  </action>
+  <action name="action_SaveMesh">
+   <property name="text">
+    <string>Save &amp;Mesh...</string>
+   </property>
+   <property name="toolTip">
+    <string>Save current mesh</string>
    </property>
   </action>
  </widget>

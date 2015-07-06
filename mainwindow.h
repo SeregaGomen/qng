@@ -56,6 +56,7 @@ private slots:
     void redo(void);
     void save(void);
     void saveAs(void);
+    void saveMesh(void);
     void startMesh(void);
     void stopMesh(void);
     void refinementMesh(void);

@@ -119,6 +119,7 @@ void MainWindow::initApp(void)
     connect(ui->action_Translate, SIGNAL(triggered(void)), this, SLOT(setTranslate(void)));
     connect(ui->action_Restore, SIGNAL(triggered(void)), this, SLOT(restoreImage(void)));
     connect(ui->action_Parameters, SIGNAL(triggered(void)), this, SLOT(imageParams(void)));
+    connect(ui->action_SaveMesh, SIGNAL(triggered(void)), this, SLOT(saveMesh(void)));
 
     ngObject = new NGInterface();
 
@@ -421,7 +422,7 @@ void MainWindow::checkMenuState(void)
     ui->action_Start->setEnabled(!isUntitled && !isGenMeshStarted);
     ui->action_Stop->setEnabled(!isUntitled && isGenMeshStarted);
     ui->action_Refinement->setEnabled(!isUntitled && isMeshGenerated);
-//    ui->actionSetupImage->setEnabled(!isUntitled && isEnabled);
+    ui->action_SaveMesh->setEnabled(!isUntitled && isMeshGenerated);
 //    ui->actionInfo->setEnabled(!isUntitled);
 //    ui->actionSaveResults->setEnabled(!isUntitled && femObject->isCalculated());
 }
@@ -782,4 +783,16 @@ void MainWindow::imageParams(void)
         qobject_cast<GLWidget*>(tabWidget->currentWidget())->setImageParams(iDlg->getImageParams());
         qobject_cast<GLWidget*>(tabWidget->currentWidget())->repaint();
     }
+}
+
+void MainWindow::saveMesh(void)
+{
+//    QString fileName = QFileDialog::getSaveFileName(this,tr("Saving a mesh"),windowFilePath(),tr("Mesh files (*.vol)"));
+    QFileInfo fi(windowFilePath());
+    QString path = fi.absolutePath() + "/" + fi.baseName() + QString(".vol"),
+            fileName = QFileDialog::getSaveFileName(this,tr("Saving a mesh"),path,tr("Mesh files (*.vol)"));
+
+    if (fileName.isEmpty())
+        return;
+    ngObject->saveMesh(fileName.toStdString());
 }

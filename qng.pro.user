@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 3.4.2, 2015-07-05T17:42:44. -->
+<!-- Written by QtCreator 3.4.2, 2015-07-06T06:25:36. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -301,7 +301,14 @@
     </valuemap>
     <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
     <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
-    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges">
+     <value type="QString">APPDATA=C:\Users\Сергей\AppData\Roaming</value>
+     <value type="QString">HOMEPATH=\Users\Сергей</value>
+     <value type="QString">LOCALAPPDATA=C:\Users\Сергей\AppData\Local</value>
+     <value type="QString">NETGEN_USER_DIR=C:\Users\Сергей\AppData\Roaming\Netgen-6.0</value>
+     <value type="QString">USERPROFILE=C:\Users\Сергей</value>
+     <value type="QString">USERNAME=Сергей</value>
+    </valuelist>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Отладка</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>

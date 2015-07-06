@@ -321,3 +321,8 @@ void NGInterface::refinementMeshCSG(void)
     cout << "Elements after refinement: " << mesh->GetNP() << endl;
     cout << "Points   after refinement: " << mesh->GetNE() << endl;
 }
+
+void NGInterface::saveMesh(string fileName)
+{
+    mesh->Save(fileName);
+}
