@@ -715,17 +715,7 @@ void MainWindow::refinementMesh(void)
 {
     bool isFind = false;
 
-    switch (fType)
-    {
-        case STL:
-            ngObject->refinementMeshSTL();
-            break;
-        case CSG:
-            ngObject->refinementMeshCSG();
-        default:
-            break;
-    }
-
+    ngObject->refinementMesh();
     // Обновление визуализации
     for (int i = 0; i < tabWidget->count(); i++)
         if (tabWidget->tabText(i).replace("&","") == tr("Mesh"))

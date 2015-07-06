@@ -308,16 +308,9 @@ int NGInterface::genMeshCSG(string data)
     return 1;
 }
 
-void NGInterface::refinementMeshSTL(void)
+void NGInterface::refinementMesh(void)
 {
-    ((STLGeometry*)geometry)->GetRefinement().Refine (*mesh);
-    cout << "Elements after refinement: " << mesh->GetNP() << endl;
-    cout << "Points   after refinement: " << mesh->GetNE() << endl;
-}
-
-void NGInterface::refinementMeshCSG(void)
-{
-    ((STLGeometry*)geometry)->GetRefinement().Refine (*mesh);
+    geometry->GetRefinement().Refine (*mesh);
     cout << "Elements after refinement: " << mesh->GetNP() << endl;
     cout << "Points   after refinement: " << mesh->GetNE() << endl;
 }
