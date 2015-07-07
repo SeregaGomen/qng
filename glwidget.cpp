@@ -131,11 +131,11 @@ void GLWidget::setupLightGL(void)
 /*******************************************************************/
 void GLWidget::resizeGL(int width, int height)
 {
-    setupCameraGL(width, height);
     if (params.isLight)
         setupLightGL();
     else
         glEnable(GL_COLOR_MATERIAL);
+    setupCameraGL(width, height);
 }
 /*******************************************************************/
 void GLWidget::mousePressEvent(QMouseEvent *event)
