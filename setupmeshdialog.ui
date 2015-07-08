@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SetupDialog</class>
- <widget class="QDialog" name="SetupDialog">
+ <class>SetupMeshDialog</class>
+ <widget class="QDialog" name="SetupMeshDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -39,7 +39,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -324,7 +324,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_14">
       <item>
-       <widget class="QLineEdit" name="leFacets_2">
+       <widget class="QLineEdit" name="leMin">
         <property name="text">
          <string>0</string>
         </property>
@@ -381,7 +381,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_32">
       <item>
-       <widget class="QLineEdit" name="leFacets_5">
+       <widget class="QLineEdit" name="leMax">
         <property name="text">
          <string>1000</string>
         </property>
@@ -419,7 +419,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_34">
       <item>
-       <widget class="QLineEdit" name="leFacets_6">
+       <widget class="QLineEdit" name="leGrading">
         <property name="text">
          <string>0.3</string>
         </property>
@@ -457,7 +457,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_36">
       <item>
-       <widget class="QSlider" name="horizontalSlider">
+       <widget class="QSlider" name="hsRadius">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -494,12 +494,15 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_37">
       <item>
-       <widget class="QSlider" name="horizontalSlider_2">
+       <widget class="QSlider" name="hsEdge">
         <property name="minimum">
          <number>1</number>
         </property>
         <property name="maximum">
          <number>25</number>
+        </property>
+        <property name="pageStep">
+         <number>5</number>
         </property>
         <property name="value">
          <number>5</number>
@@ -541,7 +544,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_39">
       <item>
-       <widget class="QLabel" name="label_17">
+       <widget class="QLabel" name="laRadius">
         <property name="text">
          <string>2.0</string>
         </property>
@@ -563,7 +566,7 @@
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_40">
       <item>
-       <widget class="QLabel" name="label_18">
+       <widget class="QLabel" name="laEdge">
         <property name="text">
          <string>1.0</string>
         </property>
@@ -582,7 +585,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>SetupDialog</receiver>
+   <receiver>SetupMeshDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -598,7 +601,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>SetupDialog</receiver>
+   <receiver>SetupMeshDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

@@ -65,6 +65,7 @@ private slots:
     void setTranslate(void);
     void restoreImage(void);
     void imageParams(void);
+    void meshParam(void);
 
 private:
     bool isUntitled = true;

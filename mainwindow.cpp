@@ -16,6 +16,7 @@
 #include "mainwindow.h"
 #include "glwidget.h"
 #include "setupimagedialog.h"
+#include "setupmeshdialog.h"
 #include "ui_mainwindow.h"
 
 
@@ -120,6 +121,7 @@ void MainWindow::initApp(void)
     connect(ui->action_Restore, SIGNAL(triggered(void)), this, SLOT(restoreImage(void)));
     connect(ui->action_Parameters, SIGNAL(triggered(void)), this, SLOT(imageParams(void)));
     connect(ui->action_SaveMesh, SIGNAL(triggered(void)), this, SLOT(saveMesh(void)));
+    connect(ui->action_MeshOptions, SIGNAL(triggered(void)), this, SLOT(meshParam(void)));
 
     ngObject = new NGInterface();
 
@@ -773,6 +775,7 @@ void MainWindow::imageParams(void)
         qobject_cast<GLWidget*>(tabWidget->currentWidget())->setImageParams(iDlg->getImageParams());
         qobject_cast<GLWidget*>(tabWidget->currentWidget())->repaint();
     }
+    delete iDlg;
 }
 
 void MainWindow::saveMesh(void)
@@ -785,4 +788,14 @@ void MainWindow::saveMesh(void)
     if (fileName.isEmpty())
         return;
     ngObject->saveMesh(fileName.toStdString());
+}
+
+void MainWindow::meshParam(void)
+{
+    SetupMeshDialog *mDlg = new SetupMeshDialog(this);
+
+    if (mDlg->exec() != QDialog::Accepted)
+        return;
+
+    delete mDlg;
 }
