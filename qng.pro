@@ -170,7 +170,8 @@ SOURCES += main.cpp\
         libsrc/stlgeom/stltool.cpp \
         libsrc/stlgeom/stltopology.cpp \
         nglib/nglib.cpp \
-    setupimagedialog.cpp
+    setupimagedialog.cpp \
+    setupdialog.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -322,11 +323,13 @@ HEADERS  += mainwindow.h \
         libsrc/stlgeom/vsstl.hpp \
         nglib/nglib.h \
     libsrc/include/csgeom.hpp \
-    setupimagedialog.h
+    setupimagedialog.h \
+    setupdialog.h
 
 
 FORMS    += mainwindow.ui \
-    setupimagedialog.ui
+    setupimagedialog.ui \
+    setupdialog.ui
 
 RESOURCES += \
     qng.qrc
