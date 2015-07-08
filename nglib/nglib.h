@@ -12,6 +12,20 @@ namespace netgen
 class NGInterface
 {
 private:
+    bool isCSG = true;
+    double facets = 20;
+    double detail = 0.001;
+    double minX = -1000;
+    double maxX = 1000;
+    double minY = -1000;
+    double maxY = 1000;
+    double minZ = -1000;
+    double maxZ = 1000;
+    double minMeshSize = 0;
+    double maxMeshSize = 1000;
+    double meshSizeGrading = 0.3;
+    double epRadius = 2.0;
+    double epEdge = 1.0;
     NetgenGeometry* geometry = NULL;
     Mesh* mesh = NULL;
     Array<STLReadTriangle> readtrias;
