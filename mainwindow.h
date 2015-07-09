@@ -68,6 +68,7 @@ private slots:
     void meshParam(void);
 
 private:
+    bool isCSG = true;
     bool isUntitled = true;
     bool isGenMeshStarted = false;
     bool isMeshGenerated = false;

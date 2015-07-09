@@ -40,6 +40,24 @@ void SetupMeshDialog::set(bool isCSG,double *params)
     ui->leMin->setText(QString("%1").arg(params[8]));
     ui->leMax->setText(QString("%1").arg(params[9]));
     ui->leGrading->setText(QString("%1").arg(params[10]));
-    ui->hsRadius->setValue(int(params[11]*5);
-    ui->hsEdge->setValue(int(params[12]*5);
+    ui->hsRadius->setValue(int(params[11]*5));
+    ui->hsEdge->setValue(int(params[12]*5));
+}
+
+void SetupMeshDialog::get(bool& isCSG,double *params)
+{
+    isCSG = ui->cbIsCSG->isChecked();
+    params[0] = ui->leFacets->text().toDouble();
+    params[1] = ui->leDetail->text().toDouble();
+    params[2] = ui->leMinX->text().toDouble();
+    params[3] = ui->leMaxX->text().toDouble();
+    params[4] = ui->leMinY->text().toDouble();
+    params[5] = ui->leMaxY->text().toDouble();
+    params[6] = ui->leMinZ->text().toDouble();
+    params[7] = ui->leMaxZ->text().toDouble();
+    params[8] = ui->leMin->text().toDouble();
+    params[9] = ui->leMax->text().toDouble();
+    params[10] = ui->leGrading->text().toDouble();
+    params[11] = double(ui->hsRadius->value())*0.2;
+    params[12] = double(ui->hsEdge->value())*0.2;
 }

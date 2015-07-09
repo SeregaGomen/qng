@@ -12,7 +12,6 @@ namespace netgen
 class NGInterface
 {
 private:
-    bool isCSG = true;
     double facets = 20;
     double detail = 0.001;
     double minX = -1000;
@@ -51,14 +50,6 @@ public:
     Mesh* getMesh(void)
     {
         return mesh;
-    }
-    bool getIsCSG(void)
-    {
-        return isCSG;
-    }
-    void setIsCSG(bool p)
-    {
-        isCSG = p;
     }
     double getFacets(void)
     {

@@ -354,7 +354,8 @@ bool MainWindow::loadCSG(const QString& fileName)
     if (!loadGeometry(fileName))
         return false;
     fType = CSG;
-    showCSG();
+    if (isCSG)
+        showCSG();
     return true;
 }
 
@@ -793,10 +794,39 @@ void MainWindow::saveMesh(void)
 void MainWindow::meshParam(void)
 {
     SetupMeshDialog *mDlg = new SetupMeshDialog(this);
+    double params[13];
 
-    mDlg->set();
+    params[0] = ngObject->getFacets();
+    params[1] = ngObject->getDetail();
+    params[2] = ngObject->getMinX();
+    params[3] = ngObject->getMaxX();
+    params[4] = ngObject->getMinY();
+    params[5] = ngObject->getMaxY();
+    params[6] = ngObject->getMinZ();
+    params[7] = ngObject->getMaxZ();
+    params[8] = ngObject->getMinX();
+    params[9] = ngObject->getMinMeshSize();
+    params[10] = ngObject->getMaxMeshSize();
+    params[11] = ngObject->getEpRadius();
+    params[12] = ngObject->getEpEdge();
+
+    mDlg->set(isCSG,params);
     if (mDlg->exec() != QDialog::Accepted)
         return;
 
+    mDlg->get(isCSG,params);
+    ngObject->setFacets(params[0]);
+    ngObject->setDetail(params[1]);
+    ngObject->setMinX(params[2]);
+    ngObject->setMaxX(params[3]);
+    ngObject->setMinY(params[4]);
+    ngObject->setMaxY(params[5]);
+    ngObject->setMinZ(params[6]);
+    ngObject->setMaxZ(params[7]);
+    ngObject->setMinX(params[8]);
+    ngObject->setMinMeshSize(params[9]);
+    ngObject->setMaxMeshSize(params[10]);
+    ngObject->setEpRadius(params[11]);
+    ngObject->setEpEdge(params[12]);
     delete mDlg;
 }
