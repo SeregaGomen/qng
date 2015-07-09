@@ -14,6 +14,7 @@ class SetupMeshDialog : public QDialog
 public:
     explicit SetupMeshDialog(QWidget *parent = 0);
     ~SetupMeshDialog();
+    void set(bool,double*);
 
 private slots:
     void changeRadius(int);

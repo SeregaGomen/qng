@@ -52,6 +52,118 @@ public:
     {
         return mesh;
     }
+    bool getIsCSG(void)
+    {
+        return isCSG;
+    }
+    void setIsCSG(bool p)
+    {
+        isCSG = p;
+    }
+    double getFacets(void)
+    {
+        return facets;
+    }
+    void setFacets(double p)
+    {
+        facets = p;
+    }
+    double getDetail(void)
+    {
+        return detail;
+    }
+    void setDetail(double p)
+    {
+        detail = p;
+    }
+    double getMinX(void)
+    {
+        return minX;
+    }
+    double getMaxX(void)
+    {
+        return maxX;
+    }
+    void setMinX(double p)
+    {
+        minX = p;
+    }
+    void setMaxX(double p)
+    {
+        maxX = p;
+    }
+    double getMinY(void)
+    {
+        return minY;
+    }
+    double getMaxY(void)
+    {
+        return maxY;
+    }
+    void setMinY(double p)
+    {
+        minY = p;
+    }
+    void setMaxY(double p)
+    {
+        maxY = p;
+    }
+    double getMinZ(void)
+    {
+        return minZ;
+    }
+    double getMaxZ(void)
+    {
+        return maxZ;
+    }
+    void setMinZ(double p)
+    {
+        minZ = p;
+    }
+    void setMaxZ(double p)
+    {
+        maxZ = p;
+    }
+    double getMinMeshSize(void)
+    {
+        return minMeshSize;
+    }
+    void setMinMeshSize(double p)
+    {
+        minMeshSize = p;
+    }
+    double getMaxMeshSize(void)
+    {
+        return maxMeshSize;
+    }
+    void setMaxMeshSize(double p)
+    {
+        maxMeshSize = p;
+    }
+    double getMeshSizeGrading(void)
+    {
+        return meshSizeGrading;
+    }
+    void setMeshSizeGrading(double p)
+    {
+        meshSizeGrading = p;
+    }
+    double getEpRadius(void)
+    {
+        return epRadius;
+    }
+    void setEpRadius(double p)
+    {
+        epRadius = p;
+    }
+    double getEpEdge(void)
+    {
+        return epEdge;
+    }
+    void setEpEdge(double p)
+    {
+        epEdge = p;
+    }
     CSGeometry* getGeometryCSG(void)
     {
         return (CSGeometry*)geometry;

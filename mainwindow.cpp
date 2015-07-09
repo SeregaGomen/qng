@@ -794,6 +794,7 @@ void MainWindow::meshParam(void)
 {
     SetupMeshDialog *mDlg = new SetupMeshDialog(this);
 
+    mDlg->set();
     if (mDlg->exec() != QDialog::Accepted)
         return;
 
