@@ -1,3 +1,4 @@
+#include <QMessageBox>
 #include "setupmeshdialog.h"
 #include "ui_setupmeshdialog.h"
 
@@ -58,4 +59,95 @@ void SetupMeshDialog::get(double *params)
     params[10] = ui->leGrading->text().toDouble();
     params[11] = double(ui->hsRadius->value())*0.2;
     params[12] = double(ui->hsEdge->value())*0.2;
+}
+
+bool SetupMeshDialog::checkValues(void)
+{
+    bool isOk;
+
+    ui->leFacets->text().toDouble(&isOk);
+    if (!isOk)
+    {
+        ui->tabWidget->setCurrentIndex(0);
+        ui->leFacets->setFocus();
+        return false;
+    }
+    ui->leDetail->text().toDouble(&isOk);
+    if (!isOk)
+    {
+        ui->tabWidget->setCurrentIndex(0);
+        ui->leDetail->setFocus();
+        return false;
+    }
+    ui->leMinX->text().toDouble(&isOk);
+    if (!isOk)
+    {
+        ui->tabWidget->setCurrentIndex(0);
+        ui->leMinX->setFocus();
+        return false;
+    }
+    ui->leMaxX->text().toDouble(&isOk);
+    if (!isOk)
+    {
+        ui->tabWidget->setCurrentIndex(0);
+        ui->leMaxX->setFocus();
+        return false;
+    }
+    ui->leMinY->text().toDouble(&isOk);
+    if (!isOk)
+    {
+        ui->tabWidget->setCurrentIndex(0);
+        ui->leMinY->setFocus();
+        return false;
+    }
+    ui->leMaxY->text().toDouble(&isOk);
+    if (!isOk)
+    {
+        ui->tabWidget->setCurrentIndex(0);
+        ui->leMaxY->setFocus();
+        return false;
+    }
+    ui->leMinZ->text().toDouble(&isOk);
+    if (!isOk)
+    {
+        ui->tabWidget->setCurrentIndex(0);
+        ui->leMinZ->setFocus();
+        return false;
+    }
+    ui->leMaxZ->text().toDouble(&isOk);
+    if (!isOk)
+    {
+        ui->tabWidget->setCurrentIndex(0);
+        ui->leMaxZ->setFocus();
+        return false;
+    }
+    ui->leMin->text().toDouble(&isOk);
+    if (!isOk)
+    {
+        ui->tabWidget->setCurrentIndex(1);
+        ui->leMin->setFocus();
+        return false;
+    }
+    ui->leMax->text().toDouble(&isOk);
+    if (!isOk)
+    {
+        ui->tabWidget->setCurrentIndex(1);
+        ui->leMax->setFocus();
+        return false;
+    }
+    ui->leGrading->text().toDouble(&isOk);
+    if (!isOk)
+    {
+        ui->tabWidget->setCurrentIndex(1);
+        ui->leGrading->setFocus();
+    }
+    return isOk;
+}
+
+void SetupMeshDialog::accept(void)
+{
+    if (checkValues())
+        QDialog::accept();
+    else
+        QMessageBox::information(this, tr("Error"), tr("Error floating value"));
 }

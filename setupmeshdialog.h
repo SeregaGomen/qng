@@ -11,6 +11,9 @@ class SetupMeshDialog : public QDialog
 {
     Q_OBJECT
 
+public slots:
+    void accept(void);
+
 public:
     explicit SetupMeshDialog(QWidget *parent = 0);
     ~SetupMeshDialog();
@@ -23,6 +26,7 @@ private slots:
 
 private:
     Ui::SetupMeshDialog *ui;
+    bool checkValues(void);
 };
 
 #endif // SETUPMESHDIALOG_H

@@ -12,8 +12,9 @@ CSGeometry* NGInterface::loadCSG(string data)
 {
     strstream in;
     CSGeometry *geom;
-    double detail = 0.001,
-           facets = 20;
+    Point<3> pmin(minX,minY,minZ),
+             pmax(maxX,maxY,maxZ);
+    Box<3> box(pmin,pmax);
 
     in << data;
     geom = ParseCSG(in);
@@ -21,6 +22,7 @@ CSGeometry* NGInterface::loadCSG(string data)
         cout << "geo-file should start with 'algebraic3d'" << endl;
     else
         geom->FindIdenticSurfaces(1e-8*geom->MaxSize());
+    geom->SetBoundingBox(box);
     geom->CalcTriangleApproximation(detail,facets);
     return (CSGeometry*)(geometry = geom);
 }
