@@ -26,9 +26,8 @@ void SetupMeshDialog::changeEdge(int pos)
     ui->laEdge->setText(tr("%1").arg(float(pos)*0.2,3,'f',1));
 }
 
-void SetupMeshDialog::set(bool isCSG,double *params)
+void SetupMeshDialog::set(double *params)
 {
-    ui->cbIsCSG->setChecked(isCSG);
     ui->leFacets->setText(QString("%1").arg(params[0]));
     ui->leDetail->setText(QString("%1").arg(params[1]));
     ui->leMinX->setText(QString("%1").arg(params[2]));
@@ -44,9 +43,8 @@ void SetupMeshDialog::set(bool isCSG,double *params)
     ui->hsEdge->setValue(int(params[12]*5));
 }
 
-void SetupMeshDialog::get(bool& isCSG,double *params)
+void SetupMeshDialog::get(double *params)
 {
-    isCSG = ui->cbIsCSG->isChecked();
     params[0] = ui->leFacets->text().toDouble();
     params[1] = ui->leDetail->text().toDouble();
     params[2] = ui->leMinX->text().toDouble();

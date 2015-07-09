@@ -45,27 +45,11 @@
     <attribute name="title">
      <string>CSG</string>
     </attribute>
-    <widget class="QCheckBox" name="cbIsCSG">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>151</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Draw CSG geometry</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QWidget" name="horizontalLayoutWidget">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>40</y>
+       <y>10</y>
        <width>81</width>
        <height>31</height>
       </rect>
@@ -84,7 +68,7 @@
      <property name="geometry">
       <rect>
        <x>90</x>
-       <y>40</y>
+       <y>10</y>
        <width>61</width>
        <height>34</height>
       </rect>
@@ -103,7 +87,7 @@
      <property name="geometry">
       <rect>
        <x>90</x>
-       <y>70</y>
+       <y>40</y>
        <width>61</width>
        <height>34</height>
       </rect>
@@ -122,7 +106,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>70</y>
+       <y>40</y>
        <width>81</width>
        <height>31</height>
       </rect>
@@ -141,7 +125,7 @@
      <property name="geometry">
       <rect>
        <x>90</x>
-       <y>110</y>
+       <y>90</y>
        <width>61</width>
        <height>34</height>
       </rect>
@@ -160,7 +144,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>110</y>
+       <y>90</y>
        <width>81</width>
        <height>31</height>
       </rect>
@@ -179,7 +163,7 @@
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>110</y>
+       <y>90</y>
        <width>61</width>
        <height>34</height>
       </rect>
@@ -198,7 +182,7 @@
      <property name="geometry">
       <rect>
        <x>90</x>
-       <y>140</y>
+       <y>120</y>
        <width>61</width>
        <height>34</height>
       </rect>
@@ -217,7 +201,7 @@
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>140</y>
+       <y>120</y>
        <width>61</width>
        <height>34</height>
       </rect>
@@ -236,7 +220,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>140</y>
+       <y>120</y>
        <width>81</width>
        <height>31</height>
       </rect>
@@ -255,7 +239,7 @@
      <property name="geometry">
       <rect>
        <x>90</x>
-       <y>170</y>
+       <y>150</y>
        <width>61</width>
        <height>34</height>
       </rect>
@@ -274,7 +258,7 @@
      <property name="geometry">
       <rect>
        <x>150</x>
-       <y>170</y>
+       <y>150</y>
        <width>61</width>
        <height>34</height>
       </rect>
@@ -293,7 +277,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>170</y>
+       <y>150</y>
        <width>81</width>
        <height>31</height>
       </rect>

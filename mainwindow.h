@@ -66,9 +66,10 @@ private slots:
     void restoreImage(void);
     void imageParams(void);
     void meshParam(void);
+    void isShowModel(void);
 
 private:
-    bool isCSG = true;
+    bool isModel = true;
     bool isUntitled = true;
     bool isGenMeshStarted = false;
     bool isMeshGenerated = false;

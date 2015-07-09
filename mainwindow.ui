@@ -24,7 +24,7 @@
      <x>0</x>
      <y>0</y>
      <width>823</width>
-     <height>21</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
@@ -77,6 +77,7 @@
      <string>&amp;Setup</string>
     </property>
     <addaction name="action_Terminal"/>
+    <addaction name="action_ShowModel"/>
    </widget>
    <widget class="QMenu" name="menu_View">
     <property name="title">
@@ -503,6 +504,20 @@
    </property>
    <property name="toolTip">
     <string>Save current mesh</string>
+   </property>
+  </action>
+  <action name="action_ShowModel">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show &amp;Model</string>
+   </property>
+   <property name="toolTip">
+    <string>Show model</string>
    </property>
   </action>
  </widget>

@@ -122,6 +122,7 @@ void MainWindow::initApp(void)
     connect(ui->action_Parameters, SIGNAL(triggered(void)), this, SLOT(imageParams(void)));
     connect(ui->action_SaveMesh, SIGNAL(triggered(void)), this, SLOT(saveMesh(void)));
     connect(ui->action_MeshOptions, SIGNAL(triggered(void)), this, SLOT(meshParam(void)));
+    connect(ui->action_ShowModel, SIGNAL(triggered(void)), this, SLOT(isShowModel(void)));
 
     ngObject = new NGInterface();
 
@@ -354,7 +355,7 @@ bool MainWindow::loadCSG(const QString& fileName)
     if (!loadGeometry(fileName))
         return false;
     fType = CSG;
-    if (isCSG)
+    if (isModel)
         showCSG();
     return true;
 }
@@ -364,7 +365,8 @@ bool MainWindow::loadSTL(const QString& fileName)
     if (!loadGeometry(fileName))
         return false;
     fType = STL;
-    showSTL();
+    if (isModel)
+        showSTL();
     return true;
 }
 
@@ -810,11 +812,11 @@ void MainWindow::meshParam(void)
     params[11] = ngObject->getEpRadius();
     params[12] = ngObject->getEpEdge();
 
-    mDlg->set(isCSG,params);
+    mDlg->set(params);
     if (mDlg->exec() != QDialog::Accepted)
         return;
 
-    mDlg->get(isCSG,params);
+    mDlg->get(params);
     ngObject->setFacets(params[0]);
     ngObject->setDetail(params[1]);
     ngObject->setMinX(params[2]);
@@ -829,4 +831,25 @@ void MainWindow::meshParam(void)
     ngObject->setEpRadius(params[11]);
     ngObject->setEpEdge(params[12]);
     delete mDlg;
+}
+
+void MainWindow::isShowModel(void)
+{
+    isModel = !isModel;
+    ui->action_ShowModel->setChecked(isModel);
+
+    if (isModel)
+    {
+        if (fType == CSG)
+            showCSG();
+        else if (fType == STL)
+            showSTL();
+    }
+    else
+        for (int i = 0; i < tabWidget->count(); i++)
+            if (tabWidget->tabText(i).replace("&","") == tr("Model"))
+            {
+                closeTab(i);
+                break;
+            }
 }
