@@ -806,9 +806,9 @@ void MainWindow::meshParam(void)
     params[5] = ngObject->getMaxY();
     params[6] = ngObject->getMinZ();
     params[7] = ngObject->getMaxZ();
-    params[8] = ngObject->getMinX();
-    params[9] = ngObject->getMinMeshSize();
-    params[10] = ngObject->getMaxMeshSize();
+    params[8] = ngObject->getMinMeshSize();
+    params[9] = ngObject->getMaxMeshSize();
+    params[10] = ngObject->getMeshSizeGrading();
     params[11] = ngObject->getEpRadius();
     params[12] = ngObject->getEpEdge();
 
@@ -825,9 +825,9 @@ void MainWindow::meshParam(void)
     ngObject->setMaxY(params[5]);
     ngObject->setMinZ(params[6]);
     ngObject->setMaxZ(params[7]);
-    ngObject->setMinX(params[8]);
-    ngObject->setMinMeshSize(params[9]);
-    ngObject->setMaxMeshSize(params[10]);
+    ngObject->setMinMeshSize(params[8]);
+    ngObject->setMaxMeshSize(params[9]);
+    ngObject->setMeshSizeGrading(params[10]);
     ngObject->setEpRadius(params[11]);
     ngObject->setEpEdge(params[12]);
     delete mDlg;
