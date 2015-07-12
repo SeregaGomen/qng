@@ -123,12 +123,17 @@ void MainWindow::initApp(void)
     connect(ui->action_SaveMesh, SIGNAL(triggered(void)), this, SLOT(saveMesh(void)));
     connect(ui->action_MeshOptions, SIGNAL(triggered(void)), this, SLOT(meshParam(void)));
     connect(ui->action_ShowModel, SIGNAL(triggered(void)), this, SLOT(isShowModel(void)));
+    connect(ui->action_Close, SIGNAL(triggered(void)), this, SLOT(closeDoc(void)));
 
     ngObject = new NGInterface();
 
     checkMenuState();
 }
 
+void MainWindow::closeDoc(void)
+{
+    closeTab(0);
+}
 
 void MainWindow::setupRecentActions(void)
 {
@@ -264,6 +269,8 @@ void MainWindow::loadFile(const QString& fileName)
         isOk = loadCSG(fileName);
     else if (QFileInfo(fileName).completeSuffix().toUpper() == "STL")
         isOk = loadSTL(fileName);
+    else if (QFileInfo(fileName).completeSuffix().toUpper() == "VOL")
+        isOk = loadVOL(fileName);
 
     if (isOk)
     {
@@ -350,6 +357,12 @@ bool MainWindow::loadGeometry(const QString& fileName)
     return true;
 }
 
+bool MainWindow::loadMesh(const QString& fileName)
+{
+    ngObject->loadMesh(fileName.toStdString());
+    return (ngObject->getMesh()) ? true : false;
+}
+
 bool MainWindow::loadCSG(const QString& fileName)
 {
     if (!loadGeometry(fileName))
@@ -370,9 +383,21 @@ bool MainWindow::loadSTL(const QString& fileName)
     return true;
 }
 
+bool MainWindow::loadVOL(const QString& fileName)
+{
+    if (!loadMesh(fileName))
+        return false;
+    fType = VOL;
+    tabWidget->addTab(new GLWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
+    tabWidget->setCurrentIndex(tabWidget->count() - 1);
+
+    return true;
+}
+
+
 void MainWindow::openDocument(void)
 {
-    QString fileName = QFileDialog::getOpenFileName(this,tr("Opening a geometry"),windowFilePath(),tr("NETGEN Geometry files (*.geo);; STL files (*.stl);; All files (*.*)"));
+    QString fileName = QFileDialog::getOpenFileName(this,tr("Opening a geometrical model"),windowFilePath(),tr("Netgen Geometry files (*.geo);; STL files (*.stl);; Netgen Mesh files (*.vol);; All files (*.*)"));
 
     if (!fileName.isEmpty())
         loadFile(fileName);
@@ -416,7 +441,7 @@ void MainWindow::checkMenuState(void)
     ui->action_SelectAll->setEnabled(isEditor);
     ui->action_Paste->setEnabled(isPaste);
     ui->action_Close->setEnabled(!isUntitled);
-    ui->action_SaveAs->setEnabled(!isUntitled);
+    ui->action_SaveAs->setEnabled(!isUntitled && fType != VOL);
 
     ui->action_Rotate->setEnabled(!isUntitled && isGL);
     ui->action_Scale->setEnabled(!isUntitled && isGL);
@@ -424,7 +449,7 @@ void MainWindow::checkMenuState(void)
     ui->action_Restore->setEnabled(!isUntitled && isGL);
     ui->action_Parameters->setEnabled(!isUntitled && isGL);
 
-    ui->action_Start->setEnabled(!isUntitled && !isGenMeshStarted);
+    ui->action_Start->setEnabled(!isUntitled && !isGenMeshStarted && fType != VOL);
     ui->action_Stop->setEnabled(!isUntitled && isGenMeshStarted);
     ui->action_Refinement->setEnabled(!isUntitled && isMeshGenerated);
     ui->action_SaveMesh->setEnabled(!isUntitled && isMeshGenerated);

@@ -169,6 +169,7 @@ public:
     void getTriangleSTL(int,int,double*);
     void refinementMesh(void);
     void saveMesh(string);
+    void loadMesh(string);
     int genMeshSTL(string);
     int genMeshCSG(string);
     int initSTL(void);

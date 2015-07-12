@@ -346,3 +346,9 @@ void NGInterface::saveMesh(string fileName)
 {
     mesh->Save(fileName);
 }
+
+void NGInterface::loadMesh(string fileName)
+{
+    mesh = new Mesh();
+    mesh->Load(fileName);
+}

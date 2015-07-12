@@ -14,7 +14,7 @@ QT_END_NAMESPACE
 
 
 typedef enum { EN = 0, RU = 1 } Lang;
-typedef enum { EMPTY = 0, CSG = 1, STL = 2 } FileType;
+typedef enum { EMPTY = 0, CSG = 1, STL = 2, VOL = 3 } FileType;
 
 const int maxRecentFiles = 5;
 
@@ -86,6 +86,7 @@ private slots:
     void imageParams(void);
     void meshParam(void);
     void isShowModel(void);
+    void closeDoc(void);
 
 private:
     bool isModel = true;
@@ -123,9 +124,11 @@ private:
     void genMeshCSG(void);
     void showSTL(void);
     void showCSG(void);
+    bool loadMesh(const QString &);
     bool loadGeometry(const QString &);
     bool loadCSG(const QString &);
     bool loadSTL(const QString &);
+    bool loadVOL(const QString &);
     bool canClose(void);
 };
 
