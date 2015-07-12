@@ -74,38 +74,49 @@ int NGInterface::genMeshSTL(string data)
 
 
     // Set the Meshing Parameters to be used
-    mparam.maxh = 1.0e+6;
+    mparam.maxh = maxMeshSize;
+    mparam.minh = minMeshSize;
+    mparam.segmentsperedge = epEdge;
+    mparam.curvaturesafety = epRadius;
+    mparam.grading = meshSizeGrading;
 //    mparam.fineness = 0.4;
 //    mparam.second_order = 0;
 
-    cout << "Initialise the STL Geometry structure...." << endl;
-    if (!initSTL())
+    try
     {
-        cout << "Error Initialising the STL Geometry....Aborting!!" << endl;
+        cout << "Initialise the STL Geometry structure...." << endl;
+        if (!initSTL())
+        {
+            cout << "Error Initialising the STL Geometry....Aborting!!" << endl;
+            return 0;
+        }
+
+        cout << "Start Edge Meshing...." << endl;
+        if (!makeEdgesSTL())
+        {
+            cout << "Error in Edge Meshing....Aborting!!" << endl;
+            return 0;
+        }
+
+        cout << "Start Surface Meshing...." << endl;
+        if (!generateSurfaceMeshSTL())
+        {
+            cout << "Error in Surface Meshing....Aborting!!" << endl;
+            return 0;
+        }
+
+        cout << "Start Volume Meshing...." << endl;
+        if(!generateVolumeMesh())
+        {
+            cout << "Error in Volume Meshing....Aborting!!" << endl;
+            return 0;
+        }
+    }
+    catch (...)
+    {
+        cerr << "Meshing error!" << endl;
         return 0;
     }
-
-    cout << "Start Edge Meshing...." << endl;
-    if (!makeEdgesSTL())
-    {
-        cout << "Error in Edge Meshing....Aborting!!" << endl;
-        return 0;
-    }
-
-    cout << "Start Surface Meshing...." << endl;
-    if (!generateSurfaceMeshSTL())
-    {
-        cout << "Error in Surface Meshing....Aborting!!" << endl;
-        return 0;
-    }
-
-    cout << "Start Volume Meshing...." << endl;
-    if(!generateVolumeMesh())
-    {
-        cout << "Error in Volume Meshing....Aborting!!" << endl;
-        return 0;
-    }
-
     cout << "Meshing successfully completed....!!" << endl;
 
     // volume mesh output
@@ -294,8 +305,22 @@ int NGInterface::genMeshCSG(string data)
         return 0;
     }
     cout << "Successfully loaded CSG data" << endl;
+
+    mparam.maxh = maxMeshSize;
+    mparam.minh = minMeshSize;
+    mparam.segmentsperedge = epEdge;
+    mparam.curvaturesafety = epRadius;
+    mparam.grading = meshSizeGrading;
 //    mparam.maxh = 0.05;
-    ((CSGeometry*)geometry)->GenerateMesh(s_ptr,mparam,1,10);
+    try
+    {
+        ((CSGeometry*)geometry)->GenerateMesh(s_ptr,mparam,1,10);
+    }
+    catch (...)
+    {
+        cerr << "Meshing error!" << endl;
+        return 0;
+    }
 
     new shared_ptr<Mesh> (s_ptr);  // hack to keep mesh m alive
 

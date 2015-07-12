@@ -622,7 +622,7 @@ void MainWindow::genMeshSTL(void)
         if (tabWidget->tabText(i).replace("&","") == tr("Mesh"))
         {
             isFind = true;
-            tabWidget->widget(i)->repaint();
+            qobject_cast<GLWidget*>(tabWidget->widget(i))->repaint();
             tabWidget->setCurrentIndex(i);
             break;
         }
@@ -680,7 +680,7 @@ void MainWindow::genMeshCSG(void)
         if (tabWidget->tabText(i).replace("&","") == tr("Mesh"))
         {
             isFind = true;
-            tabWidget->widget(i)->repaint();
+            qobject_cast<GLWidget*>(tabWidget->widget(i))->repaint();
             tabWidget->setCurrentIndex(i);
             break;
         }
