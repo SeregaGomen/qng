@@ -591,6 +591,10 @@ void MainWindow::startMesh(void)
     bool isFind = false;
 
 
+    pb->setMinimum(0);
+    pb->setMaximum(0);
+    pb->setValue(0);
+    pb->show();
     ui->action_Start->setEnabled(false);
     ui->action_Stop->setEnabled(true);
     isGenMeshStarted = true;
@@ -603,6 +607,7 @@ void MainWindow::startMesh(void)
             thread->terminate();
         QCoreApplication::processEvents();
     }
+    pb->hide();
 
     if (isGenMeshCanceled)
         cerr << endl << tr("Process aborted by user!").toStdString().c_str() << endl;
