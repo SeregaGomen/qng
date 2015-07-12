@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QThread>
 #include "qstdredirector.h"
 #include "nglib.h"
 
@@ -20,6 +21,24 @@ const int maxRecentFiles = 5;
 namespace Ui {
 class MainWindow;
 }
+
+class QNGThread : public QThread
+{
+private:
+    NGInterface *ngObject;
+    FileType fType;
+    string geomData;
+    bool isGenerated = true;
+protected:
+    void run(void);
+public:
+    QNGThread(NGInterface *p,FileType t,string g) : ngObject(p), fType(t), geomData(g), QThread() {}
+    ~QNGThread(void) {}
+    bool getIsGenerated(void)
+    {
+        return isGenerated;
+    }
+};
 
 class MainWindow : public QMainWindow
 {
@@ -72,6 +91,7 @@ private:
     bool isModel = true;
     bool isUntitled = true;
     bool isGenMeshStarted = false;
+    bool isGenMeshCanceled = false;
     bool isMeshGenerated = false;
     FileType fType = EMPTY;
     Ui::MainWindow *ui;

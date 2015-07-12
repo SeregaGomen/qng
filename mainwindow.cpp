@@ -587,35 +587,35 @@ bool MainWindow::canClose(void)
 
 void MainWindow::startMesh(void)
 {
-    ui->action_Stop->setEnabled(true);
-    isGenMeshStarted = true;
-    switch (fType)
-    {
-        case STL:
-            genMeshSTL();
-            break;
-        case CSG:
-            genMeshCSG();
-        default:
-            break;
-    }
-    isGenMeshStarted = false;
-    ui->action_Stop->setEnabled(false);
-    checkMenuState();
-}
-
-void MainWindow::stopMesh(void)
-{
-
-}
-
-void MainWindow::genMeshSTL(void)
-{
+    QNGThread *thread = new QNGThread(ngObject,fType,qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
     bool isFind = false;
 
-    if (!ngObject->genMeshSTL(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString()))
+
+    ui->action_Start->setEnabled(false);
+    ui->action_Stop->setEnabled(true);
+    isGenMeshStarted = true;
+    isGenMeshCanceled = false;
+
+    thread->start();
+    while (thread->isRunning())
+    {
+        if (isGenMeshCanceled)
+            thread->terminate();
+        QCoreApplication::processEvents();
+    }
+
+    if (isGenMeshCanceled)
+        cerr << endl << tr("Process aborted by user!").toStdString().c_str() << endl;
+
+    isMeshGenerated = thread->getIsGenerated();
+    isGenMeshStarted = isGenMeshCanceled = false;
+    ui->action_Stop->setEnabled(false);
+    ui->action_Start->setEnabled(true);
+    checkMenuState();
+    delete thread;
+
+    if (!isMeshGenerated)
         return;
-    isMeshGenerated = true;
 
     // Обновление визуализации
     for (int i = 0; i < tabWidget->count(); i++)
@@ -633,7 +633,16 @@ void MainWindow::genMeshSTL(void)
     }
 
 
-//    Ng_SaveMesh(mesh,"test_ref.vol");
+}
+
+void MainWindow::stopMesh(void)
+{
+    isGenMeshCanceled = true;
+}
+
+void MainWindow::genMeshSTL(void)
+{
+    isMeshGenerated = (ngObject->genMeshSTL(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString())) ? true : false;
 }
 
 void MainWindow::showSTL(void)
@@ -669,26 +678,7 @@ void MainWindow::showSTL(void)
 
 void MainWindow::genMeshCSG(void)
 {
-    bool isFind = false;
-
-    if (!ngObject->genMeshCSG(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString()))
-        return;
-    isMeshGenerated = true;
-
-    // Обновление визуализации
-    for (int i = 0; i < tabWidget->count(); i++)
-        if (tabWidget->tabText(i).replace("&","") == tr("Mesh"))
-        {
-            isFind = true;
-            qobject_cast<GLWidget*>(tabWidget->widget(i))->repaint();
-            tabWidget->setCurrentIndex(i);
-            break;
-        }
-    if (!isFind)
-    {
-        tabWidget->addTab(new GLWidget(ngObject,MESH_MODEL,this),tr("Mesh"));
-        tabWidget->setCurrentIndex(tabWidget->count() - 1);
-    }
+    isMeshGenerated = (ngObject->genMeshCSG(qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString())) ? true : false;
 }
 
 void MainWindow::showCSG(void)
@@ -852,4 +842,20 @@ void MainWindow::isShowModel(void)
                 closeTab(i);
                 break;
             }
+}
+
+// Запуск расчета
+void QNGThread::run(void)
+{
+    isGenerated = false;
+    switch (fType)
+    {
+        case STL:
+            isGenerated = (ngObject->genMeshSTL(geomData)) ? true : false;
+            break;
+        case CSG:
+            isGenerated = (ngObject->genMeshCSG(geomData)) ? true : false;
+        default:
+            break;
+    }
 }
