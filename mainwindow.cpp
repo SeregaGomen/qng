@@ -559,6 +559,7 @@ void MainWindow::newCSG(void)
 {
     if (!closeTab(0))
         return;
+    isUntitled = false;
     fType = CSG;
     tabWidget->insertTab(0,new QTextEdit(this),tr("Geometry"));
     tabWidget->setTabsClosable(true);
@@ -574,6 +575,7 @@ void MainWindow::newSTL(void)
 {
     if (!closeTab(0))
         return;
+    isUntitled = false;
     fType = STL;
     tabWidget->insertTab(0,new QTextEdit(this),tr("Geometry"));
     tabWidget->setTabsClosable(true);

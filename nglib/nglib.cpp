@@ -17,9 +17,21 @@ CSGeometry* NGInterface::loadCSG(string data)
     Box<3> box(pmin,pmax);
 
     in << data;
-    geom = ParseCSG(in);
+    try
+    {
+        geom = ParseCSG(in);
+    }
+    catch(...)
+    {
+        cerr << "Problem in CSG-file!" << endl;
+        return NULL;
+    }
+
     if (!geom)
+    {
         cout << "geo-file should start with 'algebraic3d'" << endl;
+        return NULL;
+    }
     else
         geom->FindIdenticSurfaces(1e-8*geom->MaxSize());
     geom->SetBoundingBox(box);
@@ -40,8 +52,20 @@ STLGeometry* NGInterface::loadSTL(string data)
            n[3];
 
     ist << data;
-    geo = geom.Load(ist);
-
+    try
+    {
+        geo = geom.Load(ist);
+    }
+    catch (...)
+    {
+        cerr << "Problem in STL-file!" << endl;
+        return NULL;
+    }
+    if (!geo->GetNT())
+    {
+        cerr << "Problem in STL-file!" << endl;
+        return NULL;
+    }
     readtrias.SetSize(0);
     readedges.SetSize(0);
     for (int i = 1; i <= geo->GetNT(); i++)
