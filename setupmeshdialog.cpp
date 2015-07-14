@@ -8,8 +8,16 @@ SetupMeshDialog::SetupMeshDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->hsRadius, SIGNAL(valueChanged  (int)),this, SLOT(changeRadius(int)));
-    connect(ui->hsEdge, SIGNAL(valueChanged  (int)),this, SLOT(changeEdge(int)));
+    connect(ui->hsRadius, SIGNAL(valueChanged(int)),this, SLOT(changeRadius(int)));
+    connect(ui->hsEdge, SIGNAL(valueChanged(int)),this, SLOT(changeEdge(int)));
+    connect(ui->hsChartDist, SIGNAL(valueChanged(int)),this, SLOT(changeChartDist(int)));
+    connect(ui->hsLineLength, SIGNAL(valueChanged(int)),this, SLOT(changeLineLength(int)));
+
+    connect(ui->hsCloseEdges, SIGNAL(valueChanged(int)),this, SLOT(changeCloseEdges(int)));
+    connect(ui->hsSurfaceCurvature, SIGNAL(valueChanged(int)),this, SLOT(changeSurfaceCurvature(int)));
+    connect(ui->hsEdgeAngle, SIGNAL(valueChanged(int)),this, SLOT(changeEdgeAngle(int)));
+    connect(ui->hsSurfaceMeshCurv, SIGNAL(valueChanged(int)),this, SLOT(changeSurfaceMeshCurv(int)));
+
 }
 
 SetupMeshDialog::~SetupMeshDialog()
@@ -27,6 +35,36 @@ void SetupMeshDialog::changeEdge(int pos)
     ui->laEdge->setText(tr("%1").arg(float(pos)*0.2,3,'f',1));
 }
 
+void SetupMeshDialog::changeChartDist(int pos)
+{
+    ui->laChartDistance->setText(tr("%1").arg(float(pos)*0.2,3,'f',1));
+}
+
+void SetupMeshDialog::changeLineLength(int pos)
+{
+    ui->laLineLength->setText(tr("%1").arg(float(pos)*0.2,3,'f',1));
+}
+
+void SetupMeshDialog::changeCloseEdges(int pos)
+{
+    ui->laCloseEdges->setText(tr("%1").arg(float(pos)*0.2,3,'f',1));
+}
+
+void SetupMeshDialog::changeSurfaceCurvature(int pos)
+{
+    ui->laSurfaceCurvature->setText(tr("%1").arg(float(pos)*0.2,3,'f',1));
+}
+
+void SetupMeshDialog::changeEdgeAngle(int pos)
+{
+    ui->laEdgeAngle->setText(tr("%1").arg(float(pos)*0.2,3,'f',1));
+}
+
+void SetupMeshDialog::changeSurfaceMeshCurv(int pos)
+{
+    ui->laSurfaceMeshCurv->setText(tr("%1").arg(float(pos)*0.2,3,'f',1));
+}
+
 void SetupMeshDialog::set(double *params)
 {
     ui->leFacets->setText(QString("%1").arg(params[0]));
@@ -42,6 +80,13 @@ void SetupMeshDialog::set(double *params)
     ui->leGrading->setText(QString("%1").arg(params[10]));
     ui->hsRadius->setValue(int(params[11]*5));
     ui->hsEdge->setValue(int(params[12]*5));
+
+    ui->hsChartDist->setValue(int(params[13]*5));
+    ui->hsLineLength->setValue(int(params[14]*5));
+    ui->hsCloseEdges->setValue(int(params[15]*5));
+    ui->hsSurfaceCurvature->setValue(int(params[16]*5));
+    ui->hsEdgeAngle->setValue(int(params[17]*5));
+    ui->hsSurfaceMeshCurv->setValue(int(params[18]*5));
 }
 
 void SetupMeshDialog::get(double *params)
@@ -59,6 +104,13 @@ void SetupMeshDialog::get(double *params)
     params[10] = ui->leGrading->text().toDouble();
     params[11] = double(ui->hsRadius->value())*0.2;
     params[12] = double(ui->hsEdge->value())*0.2;
+
+    params[13] = double(ui->hsChartDist->value())*0.2;
+    params[14] = double(ui->hsLineLength->value())*0.2;
+    params[15] = double(ui->hsCloseEdges->value())*0.2;
+    params[16] = double(ui->hsSurfaceCurvature->value())*0.2;
+    params[17] = double(ui->hsEdgeAngle->value())*0.2;
+    params[18] = double(ui->hsSurfaceMeshCurv->value())*0.2;
 }
 
 bool SetupMeshDialog::checkValues(void)

@@ -1,3 +1,4 @@
+#include <QTimer>
 #include <QDebug>
 #include <QClipboard>
 #include <QLibraryInfo>
@@ -612,11 +613,21 @@ bool MainWindow::canClose(void)
     return true;
 }
 
+
+void MainWindow::updateTimer(void)
+{
+    pb->update();
+    QCoreApplication::processEvents();
+}
+
 void MainWindow::startMesh(void)
 {
+//    QTimer *timer = new QTimer(this);
     QNGThread *thread = new QNGThread(ngObject,fType,qobject_cast<QTextEdit*>(tabWidget->widget(0))->toPlainText().toStdString());
     bool isFind = false;
 
+//    connect(timer, SIGNAL(timeout()), this, SLOT(updateTimer()));
+//    timer->start(100);
 
     pb->setMinimum(0);
     pb->setMaximum(0);
@@ -635,6 +646,7 @@ void MainWindow::startMesh(void)
         QCoreApplication::processEvents();
     }
     pb->hide();
+//    timer->stop();
 
     if (isGenMeshCanceled)
         cerr << endl << tr("Process aborted by user!").toStdString().c_str() << endl;
@@ -645,6 +657,7 @@ void MainWindow::startMesh(void)
     ui->action_Start->setEnabled(true);
     checkMenuState();
     delete thread;
+//    delete timer;
 
     if (!isMeshGenerated)
         return;
@@ -818,7 +831,7 @@ void MainWindow::saveMesh(void)
 void MainWindow::meshParam(void)
 {
     SetupMeshDialog *mDlg = new SetupMeshDialog(this);
-    double params[13];
+    double params[19];
 
     params[0] = ngObject->getFacets();
     params[1] = ngObject->getDetail();
@@ -833,6 +846,12 @@ void MainWindow::meshParam(void)
     params[10] = ngObject->getMeshSizeGrading();
     params[11] = ngObject->getEpRadius();
     params[12] = ngObject->getEpEdge();
+    params[13] = ngObject->getChartDist();
+    params[14] = ngObject->getLineLength();
+    params[15] = ngObject->getCloseEdges();
+    params[16] = ngObject->getSurfaceCurvature();
+    params[17] = ngObject->getEdgeAngle();
+    params[18] = ngObject->getSurfaceMeshCurv();
 
     mDlg->set(params);
     if (mDlg->exec() != QDialog::Accepted)
@@ -852,6 +871,14 @@ void MainWindow::meshParam(void)
     ngObject->setMeshSizeGrading(params[10]);
     ngObject->setEpRadius(params[11]);
     ngObject->setEpEdge(params[12]);
+    ngObject->setChartDist(params[13]);
+    ngObject->setLineLength(params[14]);
+    ngObject->setCloseEdges(params[15]);
+    ngObject->setSurfaceCurvature(params[16]);
+    ngObject->setEdgeAngle(params[17]);
+    ngObject->setSurfaceMeshCurv(params[18]);
+
+
     delete mDlg;
 }
 

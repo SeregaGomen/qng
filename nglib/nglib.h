@@ -12,7 +12,7 @@ namespace netgen
 class NGInterface
 {
 private:
-    double facets = 20;
+    double facets = 20.0;
     double detail = 0.001;
     double minX = -1000;
     double maxX = 1000;
@@ -25,6 +25,12 @@ private:
     double meshSizeGrading = 0.3;
     double epRadius = 2.0;
     double epEdge = 1.0;
+    double chartDist = 1.6;
+    double lineLength = 0.6;
+    double closeEdges = 2.0;
+    double surfaceCurvature = 1.0;
+    double edgeAngle = 1.0;
+    double surfaceMeshCurv = 2.0;
     NetgenGeometry* geometry = NULL;
     Mesh* mesh = NULL;
     Array<STLReadTriangle> readtrias;
@@ -154,6 +160,55 @@ public:
     void setEpEdge(double p)
     {
         epEdge = p;
+    }
+
+    double getChartDist(void)
+    {
+        return chartDist;
+    }
+    void setChartDist(double p)
+    {
+        chartDist = p;
+    }
+    double getLineLength(void)
+    {
+        return lineLength;
+    }
+    void setLineLength(double p)
+    {
+        lineLength = p;
+    }
+    double getCloseEdges(void)
+    {
+        return closeEdges;
+    }
+    void setCloseEdges(double p)
+    {
+        closeEdges = p;
+    }
+    double getSurfaceCurvature(void)
+    {
+        return surfaceCurvature;
+    }
+    void setSurfaceCurvature(double p)
+    {
+        surfaceCurvature = p;
+    }
+    double getEdgeAngle(void)
+    {
+        return edgeAngle;
+    }
+    void setEdgeAngle(double p)
+    {
+        edgeAngle = p;
+    }
+    double getSurfaceMeshCurv(void)
+    {
+        return surfaceMeshCurv;
+    }
+    void setSurfaceMeshCurv(double p)
+    {
+        surfaceMeshCurv = p;
     }
     CSGeometry* getGeometryCSG(void)
     {

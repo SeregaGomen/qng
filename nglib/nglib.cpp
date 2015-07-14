@@ -103,8 +103,18 @@ int NGInterface::genMeshSTL(string data)
     mparam.segmentsperedge = epEdge;
     mparam.curvaturesafety = epRadius;
     mparam.grading = meshSizeGrading;
-//    mparam.fineness = 0.4;
-//    mparam.second_order = 0;
+
+    stlparam.yangle = edgeAngle;
+    stlparam.resthlinelengthfac = lineLength;
+    stlparam.resthlinelengthenable = 1;
+    stlparam.resthchartdistfac = chartDist;
+    stlparam.resthchartdistenable = 1;
+    stlparam.resthcloseedgefac = closeEdges;
+    stlparam.resthcloseedgeenable = 1;
+    stlparam.resthsurfcurvfac = surfaceCurvature;
+    stlparam.resthsurfcurvenable = 1;
+    stlparam.resthsurfmeshcurvfac = surfaceMeshCurv;
+    stlparam.resthsurfmeshcurvenable = 1.0;
 
     try
     {

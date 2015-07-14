@@ -87,6 +87,7 @@ private slots:
     void meshParam(void);
     void isShowModel(void);
     void closeDoc(void);
+    void updateTimer(void);
 
 private:
     bool isModel = true;

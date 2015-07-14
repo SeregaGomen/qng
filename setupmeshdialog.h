@@ -23,6 +23,13 @@ public:
 private slots:
     void changeRadius(int);
     void changeEdge(int);
+    void changeChartDist(int);
+    void changeLineLength(int);
+    void changeCloseEdges(int);
+    void changeSurfaceCurvature(int);
+    void changeEdgeAngle(int);
+    void changeSurfaceMeshCurv(int);
+
 
 private:
     Ui::SetupMeshDialog *ui;
