@@ -32,7 +32,7 @@ private:
 protected:
     void run(void);
 public:
-    QNGThread(NGInterface *p,FileType t,string g) : ngObject(p), fType(t), geomData(g), QThread() {}
+    QNGThread(NGInterface *p,FileType t,string g) : QThread(), ngObject(p), fType(t), geomData(g) {}
     ~QNGThread(void) {}
     bool getIsGenerated(void)
     {
