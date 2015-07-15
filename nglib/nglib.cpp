@@ -89,14 +89,6 @@ int NGInterface::genMeshSTL(string data)
 {
     int ng_res = 0;
 
-    if (!loadSTL(data))
-    {
-        cout << "Error reading in current STL data" << endl;
-        return ng_res;
-    }
-    cout << "Successfully loaded STL data" << endl;
-
-
     // Set the Meshing Parameters to be used
     mparam.maxh = maxMeshSize;
     mparam.minh = minMeshSize;
@@ -116,8 +108,15 @@ int NGInterface::genMeshSTL(string data)
     stlparam.resthsurfmeshcurvfac = surfaceMeshCurv;
     stlparam.resthsurfmeshcurvenable = 1.0;
 
+
     try
     {
+        if (!loadSTL(data))
+        {
+            cout << "Error reading in current STL data" << endl;
+            return ng_res;
+        }
+        cout << "Successfully loaded STL data" << endl;
         cout << "Initialise the STL Geometry structure...." << endl;
         if (!initSTL())
         {
