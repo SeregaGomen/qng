@@ -109,6 +109,7 @@ int NGInterface::genMeshSTL(string data)
     stlparam.resthsurfmeshcurvenable = 1.0;
 
 
+
     try
     {
         if (!loadSTL(data))
@@ -117,54 +118,24 @@ int NGInterface::genMeshSTL(string data)
             return ng_res;
         }
         cout << "Successfully loaded STL data" << endl;
-        cout << "Initialise the STL Geometry structure...." << endl;
-        if (!initSTL())
-        {
-            cout << "Error Initialising the STL Geometry....Aborting!!" << endl;
-            return 0;
-        }
-
-        cout << "Start Edge Meshing...." << endl;
-        if (!makeEdgesSTL())
-        {
-            cout << "Error in Edge Meshing....Aborting!!" << endl;
-            return 0;
-        }
-
-        cout << "Start Surface Meshing...." << endl;
-        if (!generateSurfaceMeshSTL())
-        {
-            cout << "Error in Surface Meshing....Aborting!!" << endl;
-            return 0;
-        }
-
-        cout << "Start Volume Meshing...." << endl;
-        if(!generateVolumeMesh())
-        {
-            cout << "Error in Volume Meshing....Aborting!!" << endl;
-            return 0;
-        }
+        ((STLGeometry*)geometry)->GenerateMesh(s_ptr,mparam,1,10);
     }
     catch (...)
     {
         cerr << "Meshing error!" << endl;
         return 0;
     }
-    cout << "Meshing successfully completed....!!" << endl;
 
-    // volume mesh output
+    new shared_ptr<Mesh> (s_ptr);  // hack to keep mesh m alive
+
+    mesh = s_ptr.get();
     cout << "------------------------------------------------" << endl;
     cout << "Points:   " << mesh->GetNP() << endl;
     cout << "Elements: " << mesh->GetNE() << endl;
-
-
-    // refinement without geomety adaption:
-    // Ng_Uniform_Refinement (mesh);
-
-    // refinement with geomety adaption:
-//    ((STLGeometry*)geometry)->GetRefinement().Refine (*mesh);
+//    ((CSGeometry*)geometry)->GetRefinement().Refine(*mesh);
 //    cout << "Elements after refinement: " << mesh->GetNP() << endl;
 //    cout << "Points   after refinement: " << mesh->GetNE() << endl;
+//    mesh->Save("tmp.vol");
     return 1;
 }
 

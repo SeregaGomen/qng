@@ -432,7 +432,7 @@ HPREF_ELEMENT_TYPE ClassifyPrism(HPRefElement & el, INDEX_2_HASHTABLE<int> & edg
   int p[6];
   for(int m=1;m<=6;m++)
     {
-      int point_sing[6]={0,0,0,0,0,0}; 
+      int point_sing[6]={0,0,0,0,0,0};
       int face_sing[5]={0,0,0,0,0};
       int edge_sing[9]={0,0,0,0,0,0,0,0,0}; 
       

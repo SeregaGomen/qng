@@ -48,8 +48,8 @@ public:
     }
     ~NGInterface(void)
     {
-        if (dynamic_cast<STLGeometry*>(geometry))
-            delete mesh;
+//        if (dynamic_cast<STLGeometry*>(geometry))
+//            delete mesh;
         if (geometry)
             delete geometry;
     }
