@@ -2,17 +2,19 @@
 #define GLWIDGET_H
 
 #include <QGLWidget>
+#include <QOpenGLFunctions_2_0>
+
 #include "imageparams.h"
 
 typedef enum { STL_MODEL, CSG_MODEL, MESH_MODEL } ModelType;
 
 
-class GLWidget : public QGLWidget
+class GLWidget : public QGLWidget, protected QOpenGLFunctions_2_0
 {
     Q_OBJECT
 
 public:
-    GLWidget(void* p,ModelType m,QWidget* parent) : QGLWidget(parent)
+    GLWidget(void* p,ModelType m,QWidget* parent) : QGLWidget(QGLFormat(QGL::SampleBuffers),parent)
     {
         object = p;
         mType = m;

@@ -93,8 +93,8 @@ static void qNormalizeAngle(int& angle)
 /*******************************************************************/
 void GLWidget::initializeGL()
 {
+    initializeOpenGLFunctions();
     qglClearColor(params.bkgColor);
-
     glEnable(GL_DEPTH_TEST);
     glShadeModel (GL_SMOOTH);
     glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
@@ -429,8 +429,8 @@ void GLWidget::buildScene(void)
 //    radius = Ng_STL_Radius(object);
 
     calcRadius();
-    setupCameraGL(width(),height());
-    updateGL();
+//    setupCameraGL(width(),height());
+//    updateGL();
 }
 /*******************************************************************/
 void GLWidget::calcRadius(void)
@@ -496,7 +496,7 @@ void GLWidget::calcRadius(void)
 /*******************************************************************/
 void GLWidget::paintGL(void)
 {
-    setupCameraGL(width(),height());
+//    setupCameraGL(width(),height());
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
