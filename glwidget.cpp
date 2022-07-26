@@ -1,3 +1,4 @@
+#include <QApplication>
 #include <QtGui>
 #include <QtOpenGL>
 #include <QWheelEvent>
@@ -40,18 +41,18 @@ void GLWidget::restore(void)
     xTransl = yTransl = zTransl = 0.0;
     scale = 1.0;
 
-    updateGL();
+    update();
 }
 /*******************************************************************/
 void GLWidget::repaint(void)
 {
-    qglClearColor(params.bkgColor);
+    glClearColor(params.bkgColor.redF(), params.bkgColor.greenF(), params.bkgColor.blueF(), params.bkgColor.alphaF());
     if (xList1)
         glDeleteLists(xList1, 1);
     if (xList2)
         glDeleteLists(xList2, 1);
     xList1 = xList2 = 0;
-    updateGL();
+    update();
 }
 /*******************************************************************/
 QSize GLWidget::minimumSizeHint() const
@@ -93,8 +94,7 @@ static void qNormalizeAngle(int& angle)
 /*******************************************************************/
 void GLWidget::initializeGL()
 {
-    initializeOpenGLFunctions();
-    qglClearColor(params.bkgColor);
+    glClearColor(params.bkgColor.redF(), params.bkgColor.greenF(), params.bkgColor.blueF(), params.bkgColor.alphaF());
     glEnable(GL_DEPTH_TEST);
     glShadeModel (GL_SMOOTH);
     glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
@@ -179,7 +179,7 @@ void GLWidget::setupRotate(int dx, int dy, int dz)
     xRot += 8*dx;
     yRot += 8*dy;
     zRot += 8*dz;
-    updateGL();
+    update();
 }
 /*******************************************************************/
 void GLWidget::setupScale(int dx, int dy)
@@ -188,14 +188,14 @@ void GLWidget::setupScale(int dx, int dy)
         scale *= 1.05;
     else
         scale /= 1.05;
-    updateGL();
+    update();
 }
 /*******************************************************************/
 void GLWidget::setupTranslate(int dx, int dy)
 {
     xTransl += dx*radius*0.001;
     yTransl -= dy*radius*0.001;
-    updateGL();
+    update();
 }
 /*******************************************************************/
 void GLWidget::setupCameraGL(int width, int height)
@@ -290,13 +290,13 @@ void GLWidget::drawCoordinateCross(void)
     glEnd ();
 
     glColor3f(1,0,0);
-    renderText(1.1, 0.0, 0.0, (char*)"X");
+    renderText(1.1, 0.0, 0.0, (char*)"X", Qt::red);
 
     glColor3f(0,1,0);
-    renderText(0.1, 1.0, 0.0, (char*)"Y");
+    renderText(0.1, 1.0, 0.0, (char*)"Y", Qt::green);
 
     glColor3f(0,0,1);
-    renderText(0.1, 0.0, 1.0, (char*)"Z");
+    renderText(0.1, 0.0, 1.0, (char*)"Z", Qt::blue);
 
     if (params.isLight)
     {
@@ -309,6 +309,62 @@ void GLWidget::drawCoordinateCross(void)
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
 
+}
+/*******************************************************************/
+void GLWidget::renderText(double x, double y, double z, QString text, QColor color, const QFont &font)
+{
+    QPainter painter(this);
+    double textPosX = 0,
+           textPosY = 0,
+           textPosZ = 0,
+           model[16],
+           proj[16];
+    int view[4];
+
+    glGetDoublev(GL_MODELVIEW_MATRIX, model);
+    glGetDoublev(GL_PROJECTION_MATRIX, proj);
+    glGetIntegerv(GL_VIEWPORT, view);
+    project(x, y, z, model, proj, view, &textPosX, &textPosY, &textPosZ);
+
+    textPosY = height() - textPosY; // y is inverted
+    painter.setPen(color);
+    painter.setFont(font);
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
+    painter.drawText(textPosX, textPosY, text); // z = pointT4.z + distOverOp / 4
+//    painter.end();
+}
+/*******************************************************************/
+inline int GLWidget::project(double objx, double objy, double objz, const double model[16], const double proj[16], const int viewport[4], double *winx, double *winy, double *winz)
+{
+    GLdouble in[4], out[4];
+
+    in[0] = objx;
+    in[1] = objy;
+    in[2] = objz;
+    in[3] = 1.0;
+    transformPoint(out, model, in);
+    transformPoint(in, proj, out);
+
+    if (in[3] == 0.0)
+        return 0;
+
+    in[0] /= in[3];
+    in[1] /= in[3];
+    in[2] /= in[3];
+
+    *winx = viewport[0] + (1 + in[0]) * viewport[2] / 2;
+    *winy = viewport[1] + (1 + in[1]) * viewport[3] / 2;
+
+    *winz = (1 + in[2]) / 2;
+    return 1;
+}
+/*******************************************************************/
+inline void GLWidget::transformPoint(double out[4], const double m[16], const double in[4])
+{
+    out[0] = m[0] * in[0] + m[4] * in[1] + m[8] * in[2] + m[12] * in[3];
+    out[1] = m[1] * in[0] + m[5] * in[1] + m[9] * in[2] + m[13] * in[3];
+    out[2] = m[2] * in[0] + m[6] * in[1] + m[10] * in[2] + m[14] * in[3];
+    out[3] = m[3] * in[0] + m[7] * in[1] + m[11] * in[2] + m[15] * in[3];
 }
 /*******************************************************************/
 void GLWidget::setColor(GLdouble r, GLdouble g, GLdouble b, GLdouble a)
@@ -417,10 +473,10 @@ void GLWidget::makeIdentity(GLdouble* m)
 }
 /*******************************************************************/
 // Вращение колёсика мыши
-void GLWidget::wheelEvent(QWheelEvent* pe)
+void GLWidget::wheelEvent(QWheelEvent *pe)
 {
-    setupScale(pe->delta(), pe->delta());
-    updateGL();
+    setupScale(pe->angleDelta().x(), pe->angleDelta().y());
+    update();
 }
 /*******************************************************************/
 void GLWidget::buildScene(void)

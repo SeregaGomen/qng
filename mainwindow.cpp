@@ -7,10 +7,10 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QMessageBox>
-#include <QTextCodec>
+//#include <QTextCodec>
 #include <QCloseEvent>
 #include <QSettings>
-#include <QGLWidget>
+#include <QtOpenGLWidgets/QOpenGLWidget>
 #include <QProgressBar>
 #include <QTextEdit>
 #include <QDockWidget>
@@ -40,12 +40,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::initApp(void)
 {
-    QTextCodec* codec =  QTextCodec::codecForName("UTF-8");
-#if QT_VERSION < 0x050000
-    QTextCodec::setCodecForTr(codec);
-    QTextCodec::setCodecForCStrings(codec);
-#endif
-    QTextCodec::setCodecForLocale(codec);
+//    QTextCodec* codec =  QTextCodec::codecForName("UTF-8");
+//#if QT_VERSION < 0x050000
+//    QTextCodec::setCodecForTr(codec);
+//    QTextCodec::setCodecForCStrings(codec);
+//#endif
+//    QTextCodec::setCodecForLocale(codec);
 
 
     #ifndef Q_OS_LINUX
@@ -196,10 +196,10 @@ void MainWindow::setScroll(void)
 
 void MainWindow::changeTab(int nTab)
 {
-    bool isGL = (qobject_cast<QGLWidget*>(tabWidget->widget(nTab)) == NULL) ? false : true;
+    bool isGL = (qobject_cast<QOpenGLWidget*>(tabWidget->widget(nTab)) == NULL) ? false : true;
 
     if (isGL)
-        qobject_cast<QGLWidget*>(tabWidget->widget(nTab))->updateGL();
+        qobject_cast<QOpenGLWidget*>(tabWidget->widget(nTab))->update();
 
     ui->action_Rotate->setEnabled(isGL);
     ui->action_Scale->setEnabled(isGL);
@@ -437,7 +437,7 @@ void MainWindow::checkMenuState(void)
 {
     bool isEditor = (qobject_cast<QTextEdit *>(tabWidget->currentWidget()) == NULL) ? false : true,
          isPaste = (isEditor) ? QApplication::clipboard()->text().length() : false,
-         isGL = (qobject_cast<QGLWidget*>(tabWidget->currentWidget()) == NULL) ? false : true;
+         isGL = (qobject_cast<QOpenGLWidget*>(tabWidget->currentWidget()) == NULL) ? false : true;
 
     ui->action_SelectAll->setEnabled(isEditor);
     ui->action_Paste->setEnabled(isPaste);

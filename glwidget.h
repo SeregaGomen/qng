@@ -1,20 +1,19 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
-#include <QGLWidget>
-#include <QOpenGLFunctions_2_0>
+#include <QtOpenGLWidgets/QOpenGLWidget>
 
 #include "imageparams.h"
 
 typedef enum { STL_MODEL, CSG_MODEL, MESH_MODEL } ModelType;
 
 
-class GLWidget : public QGLWidget, protected QOpenGLFunctions_2_0
+class GLWidget : public QOpenGLWidget
 {
     Q_OBJECT
 
 public:
-    GLWidget(void* p,ModelType m,QWidget* parent) : QGLWidget(QGLFormat(QGL::SampleBuffers),parent)
+    GLWidget(void* p,ModelType m,QWidget* parent) : QOpenGLWidget(parent)
     {
         object = p;
         mType = m;
@@ -36,12 +35,12 @@ public:
     void init(void)
     {
         initParams();
-        updateGL();
+        update();
     }
     void init(const ImageParams &p)
     {
         params = p;
-        updateGL();
+        update();
     }
     void restore(void);
     void repaint(void);
@@ -142,6 +141,9 @@ private:
     void createSceletonMesh(void);
     void createSceletonSTL(void);
     void calcRadius(void);
+    void renderText(double, double, double, QString, QColor, const QFont& = QFont("Helvetica", 8));
+    inline GLint project(double, double, double, const double [16], const double [16], const int [4], double*, double*, double*);
+    inline void transformPoint(double [4], const double [16], const double [4]);
 };
 
 #endif

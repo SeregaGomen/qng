@@ -63,7 +63,7 @@ public:
         alpha = 1.0;
         isCoord = isLight = isQuality = isFace = true;
         isMesh = isVertex =false;
-        bkgColor = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0).dark();
+        bkgColor = QColor::fromCmykF(0.39, 0.39, 0.0, 0.0).darker();
     }
 };
 

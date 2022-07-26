@@ -9,7 +9,7 @@ unix:QMAKE_CXXFLAGS += -std=c++0x
 DEFINES += _AFXDLL\
            _CRT_SECURE_NO_WARNINGS
 
-QT       += core gui opengl
+QT       += core gui opengl widgets openglwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,6 +18,10 @@ TEMPLATE = app
 
 INCLUDEPATH += libsrc/include \
                nglib
+
+
+msvc:LIBS += -lOpenGL32
+
 
 unix:LIBS += -lz
 
